@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!-- Bootstrap CSS -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+            crossorigin="anonymous"
+    />
+
+    <!--Fontawesome-most popular icon set and toolkit-->
+    <script defer src="resources/fontawesome/js/solid.js"></script>
+    <script defer src="resources/fontawesome/js/fontawesome.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="stylesheet" type="text/css" href="table.css"/>
+
+    <script src="resources/jquery/jquery.js"></script>
+    <script src="resources/bootstrap/js/bootstrap.bundle.js"></script>
+    <link rel="stylesheet" href="resources/datatable/css/datatables.min.css">
+
+    <!--    select2-->
+    <link rel="stylesheet" href="resources/select2/css/select2.min.css">
+    <script src="resources/select2/js/select2.min.js"></script>
+    <script src="resources/script/sweetalert.min.js"></script>
+
+
+    <script src="resources/datatable/js/datatables.min.js"></script>
+    <script src="resources/script/innertablefunctions.js"></script>
+    <script src="resources/script/common.bitproject.js"></script>
+    <script src="materialinventory.js"></script>
+
+
+    <title>Hello,Gamage!</title>
+</head>
+<body>
+<!--script-->
+<script
+        type="module"
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+></script>
+<script
+        nomodule
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+></script>
+
+<div class="row w-100  ">
+    <!--Navigation-->
+    <div class="row s1 ">
+        <div class="navigation">
+            <h2 class="text-white"><span>Ga</span>mage <span>Re</span>staurant</h2>
+
+            <ul>
+                <li class="list">
+                    <a href="#">
+                <span class="icon"
+                ><ion-icon name="home-outline"></ion-icon
+                ></span>
+                        <span class="text"> Home</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#">
+                <span class="icon"
+                ><ion-icon name="notifications-outline"></ion-icon
+                ></span>
+                        <span class="text"> Notification</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#">
+                <span class="icon"
+                ><ion-icon name="settings-outline"></ion-icon
+                ></span>
+                        <span class="text"> Settings</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#">
+                <span class="icon"
+                ><ion-icon name="log-out-outline"></ion-icon
+                ></span>
+                        <span class="text"> Log out</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#" onclick="handalNavigationModel()">
+                <span class="icon"
+                ><ion-icon name="menu-outline"></ion-icon
+                ></span>
+                        <span class="text"> Menu</span>
+                    </a>
+                </li>
+
+                <div class="indicator"></div>
+            </ul>
+        </div>
+    </div>
+    <!--Navigation movement-->
+    <script>
+        const list = document.querySelectorAll(".list");
+
+        function activeLink() {
+            list.forEach((item) => item.classList.remove("active"));
+            this.classList.add("active");
+        }
+
+        list.forEach((item) => item.addEventListener("click", activeLink));
+    </script>
+
+    <!--Form-->
+    <div class="bgForm">
+        <div class="row  text-black-50 ">
+            <h3 class="p-3">
+                Material Inventory Management
+            </h3>
+        </div>
+        <div class="row m-8 ">
+            <div class="col-md-9">
+                <div class="row p-3 formcontent" style="background-color:white"  id="divTable">
+                    <div class="container-fluid ">
+                        <div class="row d-flex align-items-center justify-content-between">
+
+                            <div class="col-md-3">
+                                <input type="button" class="btn button  font-weight-bold" value="Print Table"
+                                       id="btnPrintTable" onclick="btnPrintTableMC()"/>
+
+
+                            </div>
+                            <div class="col-md-6">
+                                <input placeholder="Search"
+                                       class="my-3  form-control border border-2 border-dark txtSearchName"
+                                       type="text"
+                                       id="txtSearchName"/>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="table-responsive" id="tableParent"
+                         class="table-container m-5" style="background-color: white">
+
+                        <script>
+
+                            function getNameColumn(ob) {
+                                return ob.callingname + "(" + ob.number + ")";
+                            }
+
+                            var metadata = [
+                                {
+                                    name: 'Material',
+                                    search: true,
+                                    datatype: 'text',
+                                    property: 'material_id.materialname'
+                                },
+                                {
+                                    name: 'Total Qty',
+                                    search: true,
+                                    datatype: 'text',
+                                    property: 'totalqty'
+                                },
+                                {
+                                    name: 'Remove Qty',
+                                    search: true,
+                                    datatype: 'text',
+                                    property: 'removeqty'
+                                },
+                                {
+                                    name: 'Available Qty',
+                                    search: true,
+                                    datatype: 'text',
+                                    property: 'avaqty'
+                                },
+                                {
+                                    name: 'Inventory status',
+                                    search: true,
+                                    datatype: 'text',
+                                    property: 'inventorystatus_id.name'
+                                }
+                            ];
+                            table("tableParent", "tblMaterialInventory", metadata, true);
+
+                        </script>
+
+                    </div>
+
+                    <div>
+                        <div style="display: inline-block ; float: left">
+                            <select class="form-control input" id="cmbPageSize"
+                                    style="width: 80px;">
+                                <option selected value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="30">30</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
+                            </select>
+                            <script>
+                                cmbPageSize.onchange = function chnagePageSize() {
+                                    activepage = 1;
+                                    btnSearchMC();
+                                };
+                            </script>
+                        </div>
+                        <div style="display: inline-block; margin-left: 10px;">
+                            <ul id="pagination" class="pagination"></ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-3 ">
+
+
+                <div class="datetime">
+                    <div class="time"></div>
+                    <div class="date"></div>
+                </div>
+
+                <script>
+                    const timeElement = document.querySelector(".time");
+                    const dateElement = document.querySelector(".date");
+
+                    /**
+                     * @param {Date} date
+                     */
+                    function formatTime(date) {
+                        const hours12 = date.getHours() % 12 || 12;
+                        const minutes = date.getMinutes();
+                        const isAm = date.getHours() < 12;
+
+                        return `${hours12
+                            .toString()
+                            .padStart(2, "0")}:${minutes.toString().padStart(2, "0")} ${
+                            isAm ? "AM" : "PM"
+                        }`;
+                    }
+
+                    /**
+                     * @param {Date} date
+                     */
+                    function formatDate(date) {
+                        const DAYS = [
+                            "Sunday",
+                            "Monday",
+                            "Tuesday",
+                            "Wednesday",
+                            "Thursday",
+                            "Friday",
+                            "Saturday",
+                        ];
+                        const MONTHS = [
+                            "January",
+                            "February",
+                            "March",
+                            "April",
+                            "May",
+                            "June",
+                            "July",
+                            "August",
+                            "September",
+                            "October",
+                            "November",
+                            "December",
+                        ];
+
+                        return `${DAYS[date.getDay()]}, ${
+                            MONTHS[date.getMonth()]
+                        } ${date.getDate()} ${date.getFullYear()}`;
+                    }
+
+                    setInterval(() => {
+                        const now = new Date();
+
+                        timeElement.textContent = formatTime(now);
+                        dateElement.textContent = formatDate(now);
+                    }, 200);
+                </script>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

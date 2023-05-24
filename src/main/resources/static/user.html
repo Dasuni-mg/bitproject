@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!-- Bootstrap CSS -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+            crossorigin="anonymous"
+    />
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+
+    <script src="resources/script/"></script>
+    <script src="user.js"></script>
+    <script src="resources/datatable/js/datatables.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap"
+            rel="stylesheet"
+    />
+    <title>Hello,Gamage!</title>
+</head>
+<body>
+<!--script-->
+<script
+        type="module"
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+></script>
+<script
+        nomodule
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+></script>
+
+<div class="row w-100">
+    <!--Navigation-->
+    <div class="row s1 w-100">
+        <div class="navigation">
+            <h2 class="text-white"><span>Ga</span>mage <span>Re</span>staurant</h2>
+            <ul>
+                <li class="list">
+                    <a href="http://localhost:8080/dashboard">
+                <span class="icon"
+                ><ion-icon name="home-outline"></ion-icon
+                ></span>
+                        <span class="text"> Home</span>
+                    </a>
+                </li>
+
+
+                <li class="list">
+                    <a href="#">
+                <span class="icon"
+                ><ion-icon name="notifications-outline"></ion-icon
+                ></span>
+                        <span class="text"> Notification</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#">
+                <span class="icon"
+                ><ion-icon name="settings-outline"></ion-icon
+                ></span>
+                        <span class="text"> Settings</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#">
+                <span class="icon"
+                ><ion-icon name="log-out-outline"></ion-icon
+                ></span>
+                        <span class="text"> Log out</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#">
+                <span class="icon"
+                ><ion-icon name="menu-outline"></ion-icon
+                ></span>
+                        <span class="text"> Menu</span>
+                    </a>
+                </li>
+
+                <div class="indicator"></div>
+            </ul>
+        </div>
+    </div>
+    <!--Navigation movement-->
+    <script>
+        const list = document.querySelectorAll(".list");
+
+        function activeLink() {
+            list.forEach((item) => item.classList.remove("active"));
+            this.classList.add("active");
+        }
+
+        list.forEach((item) => item.addEventListener("click", activeLink));
+    </script>
+
+    <!--Form-->
+    <div class="row text-black m-3 p-2">
+        <h2>
+            User Management
+        </h2>
+    </div>
+    <div class="row m-8">
+        <div class="col-md-9">
+            <div class="row w-100 m-3 p-4">
+                <div class="col-md-4">
+                    <div class="form-group text-white">
+                        <div class="inputBox">
+
+                            <input
+                                    id="textUserName"
+                                    type="text"
+                                    class="form-control"
+                                    style="border:2.5px solid rgba(142,8,232,0.72); "
+                                    placeholder="Enter Username No"
+                                    required
+                            />
+                            <span class="text-dark">User Name <b style="color:red; font-size:24px; padding-left: 10px">*</b></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group text-white">
+                        <div class="inputBox">
+
+                            <input
+                                    id="textPwd"
+                                    type="text"
+                                    class="form-control"
+                                    style="border:2.5px solid rgba(142,8,232,0.72); "
+                                    placeholder="Enter Password"
+                                    required
+                                    onkeyup="textFieldBinder(textPwd,'^[A-Z][a-z]{3,10}$','user','password','olduser')"/>
+
+
+                            <span class="text-dark">Password <b style="color:red; font-size:24px; padding-left: 10px">*</b></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group text-white">
+                        <div class="inputBox">
+
+                            <input
+                                    id="txtEmail"
+                                    type="text"
+                                    class="form-control"
+                                    style="border:2.5px solid rgba(142,8,232,0.72); "
+                                    placeholder="Enter Full Name"
+                                    required
+                                    onkeyup="textFieldBinder(txtEmail,'^(([A-Z][a-z]{1,16}[ ]{0,1})+([A-Z][a-z]{1,16})+)$','user','email','olduser')"
+                            />
+                            <span class="text-dark">Email <b style="color:red; font-size:24px; padding-left: 10px">*</b></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row w-100 m-3 p-4">
+                <div class="col-md-4">
+                    <div class="form-group text-white">
+                        <div class="inputBox">
+                            <input
+                                    id="txtStatus"
+                                    type="text"
+                                    class="form-control"
+                                    style="border:2.5px solid rgba(142,8,232,0.72); "
+                                    placeholder="Enter Status"
+                                    required
+                                    onkeyup="textFieldBinder(txtStatus,'^(([0-9]{9}[VvXx])|([0-9]){12})$ ','user','status','olduser')"
+                            />
+                            <span class="text-dark">Status<b style="color:red; font-size:24px; padding-left: 10px">*</b></span>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!--Clear/Update/Delete buttons-->
+            <div class="row m-3 p-4">
+                <div class="d-grid gap-2 d-md-block">
+                    <button
+                            class="btn button btn-lg  px-5"
+                            type="button"
+                    >
+                        Add
+                    </button>
+                                      <button
+                            class="btn button btn-lg  px-5"
+                            type="button"
+                    >
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+
+            <div class="datetime">
+                <div class="time"></div>
+                <div class="date"></div>
+            </div>
+
+            <script>
+                const timeElement = document.querySelector(".time");
+                const dateElement = document.querySelector(".date");
+
+                /**
+                 * @param {Date} date
+                 */
+                function formatTime(date) {
+                    const hours12 = date.getHours() % 12 || 12;
+                    const minutes = date.getMinutes();
+                    const isAm = date.getHours() < 12;
+
+                    return `${hours12
+                        .toString()
+                        .padStart(2, "0")}:${minutes.toString().padStart(2, "0")} ${
+                        isAm ? "AM" : "PM"
+                    }`;
+                }
+
+                /**
+                 * @param {Date} date
+                 */
+                function formatDate(date) {
+                    const DAYS = [
+                        "Sunday",
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                    ];
+                    const MONTHS = [
+                        "January",
+                        "February",
+                        "March",
+                        "April",
+                        "May",
+                        "June",
+                        "July",
+                        "August",
+                        "September",
+                        "October",
+                        "November",
+                        "December",
+                    ];
+
+                    return `${DAYS[date.getDay()]}, ${
+                        MONTHS[date.getMonth()]
+                    } ${date.getDate()} ${date.getFullYear()}`;
+                }
+
+                setInterval(() => {
+                    const now = new Date();
+
+                    timeElement.textContent = formatTime(now);
+                    dateElement.textContent = formatDate(now);
+                }, 200);
+            </script>
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">User History</h5>
+                    <div class="d-flex justify-content-around align-items-center">
+                        <img
+                                src="./resources/image/user.png"
+                                width="90px"
+                                height="90px"
+                                alt="user"
+                        />
+                        <a
+                                href="http://localhost:8080/usertable"
+                                type="button"
+                                class="btn button-view"
+                        >
+                            View History
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

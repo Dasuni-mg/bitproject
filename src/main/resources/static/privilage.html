@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ceylon Engineering: Privilage Management </title>
+    <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="resources/bootstrap/css/font-awesome.min.css">
+
+    <script src="resources/jquery/jquery-3.4.1.min.js"></script>
+    <script src="resources/jquery/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="resources/jquery/popper.min.js"></script>
+    <script src="resources/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="icon" href="resources/image/cnew.jpg" type="image/x-icon">
+
+    <!-- google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Merriweather+Sans:wght@500&display=swap" rel="stylesheet">
+
+    <!--google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
+
+
+    <link rel="stylesheet" href="resources/style/home.css">
+    <link rel="stylesheet" href="resources/style/common.css">
+    <link rel="stylesheet" href="resources/style/side4.css">
+
+    <script src="resources/script/common.bitproject.js"></script>
+    <script src="resources/script/mainWindow.js"></script>
+    <script src="privilage.js"></script>
+
+    <script src="resources/script/sweetalert.min.js"></script>
+
+    <link href="resources/select2/css/select2.min.css" rel="stylesheet"/>
+    <script src="resources/select2/js/select2.min.js"></script>
+
+    <link rel="stylesheet" href="resources/bootstrap/css/bootstrap4-toggle.min.css">
+    <script src="resources/bootstrap/js/bootstrap4-toggle.min.js"></script>
+
+    <script defer src="resources/fontawesome/js/solid.js"></script>
+    <script defer src="resources/fontawesome/js/fontawesome.js"></script>
+
+
+    <link href='resources/style/clock.css' rel='stylesheet' />
+    <script src='resources/script/clock.js'></script>
+
+
+</head>
+<body>
+
+<div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar" style="background-image: linear-gradient(rgba(0, 0, 0, 0.870),rgba(49, 183, 170, 0.75)) ,url('resources/image/ver.jpg')">
+        <div class="sidebar-header">
+
+            <h3><img class="cnew" src="../resources/image/cnew.jpg"><span>Ceylon Engineering</span> </h3>
+            <strong><img class="cnew" src="../resources/image/cnew.jpg"></strong>
+        </div>
+
+        <ul class="list-unstyled components">
+            <li>
+                <a href="http://localhost:8080/mainwindow" data-toggle="collapse" aria-expanded="false">
+                    <i class="fas fa-tachometer-alt"></i><span class="viewPara"> &nbsp;Dashboard</span>
+                </a>
+
+            </li>
+
+            <li class="USER">
+                <a href="http://localhost:8080/user">
+                    <i class="fas fa-user-cog"></i><span class="viewPara">&nbsp; User</span>
+                </a>
+            </li>
+
+            <li class="PRIVILAGE">
+                <a href="http://localhost:8080/privilage">
+                    <i class="fas fa-user-shield"></i><span class="viewPara">&nbsp; Privilege</span>
+                </a>
+            </li>
+
+            <li>
+                <a  href="#customerSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-user-tie"></i> <span class="viewPara"> &nbsp;Customer</span>
+                </a>
+                <ul class="collapse list-unstyled" id="customerSubmenu">
+                    <li class="CUSTOMER">
+                        <a href="http://localhost:8080/customer"><i class="fas fa-user-plus"></i> Customer Add</a>
+                    </li>
+                    <li class="CUSTOMERPAYMENT">
+                        <a href="http://localhost:8080/cuspayment"><i class="fas fa-hand-holding-usd"></i> Customer Payment</a>
+                    </li>
+                    <li class="RESERVATIONPROGRESS">
+                        <a href="http://localhost:8080/rprogress"><i class="fas fa-book"></i> Reservation Progress</a>
+                    </li>
+
+                </ul>
+            </li>
+
+            <li>
+
+                <a href="#serviceSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-briefcase"></i><span class="viewPara"> &nbsp;Service</span>
+                </a>
+                <ul class="collapse list-unstyled" id="serviceSubmenu">
+                    <li class="SERVICE">
+                        <a href="http://localhost:8080/service"><i class="fas fa-concierge-bell"></i> Main Services Add</a>
+                    </li>
+                    <li class="PLAN">
+                        <a href="http://localhost:8080/plan"><i class="fas fa-ruler-combined"></i> Service Plan</a>
+                    </li>
+
+                </ul>
+            </li>
+
+
+
+            <li>
+                <a  href="#reservationSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-book-open"></i> <span class="viewPara"> &nbsp;Reservation</span>
+                </a>
+                <ul class="collapse list-unstyled" id="reservationSubmenu">
+                    <li class="RESERVATION">
+                        <a href="http://localhost:8080/reservation"><i class="fas fa-sticky-note"></i> Reservation Add</a>
+                    </li>
+                    <li class="DESIGNERASSIGNMENT">
+                        <a href="http://localhost:8080/designerassign"><i class="fas fa-user-edit"></i> Designer Add</a>
+                    </li>
+                    <li class="QSASSIGNMENT">
+                        <a href="http://localhost:8080/qsassign"><i class="fas fa-user-plus"></i> QS Add</a>
+                    </li>
+
+                </ul>
+            </li>
+            <li class="ESTIMATION">
+                <a href="http://localhost:8080/estimation">
+                    <i class="fas fa-pencil-ruler"></i><span class="viewPara">&nbsp; Estimation</span>
+                </a>
+            </li>
+            <li class="BSR">
+                <a href="http://localhost:8080/bsr">
+                    <i class="fas fa-pencil-ruler"></i><span class="viewPara">&nbsp; BSR</span>
+                </a>
+            </li>
+            <li>
+                <a  href="#equipmentSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-tools"></i> <span class="viewPara"> &nbsp;Equipment</span>
+                </a>
+                <ul class="collapse list-unstyled" id="equipmentSubmenu">
+                    <li class="EQUIPMENT">
+                        <a href="http://localhost:8080/equipment"><i class="fas fa-toolbox"></i></i> Equipmet Add</a>
+                    </li>
+                    <li class="EQSHIFTMENT">
+                        <a href="http://localhost:8080/eqshiftment"><i class="fas fa-toolbox"></i> Equipment Shiftment</a>
+                    </li>
+                    <li class="EQINVENTORY">
+                        <a href="http://localhost:8080/eqinventory"><i class="fas fa-toolbox"></i> Equipment Inventory</a>
+                    </li>
+
+                </ul>
+            </li>
+
+            <li>
+                <a  href="#employeeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-id-card"></i> <span class="viewPara"> &nbsp;Employee</span>
+                </a>
+                <ul class="collapse list-unstyled" id="employeeSubmenu">
+                    <li class="EMPLOYEE">
+                        <a href="http://localhost:8080/employee"><i class="fas fa-id-card-alt"></i></i> Employee Add</a>
+                    </li>
+                    <li class="EMPSHIFTMENT">
+                        <a href="http://localhost:8080/empshiftment"><i class="fas fa-users-cog"></i> Employee Shiftment</a>
+                    </li>
+
+
+                </ul>
+            </li>
+
+
+            <li>
+                <a  href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-book"></i> <span class="viewPara"> &nbsp;Reports</span>
+                </a>
+                <ul class="collapse list-unstyled" id="reportSubmenu">
+
+                    <li>
+                        <a href="http://localhost:8080/report/cusarrears"><i class="fas fa-users-cog"></i> Customer Arrears Report</a>
+                    </li>
+
+                    <li>
+                        <a href="http://localhost:8080/report/noassignemp"><i class="fas fa-id-card-alt"></i></i> Available Employee Report</a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:8080/report/empworkingusage"><i class="fas fa-users-cog"></i> Employee Working Progress Report</a>
+                    </li>
+
+                    <li>
+                        <a href="http://localhost:8080/report/expemp"><i class="fas fa-users-cog"></i> Expected Employee Report</a>
+                    </li>
+
+                    <li>
+                        <a href="http://localhost:8080/report/eqallocation"><i class="fas fa-toolbox"></i> Expected Equipment Available Report</a>
+                    </li>
+
+
+                </ul>
+            </li>
+
+
+
+        </ul>
+
+
+    </nav>
+
+
+    <!-- Page Content  -->
+    <div id="content">
+        <!-- Top Nav bar  -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+
+            <div class="container-fluid">
+                <div class="float-left">
+                    <button type="button" id="sidebarCollapse" class="btn btn-info">
+                        <i class="fas fa-align-left"></i>
+                        <span></span>
+                    </button>
+
+                    <button type="button" class="btn btn-info ml-3">
+                        <a href="http://localhost:8080/mainwindow"> <i class="fa fa-home"></i></a>
+                        <span></span>
+                    </button>
+
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="privilegeSet" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color: #bae0f1;">
+                                    <h5 class="modal-title ceylonLog" style="color:#232348;"  id="exampleModalLongTitle">Choose the Main Modules</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="border-radius: 10px !important;padding: 26px;background-image: linear-gradient(rgba(255, 248, 248, 0.640),rgba(247, 237, 237, 0.80)) ,url('resources/image/exc.jpg')">
+                                    <!--start ul-->
+                                    <!--card start-->
+                                    <div class="card mainBlock">
+                                        <div class="card-body" style="padding: 26px;background-image: linear-gradient(rgba(255, 248, 248, 0.640),rgba(247, 237, 237, 0.80)) ,url('resources/image/exc.jpg')">
+                                            <div class="row">
+                                                <div class="col-md-4 block_other">
+                                                    <div class="text-center emp"
+                                                         onclick="window.location.assign('http://localhost:8080/employee')">
+                                                        <div class="card"   style="cursor: pointer;">
+                                                            <div class="card-header text-center" style="font-size:60px;color:#fff;background-color:#343a40;">
+                                                                <i class="fas fa-user-friends"></i>
+                                                            </div>
+                                                            <div class="card-body text-center" style="background-color: rgba(29,85,211,0.4);">
+                                                                <span style="font-weight: 600;font-size: 16px">Employee</span>
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 block_other">
+                                                    <div class="text-center emp"
+                                                         onclick="window.location.assign('http://localhost:8080/user')">
+                                                        <div class="card"   style="cursor: pointer;">
+                                                            <div class="card-header text-center" style="font-size:60px;color:#fff;background-color:#343a40;">
+                                                                <i class="fas fa-user"></i>
+                                                            </div>
+                                                            <div class="card-body text-center" style="background-color: rgba(29,85,211,0.4);">
+                                                                <span style="font-weight: 600;font-size: 16px">USER</span>
+
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 block_other">
+                                                    <div class="text-center"
+                                                         onclick="window.location.assign('http://localhost:8080/privilage')">
+                                                        <div class="card"   style="cursor: pointer;">
+                                                            <div class="card-header text-center" style="font-size:60px;color:#fff;background-color:#343a40;">
+                                                                <i class="fas fa-user-lock"></i>
+                                                            </div>
+                                                            <div class="card-body text-center" style="background-color: rgba(29,85,211,0.4);">
+                                                                <span style="font-weight: 600;font-size: 16px">Privilege</span>
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--card end  -->
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--modal end-->
+
+                    <!--employee,userprivilege start -->
+                    <button type="button" style="height: 38px;" class="btn btn-info ml-3 p-0" data-toggle="modal" data-target="#privilegeSet">
+                        <a class="nav-link justify-content-center"  href="#"><i
+                                class="fa fa-th"></i> </a>
+
+                    </button>
+
+
+
+
+
+
+                </div>
+
+
+                <div class="AnimateShadow">
+                    <h2 class="ceylonHead"> <i class="fas fa-building mr-2 animatesymboll"></i>Ceylon Engineering </h2>
+                </div>
+
+                <div id="clockdate">
+                    <div class="clockdate-wrapper">
+                        <div id="clock"></div>
+                        <div id="date"></div>
+                    </div>
+                </div>
+
+
+                <div class="float-right" style="margin-top: 10px">
+                    <p class="font-weight-bold text-white"> Loged as : <a href="#" class="badge badge-success"><span id="spnDesignation"> </span></a>  </p>
+                </div>
+
+                <form class="form-inline my-2 my-lg-0 mr-2 float-right">
+
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="navbar-nav ">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" style="width: 160px" href="#"
+                                   id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                                   aria-expanded="false">
+                                    <img id="profileImage" class="profileImage">
+                                    <p class="loggedUserNameField d-inline" id="lblLogUser">123456</p>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="width: 189px;">
+<!--                                    <a class="dropdown-item" href="#"><i class="far fa-sliders-v"></i> View Profile</a>-->
+                                    <a class="dropdown-item" href="#" data-toggle="modal"
+                                       data-target="#settingsModal"><i class="far fa-sliders-v"></i> Change Password</a>
+                                    <a class="dropdown-item" href="#" onclick="btnSignoutMC()"><i
+                                            class="fas fa-sign-out-alt"></i> Sign Out</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </form>
+            </div>
+
+        </nav>
+
+        <!-- Content -->
+        <div class="container-fluid ">
+
+            <div class="row" id="ui">
+
+                <div class="col-md-12">
+                    <div class="card cardhead" style="margin-top: 10px;border: none;">
+                        <div class="card-header text-left cardhead">
+                            <h2 class="ceylonLog cardForheader"><img class="cnew" src="../resources/image/cnew.jpg">privilege Management</h2>
+                        </div>
+                        <div class="card-body"style="background-image: linear-gradient(rgba(255, 248, 248, 0.640),rgba(247, 237, 237, 0.80)) ,url('resources/image/exc.jpg')">
+                            <div class="row mb-2">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-primary ceylonLog" data-toggle="modal" data-target="#PrivilegeAdd">
+                                        Privilege  Add
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 p-3 formcontent" id="form">
+                                    <form class="" id="userform" onsubmit="return false">
+
+                                        <div class="row">
+                                            <div class="col-md-12 pull-right text-right">
+                                                <span style="color:red;">* Required</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-md-5 ceylonLog" for="cmbRole"> <b>Role : <span
+                                                style="color:red;">*</span></b></label>
+                                            <div class="col-md-7">
+                                                <select class="form-control" id="cmbRole" required
+                                                        onchange="comboBoxBinder(cmbRole,'','privilage','roleId','oldprivilage')"
+                                                ></select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-md-5 ceylonLog" for="cmbModule"> <b>Module : <span
+                                                style="color:red;">*</span></b></label>
+                                            <div class="col-md-7">
+                                                <select class="form-control" id="cmbModule" required
+                                                        onchange="comboBoxBinder(cmbModule,'','privilage','moduleId','oldprivilage')"
+                                                ></select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label ceylonLog" for="chkSelect"> <b>Select : <span
+                                                    style="color:red;">*</span></b></label>
+                                            <div class="col-md-7">
+                                                <input type="checkbox" id="chkSelect" required
+                                                       data-toggle="toggle" data-on="Granded" data-off="Not-Granded"
+                                                       data-onstyle="success" data-offstyle="danger" data-width="150"
+                                                       data-height="40"
+                                                       onchange="CheckBoxBinder(chkSelect, '','privilage','sel','oldprivilage')">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label ceylonLog" for="chkInsert"> <b>Insert : <span
+                                                    style="color:red;">*</span></b></label>
+                                            <div class="col-md-7">
+                                                <input type="checkbox" id="chkInsert" required
+                                                       data-toggle="toggle" data-on="Granded" data-off="Not-Granded"
+                                                       data-onstyle="success" data-offstyle="danger" data-width="150"
+                                                       data-height="40"
+                                                       onchange="CheckBoxBinder(chkInsert, '','privilage','ins','oldprivilage')">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label ceylonLog" for="chkUpdate"> <b>Update : <span
+                                                    style="color:red;">*</span></b></label>
+                                            <div class="col-md-7">
+                                                <input type="checkbox" id="chkUpdate" required
+                                                       data-toggle="toggle" data-on="Granded" data-off="Not-Granded"
+                                                       data-onstyle="success" data-offstyle="danger" data-width="150"
+                                                       data-height="40"
+                                                       onchange="CheckBoxBinder(chkUpdate, '','privilage','upd','oldprivilage')">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label ceylonLog" for="chkDelete"> <b>Delete : <span
+                                                    style="color:red;">*</span></b></label>
+                                            <div class="col-md-7">
+                                                <input type="checkbox" id="chkDelete" required
+                                                       data-toggle="toggle" data-on="Granded" data-off="Not-Granded"
+                                                       data-onstyle="success" data-offstyle="danger" data-width="150"
+                                                       data-height="40"
+                                                       onchange="CheckBoxBinder(chkDelete, '', 'privilage','del','oldprivilage')">
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row mt-5">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+
+                                                        <input class="btn btn-primary" type="button" id="btnClear"
+                                                               value="Clear"
+                                                               style="width: 100%" onclick="btnClearMC()"/>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-md-12">
+                                                        <input class="btn btn-warning" type="submit" id="btnUpdate"
+                                                               value="Update"
+                                                               style="width: 100%" onclick="btnUpdateMC()"/>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-md-12">
+                                                        <input class="btn btn-success" id="btnAdd" value="Add"
+                                                               style="width: 100%"
+                                                               type="submit" onclick="btnAddMC()"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+<!--                                            <input class="btn btn-primary btn-sm" type="button" id="btnClear"-->
+<!--                                                   value="Clear"-->
+<!--                                                   style="width: 25%" onclick="btnClearMC()"/>-->
+<!--                                            <input class="btn btn-warning btn-sm" type="submit" id="btnUpdate"-->
+<!--                                                   value="Update"-->
+<!--                                                   style="width: 25%" onclick="btnUpdateMC()"/>-->
+<!--                                            <input class="btn btn-success btn-sm" id="btnAdd" value="Add"-->
+<!--                                                   style="width: 25%"-->
+<!--                                                   type="submit" onclick="btnAddMC()"/>-->
+                                        </div>
+                                    </form>
+
+                                    </form>
+                                </div>
+                                <div class="col-md-8 p-3 formcontent" id="employeeview">
+
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-7">
+                                                <button class="btn btn-info ceylonLog" id="btnPrintTable" onclick="printDiv(tblPrevilage, ' Privilage Details : ')"><i class='fas fa-print mr-2'></i>Print Table</button>
+
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="float-right input-group">
+                                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                                                    <input placeholder="Search" class="form-control" type="text" id="txtSearchName" />
+
+<!--                                                    <input placeholder="Search" class="form-control" type="text" id="txtSearchName" onblur="this.focus()" />-->
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+<!--                                        <input type="button" class="btn tblbtnprint font-weight-bold" value="Print Table" id="btnPrintTable"  onclick="printDiv(tblPrevilage, ' Privilage Details : ')"/>-->
+<!--                                        <div class="float-right">-->
+<!--                                            <input placeholder="Search" class="form-control" type="text" id="txtSearchName" onblur="this.focus()" />-->
+<!--                                        </div>-->
+
+                                    </div>
+                                    <hr/>
+
+
+                                    <div class="table-responsive" id="tableParent">
+
+                                        <script>
+
+                                            function getsel(ob) {
+                                                var preselect = "Not Granted";
+                                                if (ob.sel == 1)
+                                                    preselect = "Granted"
+                                                return preselect;
+                                            }
+
+                                            function getins(ob) {
+                                                var preselect = "Not Granted";
+                                                if (ob.ins == 1)
+                                                    preselect = "Granted"
+                                                return preselect;
+                                            }
+
+                                            function getupd(ob) {
+                                                var preselect = "Not Granted";
+                                                if (ob.upd == 1)
+                                                    preselect = "Granted"
+                                                return preselect;
+                                            }
+
+                                            function getdel(ob) {
+                                                var preselect = "Not Granted";
+                                                if (ob.del == 1)
+                                                    preselect = "Granted"
+                                                return preselect;
+                                            }
+
+
+                                            var metadata = [
+                                                {name: 'Role', search: true, datatype: 'text', property: 'roleId.role'},
+                                                {
+                                                    name: 'Module',
+                                                    search: true,
+                                                    datatype: 'text',
+                                                    property: 'moduleId.name'
+                                                },
+                                                {name: 'Select', search: true, datatype: 'text', property: getsel},
+                                                {name: 'Insert', search: true, datatype: 'text', property: getins},
+                                                {name: 'Update', search: true, datatype: 'text', property: getupd},
+                                                {name: 'Delete', search: true, datatype: 'text', property: getdel}
+                                            ];
+
+                                            table("tableParent", "tblPrevilage", metadata, true);
+
+                                        </script>
+
+
+                                    </div>
+                                    <div>
+                                        <div style="display: inline-block ; float: left">
+                                            <select class="form-control input" id="cmbPageSize"
+                                                    style="width: 80px;">
+                                                <option selected value="4">4</option>
+                                                <option value="15">15</option>
+                                                <option value="20">20</option>
+                                                <option value="25">25</option>
+                                                <option value="30">30</option>
+                                                <option value="35">35</option>
+                                            </select>
+                                            <script>
+                                                cmbPageSize.onchange = function chnagePageSize() {
+                                                    activepage = 1;
+                                                    btnSearchMC();
+                                                };
+                                            </script>
+                                        </div>
+                                        <div style="display: inline-block; margin-left: 10px;">
+                                            <ul id="pagination" class="pagination"></ul>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer cardhead">
+                            <div id="err"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="overlay"></div>
+
+<!-- Settings Modal-->
+<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog"
+     aria-labelledby="settingsModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content" id="modalContent">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle"><i
+                        class="fas fa-cog"></i> Settings</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form id="changePasswordForm" onsubmit="return false">
+                    <div class="form-row">
+                        <!-- Username -->
+                        <div class="form-group col-md-12">
+                            <label for="txtUsernameView" class="text-blue">
+                                <b>Username</b>
+                            </label>
+                            <div readonly class="form-control-plaintext"
+                                 id="txtUsernameView"></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <!-- Current Password -->
+                        <div class="form-group col-md-12">
+                            <label for="txtCurrentPassword"
+                                   class="text-blue"><b>Current Password</b> <i
+                                    class="fas fa-question-circle text-primary ml-1"
+                                    data-toggle="tooltip" data-placement="right"
+                                    title=""></i></label>
+                            <input type="password"
+                                   class="form-control form-control-sm changePasswordFields"
+                                   id="txtCurrentPassword"
+                                   onkeyup="textFieldBinder(txtCurrentPassword, '^[0-9]{5,}$', 'changePassword', 'currentPassword', 'oldChangePassword')">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <!-- New Password -->
+                        <div class="form-group col-md-12">
+                            <label for="txtNewPassword" class="text-blue"><b>New
+                                Password</b><i
+                                    class="fas fa-question-circle text-primary ml-1"
+                                    data-toggle="tooltip" data-placement="right"
+                                    title=""></i></label>
+                            <input type="password"
+                                   class="form-control form-control-sm changePasswordFields"
+                                   id="txtNewPassword"
+                                   onkeyup="passwordFieldBinder(txtNewPassword, txtConfirmPassword, '^[0-9]{5,}$', 'changePassword', '', 'oldChangePassword')">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <!-- Confirm Password -->
+                        <div class="form-group col-md-12">
+                            <label for="txtConfirmPassword"
+                                   class="text-blue"><b>Confirm
+                                Password</b><i
+                                    class="fas fa-question-circle text-primary ml-1"
+                                    data-toggle="tooltip" data-placement="right"
+                                    title=""></i></label>
+                            <input type="password"
+                                   class="form-control form-control-sm changePasswordFields"
+                                   id="txtConfirmPassword"
+                                   onkeyup="passwordFieldBinder(txtNewPassword, txtConfirmPassword, '^[0-9]{5,}$', 'changePassword', 'newPassword', 'oldChangePassword')">
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="brnClosechnagepasswordmodle" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary"
+                        onclick="btnSaveChangePasswordMC()">Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

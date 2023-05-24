@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!-- Bootstrap CSS -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+            crossorigin="anonymous"
+    />
+
+    <!--Fontawesome-most popular icon set and toolkit-->
+    <script defer src="resources/fontawesome/js/solid.js"></script>
+    <script defer src="resources/fontawesome/js/fontawesome.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="stylesheet" type="text/css" href="table.css"/>
+
+    <script src="resources/jquery/jquery.js"></script>
+    <script src="resources/bootstrap/js/bootstrap.bundle.js"></script>
+    <link rel="stylesheet" href="resources/datatable/css/datatables.min.css">
+
+    <!--    select2-->
+    <link rel="stylesheet" href="resources/select2/css/select2.min.css">
+    <script src="resources/select2/js/select2.min.js"></script>
+    <script src="resources/script/sweetalert.min.js"></script>
+
+
+    <script src="resources/datatable/js/datatables.min.js"></script>
+    <script src="resources/script/innertablefunctions.js"></script>
+    <script src="resources/script/common.bitproject.js"></script>
+    <script src="material1.js"></script>
+
+
+    <title>Hello,Gamage!</title>
+</head>
+<body>
+<!--script-->
+<script
+        type="module"
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+></script>
+<script
+        nomodule
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+></script>
+
+<div class="row w-100  ">
+    <!--Navigation-->
+    <div class="row s1 ">
+        <div class="navigation">
+            <h2 class="text-white"><span>Ga</span>mage <span>Re</span>staurant</h2>
+
+            <ul>
+                <li class="list">
+                    <a href="#">
+                <span class="icon"
+                ><ion-icon name="home-outline"></ion-icon
+                ></span>
+                        <span class="text"> Home</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#">
+                <span class="icon"
+                ><ion-icon name="notifications-outline"></ion-icon
+                ></span>
+                        <span class="text"> Notification</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#">
+                <span class="icon"
+                ><ion-icon name="settings-outline"></ion-icon
+                ></span>
+                        <span class="text"> Settings</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#">
+                <span class="icon"
+                ><ion-icon name="log-out-outline"></ion-icon
+                ></span>
+                        <span class="text"> Log out</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#" onclick="handalNavigationModel()">
+                <span class="icon"
+                ><ion-icon name="menu-outline"></ion-icon
+                ></span>
+                        <span class="text"> Menu</span>
+                    </a>
+                </li>
+
+                <div class="indicator"></div>
+            </ul>
+        </div>
+    </div>
+    <!--Navigation movement-->
+    <script>
+        const list = document.querySelectorAll(".list");
+
+        function activeLink() {
+            list.forEach((item) => item.classList.remove("active"));
+            this.classList.add("active");
+        }
+
+        list.forEach((item) => item.addEventListener("click", activeLink));
+    </script>
+
+    <!--Form-->
+    <div class="bgForm">
+        <div class="row  text-black-50 ">
+            <h3 class="p-3">
+               Material Management
+            </h3>
+        </div>
+        <div class="row m-8 ">
+            <div class="col-md-9">
+                <div class=" col-md-12">
+                    <div class="card" style="background-color: transparent;">
+
+                        <div class=" card-body">
+
+                            <div class="row ">
+                                <form class="" id="customerform" onsubmit="return false">
+                                    <div class="row mt-2">
+                                        <div class="col-md-2"></div>
+                                        <!--form-->
+                                        <div class="col-md-12 p-3">
+
+                                            <div class="row m-2 p-3"   >
+
+                                                <!--Material code-->
+                                                <div class="col-md-3">
+                                                    <div class="form-group text-dark ">
+                                                        <label for="txtMaterialCode" class=" "><b>Material Code:
+                                                            <span style="color: red;">*</span></b> </label>
+                                                        <div class="input-group">
+                                                            <input type="text"
+                                                                   class="form-control"
+                                                                   id="txtMaterialCode"
+                                                                   placeholder="Enter material code"
+                                                                   required data-toggle="tooltip"
+                                                                   data-placement="bottom"
+                                                                   title="Enter five digits for Registration No-Eg: 12345"
+                                                                   onkeyup="textFieldBinder(txtMaterialCode,'^[0-9]{4}$','material','materialcode','oldmaterial')">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!--Material Category-->
+                                                <div class="col-md-3" >
+                                                    <div class="form-group text-dark  ">
+                                                        <label for="cmbMaterialCategory" class=""><b>Material Category:</b>
+                                                        </label>
+                                                        <div class="input-group">
+                                                            <select id="cmbMaterialCategory"
+                                                                    class="form-control"
+                                                                    data-toggle="tooltip" data-placement="bottom"
+                                                                    title="Select Material Category"
+                                                                    required
+                                                                    onchange="comboBoxBinder(cmbMaterialCategory,'','material','materialcategory_id','oldmaterial')">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!--Material Name-->
+                                                <div class="col-md-3">
+                                                    <div class="form-group text-dark ">
+                                                        <label for="txtMaterialName" class="  "> <b>Material Name:
+                                                        </b> <span style="color: red;">*</span></label>
+                                                        <div class="input-group">
+                                                            <input type="text"
+                                                                   class="form-control"
+                                                                   id="txtMaterialName"
+                                                                   placeholder="Enter material name"
+                                                                   required
+                                                                   data-toggle="tooltip" data-placement="bottom"
+                                                                   title="Material Name"
+                                                                   onkeyup="textFieldBinder(txtMaterialName,'^.*$','material','materialname','oldmaterial')">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Unit Size-->
+                                                <div class="col-md-3 ">
+                                                    <div class="form-group text-dark ">
+                                                        <label for="txtUnitSize" class="  "><b>Unit Size:
+                                                        </b> <span style="color: red;">*</span></label>
+                                                        <div class="input-group">
+                                                            <input type="text"
+                                                                   class="form-control"
+                                                                   id="txtUnitSize"
+                                                                   placeholder="Enter unit size"
+                                                                   required
+                                                                   data-toggle="tooltip" data-placement="bottom"
+                                                                   title="Enter Unit size"
+                                                                   onkeyup="textFieldBinder(txtUnitSize,'^.*$','material','unitsize','oldmaterial')">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="row m-2 p-3"   >
+
+                                                <!-- Unit type-->
+                                                <div class="col-md-3 ">
+                                                    <div class="form-group text-dark ">
+                                                        <label for="cmbUnitType" class="  "><b>Unit Type:
+                                                        </b> <span style="color: red;">*</span></label>
+                                                        <div class="input-group">
+                                                            <select id="cmbUnitType"
+                                                                    class="form-control"
+                                                                    required
+                                                                    data-toggle="tooltip" data-placement="bottom"
+                                                                    title="Select a Unit type"
+                                                                    onchange="comboBoxBinder(cmbUnitType,'','material','unittype_id','oldmaterial')">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </form>
+
+                            </div>
+                            <div class="col-md-2"></div>
+
+                            <!--Clear/Update/Delete buttons-->
+                            <div class="row mt-2 p-2">
+                                <div class="col-md-12">
+
+                                    <div class="text-right">
+                                        <button class="btn button " type="button" id="btnClear"
+                                                style="width: 25%">
+                                            <i class="fas fa-recycle mr-2"></i> Clear
+                                        </button>
+                                        <button class="btn button " type="submit" id="btnUpdate"
+                                                style="width: 25%"><i class="fas fa-edit mr-2"></i>
+                                            Update
+                                        </button>
+                                        <button class="btn button" style="width: 25%" type="submit"
+                                                id="btnAdd">
+                                            <i class='fas fa-plus-circle mr-2'></i>Add
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-3 ">
+
+                <div class="datetime">
+                    <div class="time"></div>
+                    <div class="date"></div>
+                </div>
+
+                <script>
+                    const timeElement = document.querySelector(".time");
+                    const dateElement = document.querySelector(".date");
+
+                    /**
+                     * @param {Date} date
+                     */
+                    function formatTime(date) {
+                        const hours12 = date.getHours() % 12 || 12;
+                        const minutes = date.getMinutes();
+                        const isAm = date.getHours() < 12;
+
+                        return `${hours12
+                            .toString()
+                            .padStart(2, "0")}:${minutes.toString().padStart(2, "0")} ${
+                            isAm ? "AM" : "PM"
+                        }`;
+                    }
+
+                    /**
+                     * @param {Date} date
+                     */
+                    function formatDate(date) {
+                        const DAYS = [
+                            "Sunday",
+                            "Monday",
+                            "Tuesday",
+                            "Wednesday",
+                            "Thursday",
+                            "Friday",
+                            "Saturday",
+                        ];
+                        const MONTHS = [
+                            "January",
+                            "February",
+                            "March",
+                            "April",
+                            "May",
+                            "June",
+                            "July",
+                            "August",
+                            "September",
+                            "October",
+                            "November",
+                            "December",
+                        ];
+
+                        return `${DAYS[date.getDay()]}, ${
+                            MONTHS[date.getMonth()]
+                        } ${date.getDate()} ${date.getFullYear()}`;
+                    }
+
+                    setInterval(() => {
+                        const now = new Date();
+
+                        timeElement.textContent = formatTime(now);
+                        dateElement.textContent = formatDate(now);
+                    }, 200);
+                </script>
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Material History</h5>
+                        <div class="d-flex justify-content-around align-items-center">
+                            <img
+                                    src="./resources/image/deliver.png"
+                                    width="90px"
+                                    height="90px"
+                                    alt="deliver"
+                            />
+                            <a
+                                    href="http://localhost:8080/deliverytable"
+                                    type="button"
+                                    class="btn button-view"
+                                    data-toggle="modal" data-target="#tableview"
+                            >
+                                View History
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!--Table- Modal -->
+        <div class="modal fade" id="tableview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-body">
+                        <div class="row p-5  formcontent w-100" style="background-color: white" id="divTable">
+                            <div class="container-fluid">
+                                <div class="row d-flex align-items-center">
+                                    <div class="col-md-3">
+                                        <a class="btn button  font-weight-bold" href="http://localhost:8080/material1">Material</a>
+
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="button" class="btn button  font-weight-bold" value="Print Table"
+                                               id="btnPrintTable" onclick="btnPrintTableMC()"/>
+
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input placeholder="Search"
+                                               class="my-3  form-control border border-2 border-dark txtSearchName"
+                                               type="text"
+                                               id="txtSearchName"/>
+                                    </div>
+
+                                </div>
+
+                                <div class="modal fade" id="materialViewModal" tabindex="-1" role="dialog"
+                                     aria-labelledby="exampleModalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content ">
+                                            <div class="modal-header bg-black text-white">
+                                                <img src="./resources/image/cart/chef.png" width="65" height="65"
+                                                     class="align-top mx-2" alt="">
+                                                <h2 class="text-white"><span>Ga</span>mage <span>Re</span>staurant</h2>
+
+                                            </div>
+                                            <div class="modal-body container-print">
+                                                <table id="tablePrintEmployee"
+                                                       class=" table table-striped shadow rounded">
+                                                    <thead class="text-white bg-black ">
+                                                    <h3> View Material</h3>
+                                                    </thead>
+                                                    <div class="modal-body">
+                                                        <table id="printformtable" class="mt-5 table table-bordered table-striped"
+                                                               style="background-color:rgba(153,18,161,0.08) ">
+                                                            <tbody>
+                                                            <tr>
+                                                                <td>Material code :</td>
+                                                                <td id="tdMaterialCode"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Material Name :</td>
+                                                                <td id="tdMaterialName"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> Unit Size :</td>
+                                                                <td id="tdUnitSize"></td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td> Material Category :</td>
+                                                                <td id="tdMaterialCategory"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> Unit type :</td>
+                                                                <td id="tdUnitType"></td>
+                                                            </tr>
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="modal-footer bg-black">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Close
+                                                        </button>
+                                                        <button type="button" class="btn btn-light"
+                                                                onclick="btnPrintRowMC()">Print
+                                                        </button>
+                                                    </div>
+
+                                                </table>
+                                            </div>
+                                        </div>
+
+
+
+
+
+                                        <!--                                <div class="justify-content-between">-->
+                                        <!--                                   -->
+                                        <!--                                  -->
+
+                                        <!--                                </div>-->
+
+                                        <!--                                <div class="float-right">-->
+                                        <!--                                   -->
+                                        <!--                                </div>-->
+
+                                    </div>
+                                    <hr/>
+                                    <div class="table-responsive" id="tableParent" class="table-container m-5"
+                                    >
+
+                                        <script>
+
+                                            function getNameColumn(ob) {
+                                                return ob.callingname + "(" + ob.number + ")";
+                                            }
+
+                                            var metadata = [
+                                                {
+                                                    name: 'Material Code',
+                                                    search: true,
+                                                    datatype: 'text',
+                                                    property: 'materialcode'
+                                                },
+                                                {
+                                                    name: 'Material Name',
+                                                    search: true,
+                                                    datatype: 'text',
+                                                    property: 'materialname'
+                                                },
+                                                {
+                                                    name: 'Unit Size',
+                                                    search: true,
+                                                    datatype: 'text',
+                                                    property: 'unitsize'
+                                                },
+                                                {
+                                                    name: 'Added Date',
+                                                    search: true,
+                                                    datatype: 'text',
+                                                    property: 'addeddate'
+                                                },
+                                                {
+                                                    name: 'Material Status',
+                                                    search: true,
+                                                    datatype: 'text',
+                                                    property: 'materialstatus_id.name'
+                                                },
+                                                {
+                                                    name: 'Material Categoory',
+                                                    search: true,
+                                                    datatype: 'text',
+                                                    property: 'materialcategory_id.name'
+                                                },
+                                                {
+                                                    name: 'Unit Type',
+                                                    search: true,
+                                                    datatype: 'text',
+                                                    property: 'unittype_id.name'
+                                                },
+                                            ];
+                                            table("tableParent", "tblMaterial", metadata, true);
+                                        </script>
+                                    </div>
+
+                                    <div>
+                                        <div style="display: inline-block ; float: left">
+                                            <select class="form-control input" id="cmbPageSize" style="width: 80px;">
+                                                <option selected value="10">10</option>
+                                                <option value="15">15</option>
+                                                <option value="30">30</option>
+                                                <option value="500">500</option>
+                                                <option value="1000">1000</option>
+                                            </select>
+                                            <script>
+                                                cmbPageSize.onchange = function chnagePageSize() {
+                                                    activepage = 1;
+                                                    btnSearchMC();
+                                                };
+                                            </script>
+                                        </div>
+                                        <div style="display: inline-block; margin-left: 10px;">
+                                            <ul id="pagination" class="pagination"></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

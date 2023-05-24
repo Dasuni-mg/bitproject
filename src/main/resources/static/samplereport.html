@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+        <div id="dismiss">
+            <i class="fas fa-arrow-left"></i>
+        </div>
+        <h3 class="text-center" style="margin-top: 20px">Gamage Restaurant</h3>
+        <div class="d-block" style="margin-top:30px;">
+            <div class="text-center"> <img id="profileImage" class="profileImage"></div>
+            <div class="text-center"> <p class="loggedUserNameField d-inline" id="lblLogUser">123456</p>
+            </div>
+        </div>
+        <div>
+            <div >
+                <p class="text-white text-center"> Loged as : <span id="spnDesignation"> </span></p>
+            </div>
+
+        </div>
+
+
+        <ul class="list-unstyled components">
+
+            <li >
+                <a href="http://localhost:8080/mainwindow">
+                    <i class="fas fa-home" ></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-briefcase"></i> Administration
+                </a>
+                <ul class="collapse list-unstyled" id="pageSubmenu">
+                    <li class="EMPLOYEE">
+                        <a href="http://localhost:8080/employee">Employee</a>
+                    </li>
+                    <li class="USER">
+                        <a href="http://localhost:8080/user">User</a>
+                    </li>
+                    <li class="PRIVILAGE">
+                        <a href="http://localhost:8080/privilage">privilage</a>
+                    </li>
+
+                </ul>
+            </li>
+            <li>
+                <a href="#productSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-briefcase"></i> Reservation
+                </a>
+                <ul class="collapse list-unstyled" id="productSubmenu">
+                    <li class="ITEM">
+                        <a href="http://localhost:8080/customer">customer</a>
+                    </li>
+                    <li class="BRAND">
+                        <a href="http://localhost:8080/reservation">Reservation</a>
+                    </li>
+                    <li class="BATCH">
+                        <a href="http://localhost:8080/customerpayment">Customer Payments</a>
+                    </li>
+
+
+                </ul>
+            </li>
+            <li>
+                <a href="#purchaseSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-briefcase"></i> Purchase
+                </a>
+                <ul class="collapse list-unstyled" id="purchaseSubmenu">
+                    <li class="SUPPLIER">
+                        <a href="http://localhost:8080/supplier"> Supplier </a>
+                    </li>
+                    <li class="PURCHASEORDER">
+                        <a href="http://localhost:8080/quotation"> Quotation </a>
+                    </li>
+                    <li class="PURCHASEORDER">
+                        <a href="http://localhost:8080/quotationrequest"> Quotation Request </a>
+                    </li>
+                    <li class="PURCHASEORDER">
+                        <a href="http://localhost:8080/purchaseorder"> Purchase Order </a>
+                    </li>
+
+                    <li class="GRN">
+                        <a href="http://localhost:8080/grn"> GRN </a>
+                    </li>
+                    <li class="SUPPLIERPAYMENT">
+                        <a href="http://localhost:8080/spayment"> Supplier Payment </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- Dropdown -->
+
+
+            <li>
+                <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-chart-line"></i>Report
+                </a>
+                <ul class="collapse list-unstyled" id="reportSubmenu">
+                    <li>
+                        <a href="http://localhost:8080/lowinventory"> Low Inventory </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:8080/reportinvoice"> Daily Invoice </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:8080/reportprofit"> Profit </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Page Content  -->
+    <div id="content">
+        <nav class="navbar navbar-expand-lg  " style="background-color: #121212;">
+            <div class="container-fluid">
+                <div class="float-left">
+                    <button type="button" id="sidebarCollapse" class="btn btn-light btn-lg">
+                        <i class="fas fa-align-left"></i>
+                        <span></span>
+                    </button>
+                    <button type="button" class="btn btn-light btn-lg ml-3 rounded-circle">
+                        <a href="http://localhost:8080/mainwindow"> <i class="fa fa-home"></i></a>
+                        <span></span>
+                    </button>
+                    <button type="button" class="btn btn-light btn-lg rounded-circle ml-3 p-0" data-toggle="dropdown">
+                        <a class="nav-link justify-content-center" data-toggle="dropdown" href="#"><i
+                                class="fa fa-th"></i> </a>
+                        <div class="dropdown-menu" style="margin-left: 10px;background-color: rgba(86,75,71,0.75);border-bottom-color: white">
+
+                            <ul class="navbar-nav"
+                                style="margin-bottom: 30px;margin-top: 30px;">
+
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/employee')">
+                                        <div id="waiter" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">Empolyee</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/user')">
+                                        <div id="user" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">User</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/privilage')">
+                                        <div id="privilage" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">Privilage</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/reservation')">
+                                        <div id="reservation" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">Reservation</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/customer')">
+                                        <div id="customer" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">Customer</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/menu')">
+                                        <div id="menu" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">Menu</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/submenu')">
+                                        <div id="submenu" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">Submenu</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/customerpayment')">
+                                        <div id="cpayment" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">CPayments</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/quotation')">
+                                        <div id="quotation" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">Quotation</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/quotationrequest')">
+                                        <div id="quotationReq" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">QRequest</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/grn')">
+                                        <div id="grn" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">GRN</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/purchaseorder')">
+                                        <div id="porder" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">POrder</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/spayment')">
+                                        <div id="spayment" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">SPayments</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/tableallocation')">
+                                        <div id="tblallocation" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">TblAllocation</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </button>
+                </div>
+
+                <h2 class="text-white font-weight-light float-left"> Gamage Restaurant </h2>
+
+                <div class="float-right">
+                    <button type="button" class="btn  btn-lg ml-3 text-white"
+                            data-toggle="modal"
+                            data-target="#settingsModal">
+                        <i class="fa fa-cogs"></i>
+                        <span></span>
+                    </button>
+
+                    <button type="button" class="btn btn-lg ml-3 text-white"
+                            onclick="btnSignoutMC()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <!-- Content -->
+
+        <div class="row" id="ui">
+            <div class=" col-md-12">
+                <div class="card cardstyle">
+                    <div class="card-header  text-center cardhead">
+                        <h3 class="font-weight-normal">Sample Report</h3>
+                    </div>
+                    <div class=" card-body" id="body">
+
+
+                        <div class="col-md-6">
+                            <canvas id="myChart" width="50%" height="40%"></canvas>
+                        </div>
+
+                        <script>
+                            const ctx = document.getElementById('myChart').getContext('2d');
+                            const myChart = new Chart(ctx, {
+                                type: 'pie',
+                                data: {
+                                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                                    datasets: [{
+                                        label: '# of Votes',
+                                        data: [12, 19, 3, 5, 2, 3],
+                                        backgroundColor: [
+                                            'rgba(255, 99, 132)',
+                                            'rgba(54, 162, 235)',
+                                            'rgba(255, 206, 86)',
+                                            'rgba(75, 192, 192)',
+                                            'rgba(153, 102, 255)',
+                                            'rgba(255, 159, 64)'
+                                        ],
+                                        borderColor: [
+                                            'rgba(255, 99, 132)',
+                                            'rgba(54, 162, 235)',
+                                            'rgba(255, 206, 86)',
+                                            'rgba(75, 192, 192)',
+                                            'rgba(153, 102, 255)',
+                                            'rgba(255, 159, 64)'
+                                        ],
+
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        </script>
+
+                    </div>
+                    <div class="card-footer">
+                        <div id="err" style="display: none">
+                            <h3>Error Log</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<!-- Modal View Item -->
+<div class="modal fade" id="dataViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#6998AB">
+                <h3 class="text-white font-weight-light float-left" id="exampleModalLabel">View Customer Details
+                </h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="printformtable" class="mt-5 table table-bordered table-striped"
+                       style="background-color:#d0e6ef ">
+                    <tbody>
+                    <tr>
+                        <th>Registration No :</th>
+                        <td id="tdRegNo"></td>
+                    </tr>
+                    <tr>
+                        <th>Customer Full Name :</th>
+                        <td id="tdFname"></td>
+                    </tr>
+                    <tr>
+                        <th>Customer Last Name :</th>
+                        <td id="tdLname"></td>
+                    </tr>
+                    <tr>
+                        <th>Customer Mobile No1 :</th>
+                        <td id="tdmno1"></td>
+                    </tr>
+                    <tr>
+                        <th>Customer Mobile No2:</th>
+                        <td id="tdmno2"></td>
+                    </tr>
+                    <tr>
+                        <th>Customer NIC :</th>
+                        <td id="tdNic"></td>
+                    </tr>
+                    <tr>
+                        <th>Customer Address :</th>
+                        <td id="tdAddress"></td>
+                    </tr>
+                    <tr>
+                        <th>Customer Description :</th>
+                        <td id="tdDescription"></td>
+                    </tr>
+                    <tr>
+                        <th>Added Date :</th>
+                        <td id="tdAddeddate"></td>
+                    </tr>
+                    <tr>
+                        <th>Customer Status Id:</th>
+                        <td id="tdCustomerStatus"></td>
+                    </tr>
+                    <tr>
+                        <th>Added Employee :</th>
+                        <td id="tdAddedEmployee"></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary" onclick="btnPrintRowMC()">
+                    Print
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="overlay"></div>
+
+<!-- Settings Modal-->
+<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModal"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content" id="modalContent">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle"><i class="fas fa-cog"></i> Settings</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form id="changePasswordForm" onsubmit="return false">
+                    <div class="form-row">
+                        <!-- Username -->
+                        <div class="form-group col-md-12">
+                            <label for="txtUsernameView" class="text-blue">
+                                <b>Username</b>
+                            </label>
+                            <div readonly class="form-control-plaintext" id="txtUsernameView"></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <!-- Current Password -->
+                        <div class="form-group col-md-12">
+                            <label for="txtCurrentPassword" class="text-blue"><b>Current Password</b> <i
+                                    class="fas fa-question-circle text-primary ml-1"
+                                    data-toggle="tooltip" data-placement="right"
+                                    title=""></i></label>
+                            <input type="password" class="form-control form-control-sm changePasswordFields"
+                                   id="txtCurrentPassword"
+                                   onkeyup="textFieldBinder(txtCurrentPassword, '^[0-9]{5,}$', 'changePassword', 'currentPassword', 'oldChangePassword')">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <!-- New Password -->
+                        <div class="form-group col-md-12">
+                            <label for="txtNewPassword" class="text-blue"><b>New
+                                Password</b><i
+                                    class="fas fa-question-circle text-primary ml-1"
+                                    data-toggle="tooltip" data-placement="right"
+                                    title=""></i></label>
+                            <input type="password" class="form-control form-control-sm changePasswordFields"
+                                   id="txtNewPassword"
+                                   onkeyup="passwordFieldBinder(txtNewPassword, txtConfirmPassword, '^[0-9]{5,}$', 'changePassword', '', 'oldChangePassword')">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <!-- Confirm Password -->
+                        <div class="form-group col-md-12">
+                            <label for="txtConfirmPassword" class="text-blue"><b>Confirm
+                                Password</b><i
+                                    class="fas fa-question-circle text-primary ml-1"
+                                    data-toggle="tooltip" data-placement="right"
+                                    title=""></i></label>
+                            <input type="password" class="form-control form-control-sm changePasswordFields"
+                                   id="txtConfirmPassword"
+                                   onkeyup="passwordFieldBinder(txtNewPassword, txtConfirmPassword, '^[0-9]{5,}$', 'changePassword', 'newPassword', 'oldChangePassword')">
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="brnClosechnagepasswordmodle" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary" onclick="btnSaveChangePasswordMC()">Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

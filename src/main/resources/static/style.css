@@ -1,0 +1,324 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900");
+
+* {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+:root {
+    --clr: rgb(255, 255, 255);
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: var(--clr);
+}
+
+
+.navigation {
+    position: relative;
+    height: 120px;
+    background: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.navigation ul {
+    display: flex;
+    width: 450px;
+
+}
+
+.navigation ul li {
+    posotion: relative;
+    list-style: none;
+    margin-top: 8px;
+    width: 70px;
+    height: 70px;
+    z-index: 2;
+}
+
+.navigation ul li a {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    font-weight: 500;
+}
+
+.navigation ul li a .icon {
+    position: relative;
+    display: block;
+    line-height: 75px;
+    font-size: 1.6em;
+    text-align: center;
+    transition: 0.5s;
+    color: var(--clr);
+}
+
+.navigation ul li.active a .icon {
+    transform: translateY(85px);
+    font-weight: bolder;
+    color: black;
+}
+
+.navigation ul li a .text {
+    position: absolute;
+    color: var(--clr);
+    font-weight: 400;
+    font-size: 0.75em;
+    margin-top: 5px;
+    letter-spacing: 0.05em;
+    transition: 0.5s;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.navigation ul li.active a .text {
+    opacity: 1;
+    transform: translateY(5px);
+    margin-top: 5px;
+    font-weight: bolder;
+    color: #ffffff;
+}
+
+.indicator {
+    position: absolute;
+    bottom: -50%;
+    width: 70px;
+    height: 70px;
+    background: #5a085e;
+    border-radius: 50%;
+    border: 6px solid rgb(255, 255, 255);
+    transition: 0.5s;
+}
+
+.indicator::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -22px;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border-top-right-radius: 20px;
+
+}
+
+.indicator::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -22px;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border-top-left-radius: 20px;
+
+}
+
+.navigation ul li:nth-child(1).active ~ .indicator {
+    transform: translateX(calc(70px * 0));
+}
+
+.navigation ul li:nth-child(2).active ~ .indicator {
+    transform: translateX(calc(70px * 1));
+}
+
+.navigation ul li:nth-child(3).active ~ .indicator {
+    transform: translateX(calc(70px * 2));
+}
+
+.navigation ul li:nth-child(4).active ~ .indicator {
+    transform: translateX(calc(70px * 3));
+}
+
+.navigation ul li:nth-child(5).active ~ .indicator {
+    transform: translateX(calc(70px * 4));
+}
+
+h2 {
+    font-size: 3em;
+    font-weight: 900;
+    color: rgb(0, 0, 0);
+    z-index: 1;
+    margin-left: 30px;
+
+    overflow: hidden;
+}
+
+h2 span {
+    color: rgba(153, 18, 161, 0.97);
+}
+
+.button {
+    color: #fff;
+    width: 230px;
+    background: #5a085e;
+
+
+}
+
+.button:hover {
+    color: #fff;
+    font-weight: bold;
+    background: #BC8CF2;
+}
+
+.button-view {
+    color: #fff;
+    font-weight: bold;
+    background: #5a085e;
+
+}
+
+.button-view:hover {
+    color: #fff;
+    font-weight: bold;
+    background: #BC8CF2;
+
+}
+              /* CSS */
+                                                   .button-86 {
+                                                       --c: #fff;
+                                                       /* text color */
+                                                       background: linear-gradient(90deg, #85318c 33%, #fff5, rgba(30, 5, 54, 0.69) 67%) var(--_p,100%)/300% no-repeat,
+                                                       #5a085e;
+                                                       /* background color */
+                                                       color: rgb(255, 255, 255);
+
+                                                       transform: perspective(500px) rotateY(calc(20deg*var(--_i,-1)));
+                                                       calc(var(--_i,-1)*-0.08em)  .01em 2px rgb(133, 49, 140);
+                                                       outline-offset: .1em;
+                                                       transition: 0.2s;
+                                                       margin: 2px;
+                                                   }
+
+.button-86:hover,
+.button-86:focus-visible {
+    --_p: 0%;
+    --_i: 1;
+}
+
+.button-86:active {
+    text-shadow: none;
+    color: var(--c);
+    box-shadow: inset 0 0 9e9q #c650d3;
+    transition: 0s;
+    padding: 2px;
+}
+
+.button-86 {
+    font-weight: bold;
+    font-size: 2rem;
+    margin: 1;
+    cursor: pointer;
+    padding: .2em .3em;
+}
+
+
+@media (min-width: 768px) {
+    .button-86 {
+        font-size: 24px;
+        min-width: 196px;
+    }
+}
+.datetime {
+    font-size: 16px;
+    padding: 24px;
+    padding-top: 26px;
+    color: #ffffff;
+    background: black;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+    border-right: 10px #5a085e solid;
+    width: auto;
+    font-weight: 500;
+    font-family: "Inter", sans-serif;
+}
+
+.logged-user {
+    padding-bottom: 3px;
+    color: rgba(0, 0, 0, 0.49);
+    background: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+    border-left: 10px #5a085e solid;
+    width: auto;
+    font-weight: 500;
+    font-family: "Inter", sans-serif;
+    margin-bottom: 4px;
+}
+
+.logged {
+    padding-bottom: 5px;
+    height: 9px;
+    padding-left: 20px;
+    font-size: 1.4em;
+}
+
+.user {
+    border-radius: 50%;
+}
+
+.time {
+    font-size: 2em;
+    color: rgba(153, 18, 161, 0.97);
+}
+
+.date {
+    margin-top: 10px;
+    font-size: 1.00em;
+}
+
+.container {
+    background: #ffffff;
+    background-size: 300% 300%;
+}
+
+.row.s1 {
+    padding: 0px;
+    margin: 0px 0px;
+}
+
+h1.m-lg-4.main-title {
+    margin: 0px;
+}
+
+
+.navIcon:hover {
+    -ms-transform: scale(1);
+    -webkit-transform: scale(1.5);
+    z-index: 5;
+}
+
+
+.headding-inner {
+    background: rgba(133, 49, 140, 0.42);
+
+}
+
+
+.bgForm {
+    background-image: url("./resources/image/bg2.jpg");
+    background-size: cover;
+}
+
+.modal.fade .modal-dialog {
+    transform: rotateY(-90deg);
+    transition: transform 0.5s;
+}
+
+.modal.fade.show .modal-dialog {
+    transform: rotateY(0);
+}

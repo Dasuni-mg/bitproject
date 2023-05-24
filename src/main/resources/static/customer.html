@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!-- Bootstrap CSS -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+            crossorigin="anonymous"
+    />
+
+    <!--Fontawesome-most popular icon set and toolkit-->
+    <script defer src="resources/fontawesome/js/solid.js"></script>
+    <script defer src="resources/fontawesome/js/fontawesome.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="stylesheet" type="text/css" href="table.css"/>
+
+    <script src="resources/jquery/jquery.js"></script>
+    <script src="resources/bootstrap/js/bootstrap.bundle.js"></script>
+    <link rel="stylesheet" href="resources/datatable/css/datatables.min.css">
+
+    <!--    select2-->
+    <link rel="stylesheet" href="resources/select2/css/select2.min.css">
+    <script src="resources/select2/js/select2.min.js"></script>
+    <script src="resources/script/sweetalert.min.js"></script>
+
+
+    <script src="resources/datatable/js/datatables.min.js"></script>
+    <script src="resources/script/innertablefunctions.js"></script>
+    <script src="resources/script/common.bitproject.js"></script>
+    <script src="customertable.js"></script>
+    <link rel="stylesheet" href="resources/style/common.css">
+
+
+    <title>Hello,Gamage!</title>
+</head>
+<body>
+<!--script-->
+<script
+        type="module"
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+></script>
+<script
+        nomodule
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+></script>
+
+<div class="row w-100  ">
+    <!--Navigation-->
+    <div class="row s1 ">
+        <div class="navigation">
+            <h2 class="text-white"><span>Ga</span>mage <span>Re</span>staurant</h2>
+
+            <ul>
+                <li class="list">
+                    <a href="#">
+                <span class="icon"
+                ><ion-icon name="home-outline"></ion-icon
+                ></span>
+                        <span class="text"> Home</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#">
+                <span class="icon"
+                ><ion-icon name="notifications-outline"></ion-icon
+                ></span>
+                        <span class="text"> Notification</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#">
+                <span class="icon"
+                ><ion-icon name="settings-outline"></ion-icon
+                ></span>
+                        <span class="text"> Settings</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#">
+                <span class="icon"
+                ><ion-icon name="log-out-outline"></ion-icon
+                ></span>
+                        <span class="text"> Log out</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#" onclick="handalNavigationModel()">
+                <span class="icon"
+                ><ion-icon name="menu-outline"></ion-icon
+                ></span>
+                        <span class="text"> Menu</span>
+                    </a>
+                </li>
+
+                <div class="indicator"></div>
+            </ul>
+        </div>
+    </div>
+    <!--Navigation movement-->
+    <script>
+        const list = document.querySelectorAll(".list");
+
+        function activeLink() {
+            list.forEach((item) => item.classList.remove("active"));
+            this.classList.add("active");
+        }
+
+        list.forEach((item) => item.addEventListener("click", activeLink));
+    </script>
+
+    <!--Form-->
+    <div class="bgForm">
+        <div class="row  text-black ">
+            <h3 class="p-3">
+                Customer Management
+            </h3>
+        </div>
+        <div class="row m-8 ">
+            <div class="col-md-9">
+                <div class="row p-3 formcontent" style="background-color:white" id="divTable">
+                    <div class="container-fluid ">
+                        <div class="row d-flex align-items-center justify-content-between">
+
+                            <div class="col-md-3">
+                                <input type="button" class="btn button  font-weight-bold" value="Print Table"
+                                       id="btnPrintTable" onclick="btnPrintTableMC()"/>
+
+
+                            </div>
+                            <div class="col-md-6">
+                                <input placeholder="Search"
+                                       class="my-3  form-control border border-2 border-dark txtSearchName"
+                                       type="text"
+                                       id="txtSearchName"/>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="table-responsive" id="tableParent"
+                         class="table-container m-5" style="background-color: white">
+
+                        <script>
+                            function getCustomerName(ob) {
+                                return ob.fname + " " + ob.lname;
+                            }
+
+                            var metadata = [{
+                                name: 'Regno',
+                                search: true,
+                                datatype: 'text',
+                                property: 'regno'
+                            }, {
+                                name: 'Customer Name',
+                                search: true,
+                                datatype: 'text',
+                                property: getCustomerName
+                            }, {
+                                name: 'Mobile No',
+                                search: true,
+                                datatype: 'text',
+                                property: 'mobileno'
+                            },
+                                 {
+                                    name: 'Address',
+                                    search: true,
+                                    datatype: 'text',
+                                    property: 'address'
+                                },];
+                            //table function
+                            table("tableParent", "tblCustomer", metadata, true);
+                        </script>
+                    </div>
+
+                    <div>
+                        <div style="display: inline-block ; float: left">
+                            <select class="form-control input" id="cmbPageSize"
+                                    style="width: 80px;">
+                                <option selected value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="30">30</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
+                            </select>
+                            <script>
+                                cmbPageSize.onchange = function chnagePageSize() {
+                                    activepage = 1;
+                                    btnSearchMC();
+                                };
+                            </script>
+                        </div>
+                        <div style="display: inline-block; margin-left: 10px;">
+                            <ul id="pagination" class="pagination"></ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Modal View Item -->
+                <div class="modal fade" id="dataViewModal" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content ">
+                            <div class="modal-header bg-black text-white">
+                                <img src="./resources/image/cart/chef.png" width="65" height="65"
+                                     class="align-top mx-2" alt="">
+                                <h2 class="text-white"><span>Ga</span>mage <span>Re</span>staurant</h2>
+
+                            </div>
+                            <div class="modal-body container-print">
+                                <table id="tablePrintEmployee"
+                                       class=" table table-striped shadow rounded">
+                                    <thead class="text-white bg-black ">
+                                    <h3> View Customer Details</h3>
+                                    </thead>
+                                    <div class="modal-body">
+                                        <table id="printformtable"
+                                               class="mt-5 table table-bordered table-striped"
+                                               style="background-color:rgba(153,18,161,0.08) ">
+                                            <tbody>
+                                            <tr>
+                                                <th>Registration No :</th>
+                                                <td id="tdRegNo"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Customer Full Name :</th>
+                                                <td id="tdFname"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Customer Last Name :</th>
+                                                <td id="tdLname"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Customer Mobile No1 :</th>
+                                                <td id="tdmno1"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Customer NIC :</th>
+                                                <td id="tdNic"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Customer Address :</th>
+                                                <td id="tdAddress"></td>
+                                            </tr>
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer bg-black">
+                                        <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close
+                                        </button>
+                                        <button type="button" class="btn btn-light"
+                                                onclick="btnPrintRowMC()">Print
+                                        </button>
+                                    </div>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-3 ">
+
+
+                    <div class="datetime">
+                        <div class="time"></div>
+                        <div class="date"></div>
+                    </div>
+
+                    <script>
+                        const timeElement = document.querySelector(".time");
+                        const dateElement = document.querySelector(".date");
+
+                        /**
+                         * @param {Date} date
+                         */
+                        function formatTime(date) {
+                            const hours12 = date.getHours() % 12 || 12;
+                            const minutes = date.getMinutes();
+                            const isAm = date.getHours() < 12;
+
+                            return `${hours12
+                                .toString()
+                                .padStart(2, "0")}:${minutes.toString().padStart(2, "0")} ${
+                                isAm ? "AM" : "PM"
+                            }`;
+                        }
+
+                        /**
+                         * @param {Date} date
+                         */
+                        function formatDate(date) {
+                            const DAYS = [
+                                "Sunday",
+                                "Monday",
+                                "Tuesday",
+                                "Wednesday",
+                                "Thursday",
+                                "Friday",
+                                "Saturday",
+                            ];
+                            const MONTHS = [
+                                "January",
+                                "February",
+                                "March",
+                                "April",
+                                "May",
+                                "June",
+                                "July",
+                                "August",
+                                "September",
+                                "October",
+                                "November",
+                                "December",
+                            ];
+
+                            return `${DAYS[date.getDay()]}, ${
+                                MONTHS[date.getMonth()]
+                            } ${date.getDate()} ${date.getFullYear()}`;
+                        }
+
+                        setInterval(() => {
+                            const now = new Date();
+
+                            timeElement.textContent = formatTime(now);
+                            dateElement.textContent = formatDate(now);
+                        }, 200);
+                    </script>
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Customer </h5>
+                            <div class="d-flex justify-content-around align-items-center">
+                                <img
+                                        src="./resources/image/customer.png"
+                                        width="90px"
+                                        height="90px"
+                                        alt="employee"
+                                />
+                                <a
+
+                                        type="button"
+                                        class="btn button-view"
+                                        data-toggle="modal" data-target="#exampleModal"
+                                >
+                                     + New Customer
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-xl" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-body">
+                                <!--Form-->
+                                <div class="row  text-black  ">
+                                    <h2>
+                                        Customer Management
+                                    </h2>
+                                </div>
+                                <div class="row m-8 divBody ">
+                                    <div class="col-md-9">
+                                        <div class=" col-md-12">
+                                            <div class="card ">
+
+                                                <div class=" card-body">
+
+                                                    <div class="row ">
+                                                        <form class="" id="employeeform" onsubmit="return false">
+                                                            <div class="row mt-2">
+                                                                <div class="col-md-2"></div>
+                                                                <!--form-->
+                                                                <div class="col-md-12 p-3">
+                                                                    <!--Registration NO/first name-->
+                                                                    <div class="row mt-2 ">
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group text-black">
+                                                                                <label for="txtRegNo"><b>Registration
+                                                                                    No:
+                                                                                    <span style="color: red;">*</span></b></label>
+                                                                                <div class="input-group">
+                                                                                    <input type="text" class="form-control"
+                                                                                           id="txtRegNo"
+                                                                                           placeholder="Enter Registration No"
+                                                                                           required
+                                                                                           data-toggle="tooltip"
+                                                                                           data-placement="bottom"
+                                                                                           title="Enter five digits for Registration No-Eg: 12345"
+                                                                                           onkeyup="textFieldBinder(txtRegNo,'^[0-9]{5}$','customer','regno','olditem')">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group text-black">
+                                                                                <label for="txtFname"><b>First
+                                                                                    Name: <span
+                                                                                            style="color: red;">*</span></b></label>
+                                                                                <div class="input-group">
+                                                                                    <input type="text" class="form-control"
+                                                                                           id="txtFname"
+                                                                                           placeholder="Enter First Name"
+                                                                                           required
+                                                                                           data-toggle="tooltip"
+                                                                                           data-placement="bottom"
+                                                                                           title="First Letter of the firstname shoud be capital  Eg:Dasuni"
+                                                                                           onkeyup="textFieldBinder(txtFname,'^([A-Z][a-z]+)$','customer','fname','oldcustomer')">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group text-black ">
+                                                                                <label for="txtLname"><b>Last
+                                                                                    Name: <span
+                                                                                            style="color: red;">*</span></b></label>
+                                                                                <div class="input-group">
+
+                                                                                    <input type="text" class="form-control"
+                                                                                           id="txtLname"
+                                                                                           placeholder="Enter Last Name" required
+                                                                                           data-toggle="tooltip"
+                                                                                           data-placement="bottom"
+                                                                                           title="First Letter of the last name shoud be capital Eg:Gamage"
+                                                                                           onkeyup="textFieldBinder(txtLname,'^([A-Z][a-z]+)$','customer','lname','oldcustomer')">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <!--last name/contact No 1-->
+                                                                    <div class="row mt-2 ">
+
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group text-black ">
+                                                                                <label for="txtmno1"><b>Contact
+                                                                                    no1: <span
+                                                                                            style="color: red;">*</span></b></label>
+                                                                                <div class="input-group">
+
+                                                                                    <input type="text" class="form-control"
+                                                                                           id="txtmno1"
+                                                                                           placeholder="Enter contact no 1 "
+                                                                                           required
+                                                                                           data-toggle="tooltip"
+                                                                                           data-placement="bottom"
+                                                                                           title="Number must have 10 numbers  Eg: 0768354408"
+                                                                                           onkeyup="textFieldBinder(txtmno1,'^0\\d{9}$','customer','mobileno','oldcustomer')">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group text-black ">
+                                                                                <label for="txtmno2"><b>Contact no2:
+                                                                                </b></label>
+                                                                                <div class="input-group">
+
+                                                                                    <input type="text" class="form-control"
+                                                                                           id="txtmno2"
+                                                                                           placeholder="Enter contact no 2 "
+                                                                                           data-toggle="tooltip"
+                                                                                           data-placement="bottom"
+                                                                                           title="Number must have 10 numbers  Eg:0710660082"
+                                                                                           onkeyup="textFieldBinder(txtmno2,'^0\\d{9}$','customer','secondno','oldcustomer')">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!--contact no2/NIC-->
+                                                                    <div class="row mt-2 ">
+
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group text-black ">
+
+                                                                                <label for="txtNic"><b>NIC:</b>
+                                                                                </label>
+                                                                                <div class="input-group">
+
+                                                                                    <input type="text" class="form-control"
+                                                                                           id="txtNic"
+                                                                                           placeholder="Enter NIC"
+                                                                                           data-toggle="tooltip"
+                                                                                           data-placement="bottom"
+                                                                                           title="9 digite plus vVxX or 12 digits  Eg:967751979V"
+                                                                                           onkeyup="textFieldBinder(txtNic,'^(([\\d]{9}[vVxX])|([\\d]{12}))$','customer','nic','oldcustomer')">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group text-black ">
+                                                                                <label for="txtAddress"><b>Customer
+                                                                                    Address:
+                                                                                    <span style="color: red;">*</span></b>
+                                                                                </label>
+                                                                                <div class="input-group">
+
+
+                                                                        <textarea id="txtAddress"
+                                                                                  placeholder="Enter Address"
+                                                                                  class="form-control"
+                                                                                  placeholder="Enter Address"
+                                                                                  onkeyup="textFieldBinder(txtAddress,'^.*$','customer','address','oldcustomer')">
+                                                                </textarea>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </div>
+                                                            <div class="col-md-2"></div>
+
+
+                                                        </form>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 ">
+
+                                        <div class="card mt-4">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Customer History</h5>
+                                                <div class="d-flex justify-content-around align-items-center">
+                                                    <img
+                                                            src="./resources/image/customer.png"
+                                                            width="90px"
+                                                            height="90px"
+                                                            alt="employee"
+                                                    />
+                                                    <a
+
+                                                            type="button"
+                                                            class="btn button-view"
+                                                            href="http://localhost:8080/customer"
+                                                    >
+                                                        View History
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer bg-black">
+                                <!--Clear/Update/Delete buttons-->
+                                <div class="row mt-2 p-2">
+                                    <div class="col-md-12">
+
+                                        <div class="text-right">
+                                            <button class="btn button-86 " type="button" id="btnClear1"
+                                                    style="width: 25%" >
+                                                Clear
+                                            </button>
+                                            <button class="btn button-86 " type="submit" id="btnUpdate1"
+                                                    style="width: 25%">
+                                                Update
+                                            </button>
+                                            <button class="btn button-86" style="width: 25%" type="submit"
+                                                    id="btnAdd1">
+                                                Add
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer bg-black">
+                                <button type="button" class="btn btn-secondary"
+                                        data-dismiss="modal" onclick="window.location.reload()">Close
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

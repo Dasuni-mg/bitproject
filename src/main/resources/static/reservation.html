@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Gamage Restaurant | Reservation Management </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="resources/fontawesome/css/all.css">
+
+    <script defer src="resources/fontawesome/js/solid.js"></script>
+    <script defer src="resources/fontawesome/js/fontawesome.js"></script>
+
+
+    <script src="resources/jquery/jquery-3.4.1.min.js"></script>
+    <script src="resources/jquery/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="resources/jquery/popper.min.js"></script>
+    <script src="resources/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="resources/bootstrap/css/bootstrap4-toggle.min.css">
+    <script src="resources/bootstrap/js/bootstrap4-toggle.min.js"></script>
+
+    <script src="resources/script/common.bitproject.js"></script>
+    <script src="resources/script/innertablefunctions.js"></script>
+    <script src="resources/script/sweetalert.min.js"></script>
+    <script src="resources/script/mainWindow.js"></script>
+    <script src="reservation.js"></script>
+
+
+    <link rel="stylesheet" href="resources/style/home.css">
+    <link rel="stylesheet" href="resources/style/common.css">
+    <link rel="stylesheet" href="resources/style/style3.css">
+
+
+</head>
+
+<div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+        <div id="dismiss">
+            <i class="fas fa-arrow-left"></i>
+        </div>
+        <h3 class="text-center" style="margin-top: 20px;background-color: #e52a2a">Gamage Restaurant</h3>
+        <div class="d-block" style="margin-top:30px;">
+            <div class="text-center"><img id="profileImage" class="profileImage"></div>
+            <div class="text-center"><p class="loggedUserNameField d-inline" id="lblLogUser">123456</p>
+            </div>
+        </div>
+        <div>
+            <div>
+                <p class="text-white text-center"> Loged as : <span id="spnDesignation"> </span></p>
+            </div>
+
+        </div>
+
+
+        <ul class="list-unstyled components">
+
+            <li>
+                <a href="http://localhost:8080/mainwindow">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                      Administration
+                </a>
+                <ul class="collapse list-unstyled" id="pageSubmenu">
+                    <li class="EMPLOYEE">
+                        <a href="http://localhost:8080/employee">Employee</a>
+                    </li>
+                    <li class="USER">
+                        <a href="http://localhost:8080/user">User</a>
+                    </li>
+                    <li class="PRIVILAGE">
+                        <a href="http://localhost:8080/privilage">privilage</a>
+                    </li>
+
+                </ul>
+            </li>
+            <li>
+                <a href="#productSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                      Reservation
+                </a>
+                <ul class="collapse list-unstyled" id="productSubmenu">
+                    <li class="ITEM">
+                        <a href="http://localhost:8080/customer">customer</a>
+                    </li>
+                    <li class="BRAND">
+                        <a href="http://localhost:8080/reservation">Reservation</a>
+                    </li>
+                    <li class="BATCH">
+                        <a href="http://localhost:8080/customerpayment">Customer Payments</a>
+                    </li>
+
+
+                </ul>
+            </li>
+            <li>
+                <a href="#purchaseSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                     Purchase
+                </a>
+                <ul class="collapse list-unstyled" id="purchaseSubmenu">
+                    <li class="SUPPLIER">
+                        <a href="http://localhost:8080/supplier"> Supplier </a>
+                    </li>
+                    <li class="PURCHASEORDER">
+                        <a href="http://localhost:8080/quotation"> Quotation </a>
+                    </li>
+                    <li class="PURCHASEORDER">
+                        <a href="http://localhost:8080/quotationrequest"> Quotation Request </a>
+                    </li>
+                    <li class="PURCHASEORDER">
+                        <a href="http://localhost:8080/purchaseorder"> Purchase Order </a>
+                    </li>
+
+                    <li class="GRN">
+                        <a href="http://localhost:8080/grn"> GRN </a>
+                    </li>
+                    <li class="SUPPLIERPAYMENT">
+                        <a href="http://localhost:8080/spayment"> Supplier Payment </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- Dropdown -->
+
+
+            <li>
+                <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-chart-line"></i>Report
+                </a>
+                <ul class="collapse list-unstyled" id="reportSubmenu">
+                    <li>
+                        <a href="http://localhost:8080/lowinventory"> Low Inventory </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:8080/reportinvoice"> Daily Invoice </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:8080/reportprofit"> Profit </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Page Content  -->
+    <div id="content">
+        <nav class="navbar navbar-expand-lg  " style="background-color: #121212;">
+            <div class="container-fluid">
+                <div class="float-left">
+                    <button type="button" id="sidebarCollapse" class="btn btn-light btn-lg">
+                        <i class="fas fa-align-left"></i>
+                        <span></span>
+                    </button>
+                    <button type="button" class="btn btn-light btn-lg ml-3 rounded-circle">
+                        <a href="http://localhost:8080/mainwindow"> <i class="fa fa-home"></i></a>
+                        <span></span>
+                    </button>
+                    <button type="button" class="btn btn-light btn-lg rounded-circle ml-3 p-0" data-toggle="dropdown">
+                        <a class="nav-link justify-content-center" data-toggle="dropdown" href="#"><i
+                                class="fa fa-th"></i> </a>
+                        <div class="dropdown-menu"
+                             style="margin-left: 10px;background-color: rgba(86,75,71,0.75);border-bottom-color: white">
+
+                            <ul class="navbar-nav"
+                                style="margin-bottom: 30px;margin-top: 30px;">
+
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/employee')">
+                                        <div id="waiter" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">Empolyee</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/user')">
+                                        <div id="user" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">User</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/privilage')">
+                                        <div id="privilage" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">Privilage</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/reservation')">
+                                        <div id="reservation" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">Reservation</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/customer')">
+                                        <div id="customer" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">Customer</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/menu')">
+                                        <div id="menu" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">Menu</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/submenu')">
+                                        <div id="submenu" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">Submenu</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/customerpayment')">
+                                        <div id="cpayment" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">CPayments</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/quotation')">
+                                        <div id="quotation" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">Quotation</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/quotationrequest')">
+                                        <div id="quotationReq" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">QRequest</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/grn')">
+                                        <div id="grn" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">GRN</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/purchaseorder')">
+                                        <div id="porder" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">POrder</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/spayment')">
+                                        <div id="spayment" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">SPayments</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item navitem">
+                                    <div class="m-2 text-center"
+                                         onclick="window.location.assign('http://localhost:8080/tableallocation')">
+                                        <div id="tblallocation" style="width:50px; height:40px"></div>
+                                        <div class="">
+                                            <p class="font-weight-bold text-dark">TblAllocation</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </button>
+                </div>
+
+                <h2 class="text-white font-weight-light float-left"> Gamage Restaurant </h2>
+
+                <div class="float-right">
+                    <button type="button" class="btn  btn-lg ml-3 text-white"
+                            data-toggle="modal"
+                            data-target="#settingsModal">
+                        <i class="fa fa-cogs"></i>
+                        <span></span>
+                    </button>
+
+                    <button type="button" class="btn btn-lg ml-3 text-white"
+                            onclick="btnSignoutMC()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <!-- Content -->
+        <div class="row" id="ui">
+            <div class="col-md-12">
+                <div class="card cardstyle">
+                    <div class="card-header text-white  text-center cardhead" style="background-color: rgb(250,2,2);">
+                        <h3>Reservation Management</h3>
+                    </div>
+
+                    <div class="card-body cardstyleImg ">
+
+                        <ul class="nav nav-pills mb-2">
+                            <li class="nav-item" onclick="changeTab('form')">
+                                <a class="nav-link active text-white" id="tbForm" href="#">Reservation Add Form</a>
+                            </li>
+                            <li class="nav-item" onclick="changeTab('table')">
+                                <a class="nav-link text-white" id="tbTable" href="#">Reservation View Table</a>
+                            </li>
+                        </ul>
+                        <div id="divFrom" class="row p-3">
+                            <div class="col-md-12">
+                                <form class="" id="supplierform" onsubmit="return false">
+
+                                    <div class="row">
+                                        <div class="col-md-12 pull-right text-right">
+                                            <p class="font-weight-bold text-white"><span
+                                                    style="color:red; font-size:24px"><b>*</b></span> Required</p>
+                                        </div>
+                                    </div>
+
+                                    <!--Reservation No/Registerd customer/Customer name/Customer mobile-->
+                                    <div class="row m-2 p-3"
+                                         style="border-radius: 10px;background-color:  rgba(255, 99, 71, 0.2)">
+
+                                        <!-- Reservation No-->
+                                        <div class="col-md-3">
+                                            <div class="form-group text-white ">
+                                                <label for="txtReservationNo" class=" "><b>Reservation No:
+                                                    <span style="color: red;">*</span></b> </label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                                    <span class="input-group-text ">
+                                                                        <i class="fas fa-sort-numeric-up"></i></span>
+                                                    </div>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           id="txtReservationNo"
+                                                           required>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Registerd customer-->
+                                        <div class="col-md-3">
+                                            <div class="form-group text-white  ">
+                                                <label for="cmbRegCustomer" class=""><b>Registered Customer :</b> </label>
+                                                <select id="cmbRegCustomer"
+                                                        class="js-example-basic-single form-control"
+                                                        required
+                                                        data-toggle="tooltip"
+                                                        data-placement="bottom"
+                                                        title="Registerd Customer"
+                                                        onchange="comboBoxBinder(cmbRegCustomer,'','reservation','customer_id','oldreservation')">
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Customer name-->
+                                        <div class="col-md-3 ">
+                                            <div class="form-group text-white ">
+                                                <label for="txtCName" class="  "> <b>Customer Name:
+                                                </b> <span style="color: red;">*</span></label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                            <span class="input-group-text "><i
+                                                                    class="fas fa-user-edit"></i></span>
+                                                    </div>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           id="txtCName"
+                                                           placeholder="Enter Customer Name"
+                                                           required data-toggle="tooltip"
+                                                           data-placement="bottom"
+                                                           title="Eg:Kamal"
+                                                           onkeyup="textFieldBinder(txtCName,'','reservation','cname','oldreservation')">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Customer mobile-->
+                                        <div class="col-md-3 ">
+                                            <div class="form-group text-white ">
+                                                <label for="txtCMobile" class="  "><b>Customer Mobile:
+                                                </b> <span style="color: red;">*</span></label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                            <span class="input-group-text "><i
+                                                                    class="fas fa-phone-square-alt"></i></span>
+                                                    </div>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           id="txtCMobile"
+                                                           placeholder="Enter Mobile No"
+                                                           required data-toggle="tooltip"
+                                                           data-placement="bottom"
+                                                           title="Eg:0765354687"
+                                                           onkeyup="textFieldBinder(txtCMobile,'^0\\d{9}$','reservation','cmobile','oldreservation')">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--Inner form-->
+                                    <div class="card m-4" style="background-color:  rgba(33, 35, 35, 0.20)">
+                                        <div class="card-header text-white  text-center cardhead" style="background-color: rgb(250,2,2);">
+                                            <h2>Reservation Service</h2>
+                                        </div>
+
+                                        <div class="card-body"
+                                             style="border: 4px solid rgba(91,26,2,0.66); border-radius: 10px; margin:5px;background-color: rgb(255,255,255)">
+                                            <div></div>
+                                            <div class="row m-2 p-3"
+                                                 style="border-radius: 10px;background-color:  rgba(255, 99, 71, 0.2)">
+                                                <!--Service-->
+                                                <div class="col-md-3">
+                                                    <div class="form-group text-dark  ">
+                                                        <label for="cmbService" class="  "><b>Service
+                                                            : <span style="color: red;">*</span></b> </label>
+                                                        <select id="cmbService"
+                                                                class="js-example-basic-single form-control"
+                                                                required
+                                                                data-toggle="tooltip"
+                                                                data-placement="bottom"
+                                                                title="Take away/Dine in/Order-Delivery"
+                                                                onchange="comboBoxBinder(cmbService,'','reservationHasService','service_id','oldreservationHasService')">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!--Delivery-->
+                                                <div class="col-md-3">
+                                                    <div class="form-group text-dark ">
+                                                        <label for="chkDeliveryRequired" class="row "><b>Delivery
+                                                            : <span style="color: red;">*</span></b> </label>
+                                                        <input type="checkbox" onchange="chkDeliveryRequiredCH()"
+                                                               class="row form-control"
+                                                               id="chkDeliveryRequired"
+                                                               required data-toggle="toggle"
+                                                               data-on="Required" data-off="Not Required"
+                                                               data-onstyle="success" data-offstyle="danger"
+                                                               data-width="150" data-height="30"
+                                                               data-toggle="tooltip"
+                                                               data-placement="bottom"
+                                                               title="Enter Deliver Details">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group text-dark row">
+                                                        <label for="dteReservedDate" class="  "><b>Reserved
+                                                            Date
+                                                            : <span style="color: red;">*</span></b> </label>
+
+                                                        <input type="date"
+                                                               class="form-control form-control"
+                                                               id="dteReservedDate"
+                                                               required
+                                                               data-toggle="tooltip"
+                                                               data-placement="bottom"
+                                                               title="Select Reserved Date"
+                                                               onchange="textFieldBinder(dteReservedDate,'^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$','reservationHasService','reserveddate','oldreservationHasService')">
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <!-- Button trigger modal -->
+                                                    <button type="button" class="btn btn-danger float-right"
+                                                            onclick="window.location.assign('http://localhost:8080/tableallocation')">
+                                                        Table allocation
+                                                    </button>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="row m-2 p-3"
+                                                 style="border-radius: 10px;background-color:  rgba(255, 99, 71, 0.2)">
+
+
+
+                                            </div>
+                                            <div style=" margin:5px;">
+
+                                                <div class="row p-4">
+                                                    <ul class="nav nav-pills">
+                                                        <li class="nav-item m-2" onclick="changeTab2('menu')">
+                                                            <a class="nav-link active bg-danger text-white" id="tbMenu"
+                                                               href="#tbMenu">Menu</a>
+                                                        </li>
+                                                        <li class="nav-item m-2" onclick="changeTab2('submenu')">
+                                                            <a class="nav-link  bg-danger  text-white" id="tbSubMenu"
+                                                               href="#tbSubMenu">Sub
+                                                                Menu</a>
+                                                        </li>
+                                                        <div class="viewModels ">
+                                                            <div class="col-md-5 ">
+                                                                <!-- Button trigger modal -->
+                                                                <button type="button" class="btn border-danger text-danger  "
+                                                                        data-toggle="modal" data-target="#MenuModal">
+                                                                    View Menus
+                                                                </button>
+
+                                                            </div>
+                                                        </div>
+                                                    </ul>
+
+                                                </div>
+
+                                                <div id="divmenu" class="p-5 m-3" style="background-color:  rgba(255, 99, 71, 0.2);border-radius: 10px;" >
+                                                    <!--menu-->
+                                                    <div class="col-md-4">
+                                                        <div class="form-group text-dark">
+                                                            <label for="cmbMenuCategory"><b>Menu
+                                                                Category</b></label>
+
+                                                            <select id="cmbMenuCategory"
+                                                                    class=" js-example-basic-single form-control"
+                                                                    required
+                                                                    data-toggle="tooltip"
+                                                                    data-placement="bottom"
+                                                                    title="Breakfast Menus/Lunch Menus/Dinner Menus"
+                                                                    onchange="comboBoxBinder(cmbMenuCategory,'','reservationHasService','menucategory_id','oldreservationHasService')">
+                                                            </select>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group text-dark ">
+                                                            <label for="cmbMenu"><b>Menu</b></label>
+
+                                                            <select id="cmbMenu"
+                                                                    class="js-example-basic-single form-control"
+                                                                    required
+                                                                    data-toggle="tooltip"
+                                                                    data-placement="bottom"
+                                                                    title="Select a menu from menu list"
+                                                                    onchange="comboBoxBinder(cmbMenu,'','reservationHasService','menu_id','oldreservationHasService')">
+                                                            </select>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="row p-3 ">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group text-dark ">
+                                                                <label for="txtMenuprice"><b>Menu
+                                                                    price</b></label>
+
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                                <span class="input-group-text "><i
+                                                                                        class="fas fa-sort-numeric-up"></i></span>
+                                                                    </div>
+                                                                    <input type="text"
+                                                                           class=" form-control"
+                                                                           id="txtMenuprice"
+                                                                           placeholder="Enter the menu price"
+                                                                           required data-toggle="tooltip"
+                                                                           data-placement="bottom"
+                                                                           title="Menu price"
+                                                                           onkeyup="textFieldBinder(txtMenuprice,'^[0-9]{2,5}[.][0-9]{2}$','reservationHasService','menuprice','oldreservationHasService')">
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group text-dark  ">
+                                                                <label for="txtMenuOrderCount"><b>Order
+                                                                    count</b></label>
+
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                                <span class="input-group-text "><i
+                                                                                        class="fas fa-sort-numeric-up"></i></span>
+                                                                    </div>
+                                                                    <input type="text"
+                                                                           class="form-control  "
+                                                                           id="txtMenuOrderCount"
+                                                                           placeholder="Enter Order count"
+                                                                           required data-toggle="tooltip"
+                                                                           data-placement="bottom"
+                                                                           title="Enter the no of orders"
+                                                                           onkeyup="textFieldBinder(txtMenuOrderCount,'^.*$','reservationHasService','ordercount','oldreservationHasService')">
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group text-dark  ">
+                                                                <label for="txtMLineTotal"><b>Line Total
+                                                                </b></label>
+
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                                <span class="input-group-text "><i
+                                                                                        class="fas fa-sort-numeric-up"></i></span>
+                                                                    </div>
+                                                                    <input type="text"
+                                                                           id="txtMLineTotal"
+                                                                           placeholder="Line total"
+                                                                           class="form-control  "
+                                                                           required data-toggle="tooltip"
+                                                                           data-placement="bottom"
+                                                                           title="Line total"
+                                                                           onkeyup="textFieldBinder(txtMLineTotal,'^[0-9]{2,5}[.][0-9]{2}$','reservationHasService','linetotal','oldreservationHasService')">
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--Inner clear add btns-->
+                                                    <div class="row m-3">
+                                                        <div class="col-md-12">
+                                                            <div class="text-right mt-2">
+                                                                <button class="btn btn-info btnClear " type="button"
+                                                                        id="btnInnerClear"
+                                                                        onclick="btninnerClearMC()"
+                                                                        style="width: 25%">
+                                                                    <i class="fas fa-recycle mr-2"></i>
+                                                                    Clear
+                                                                </button>
+                                                                <button class="btn btn-success btnAdd"
+                                                                        style="width: 25%" type="button"
+                                                                        id="btnInnerAdd"
+                                                                        onclick="btnInnerAddMC()">
+                                                                    <i class='fas fa-plus-circle mr-2'></i>Add
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="divsubmenu" class="p-5 m-3"style="background-color:   rgba(255, 99, 71, 0.2);border-radius: 10px;" >
+                                                    <!--sub menu-->
+                                                    <div class="col-md-4">
+                                                        <div class="form-group text-dark">
+                                                            <label for="cmbSMenuCategory"><b>Sub
+                                                                Menu Category</b></label>
+
+                                                            <select id="cmbSMenuCategory"
+                                                                    class="js-example-basic-single form-control"
+                                                                    data-toggle="tooltip"
+                                                                    data-placement="bottom"
+                                                                    title="Ex: Fried Rice"
+                                                                    onchange="comboBoxBinder(cmbSMenuCategory,'','reservationHasService','submenucategory_id','oldreservationHasService')"
+                                                            >
+                                                            </select>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="row p-3">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group text-dark ">
+                                                                <label for="cmbSMenu"><b>Sub
+                                                                    Menu</b></label>
+
+                                                                <select id="cmbSMenu"
+                                                                        class="js-example-basic-single form-control"
+                                                                        data-toggle="tooltip"
+                                                                        data-placement="bottom"
+                                                                        title="Ex: Chicken fried rice-Full "
+                                                                        onchange="comboBoxBinder(cmbSMenu,'','reservationHasService','submenu_id','oldreservationHasService')">
+                                                                </select>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row p-3">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group text-dark ">
+                                                                <label for="txtSMPrice"><b> Sub Menu
+                                                                    Price</b></label>
+
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                                <span class="input-group-text "><i
+                                                                                        class="fas fa-sort-numeric-up"></i></span>
+                                                                    </div>
+                                                                    <input type="text"
+                                                                           class="form-control  "
+                                                                           id="txtSMPrice"
+                                                                           placeholder="Enter the sub menu price"
+                                                                           data-toggle="tooltip"
+                                                                           data-placement="bottom"
+                                                                           onkeyup="textFieldBinder(txtSMPrice,'^[0-9]{2,5}[.][0-9]{2}$','reservationHasService','submenuprice','oldreservationHasService')">
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group text-dark ">
+                                                                <label for="txtSMOrderCount"><b>Order
+                                                                    count</b></label>
+
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                                <span class="input-group-text "><i
+                                                                                        class="fas fa-sort-numeric-up"></i></span>
+                                                                    </div>
+                                                                    <input type="text"
+                                                                           class="form-control  "
+                                                                           id="txtSMOrderCount"
+                                                                           placeholder="Enter Order count"
+                                                                           required data-toggle="tooltip"
+                                                                           data-placement="bottom"
+                                                                           title="Enter the no of orders"
+                                                                           onkeyup="textFieldBinder(txtSMOrderCount,'^.*$','reservationHasService','ordercount','oldreservationHasService')">
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group text-dark ">
+                                                                <label for="txtSMLineTotal"><b>Line Total
+                                                                </b></label>
+
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                                <span class="input-group-text "><i
+                                                                                        class="fas fa-sort-numeric-up"></i></span>
+                                                                    </div>
+                                                                    <input type="text"
+                                                                           class="form-control form-control"
+                                                                           id="txtSMLineTotal"
+                                                                           placeholder="Line total"
+                                                                           required data-toggle="tooltip"
+                                                                           data-placement="bottom"
+                                                                           title="Line total"
+                                                                           onkeyup="textFieldBinder(txtSMLineTotal,'^[0-9]{2,5}[.][0-9]{2}$','reservationHasService','linetotal','oldreservationHasService')">
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--Inner clear add btns-->
+                                                    <div class="row m-3">
+                                                        <div class="col-md-12">
+                                                            <div class="text-right mt-2">
+                                                                <button class="btn btn-info btnClear " type="button"
+                                                                        id="btnInnerClear2"
+                                                                        style="width: 25%">
+                                                                    <i class="fas fa-recycle mr-2"></i>
+                                                                    Clear
+                                                                </button>
+                                                                <button class="btn btn-success btnAdd"
+                                                                        style="width: 25%" type="button"
+                                                                        id="btnInnerAdd2"
+                                                                        onclick="btnInnerAddMC2()">
+                                                                    <i class='fas fa-plus-circle mr-2'></i>Add
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!--Inner table-->
+                                        <div class="row m-3 " style="background-color: antiquewhite"
+                                             id="innertable">
+
+                                            <script>
+                                                function getMenuSubmenuname(ob) {
+                                                    var msname = "";
+                                                    if (ob.menu_id != null) {
+                                                        msname = ob.menu_id.menuname;
+                                                    } else {
+                                                        msname = ob.submenu_id.submenuname;
+                                                    }
+
+                                                    return msname;
+                                                }
+
+                                                function getMenuSubmenuPrice(ob) {
+                                                    var msprice = 0.00;
+                                                    if (ob.menu_id != null) {
+                                                        msprice = toDecimal(ob.menuprice);
+                                                    } else {
+                                                        msprice = toDecimal(ob.submenuprice);
+                                                    }
+                                                    return msprice;
+                                                }
+
+                                                var metadatainner = [
+
+                                                    {
+                                                        name: 'Service',
+                                                        search: true,
+                                                        datatype: 'text',
+                                                        property: 'service_id.servicename'
+                                                    },
+                                                    {
+                                                        name: 'Reserved Date',
+                                                        search: true,
+                                                        datatype: 'text',
+                                                        property: 'reserveddate'
+                                                    },
+
+                                                    {
+                                                        name: 'Menu / Sub menu Name',
+                                                        search: true,
+                                                        datatype: 'text',
+                                                        property: getMenuSubmenuname
+                                                    },
+                                                    {
+                                                        name: 'Menu /Sub menu Price',
+                                                        search: true,
+                                                        datatype: 'text',
+                                                        property: getMenuSubmenuPrice
+                                                    },
+
+                                                    {
+                                                        name: 'Order quantity',
+                                                        search: true,
+                                                        datatype: 'text',
+                                                        property: 'ordercount'
+                                                    },
+                                                    {
+                                                        name: 'Line Total',
+                                                        search: true,
+                                                        datatype: 'amount',
+                                                        property: 'linetotal'
+                                                    },
+
+                                                ];
+                                                tableForInnerForm("innertable", "tblInnerReservation", metadatainner, true);
+                                            </script>
+                                        </div>
+                                    </div>
+
+                                    <div class="row m-2 p-3"
+                                         style="border-radius: 10px;background-color:  rgba(255, 99, 71, 0.2)">
+                                        <!--Service-->
+
+                                        <!--Description-->
+                                        <div class="col-md-4">
+                                            <div class="form-group text-white text-white text-white">
+                                                <label for="txtDescription" class="font-weight-bold"><b>Description
+                                                   </b>
+                                                </label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                                    <span class="input-group-text ">
+                                                                        <i class="fas fa-clipboard"></i></span>
+                                                    </div>
+                                                    <textarea id="txtDescription"
+                                                              placeholder="Enter Description Here"
+                                                              class="form-control"
+                                                              onkeyup="textFieldBinder(txtDescription,'^.*$','reservation','description','oldreservation')">
+                                                            </textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group text-white">
+                                                <label for="txtRBday"><b>
+                                                    Birthday <span
+                                                        style="color: red;">*</span></b></label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                                <span class="input-group-text "><i
+                                                                        class="fas fa-id-card-alt"></i></span>
+                                                        <input type="date" class="form-control" id="txtRBday"
+                                                               required
+                                                               onchange="textFieldBinder(txtRBday,'^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$','reservation','reserveddate','oldreservation')">
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1"></div>
+
+                                        <div class="col-md-6 ">
+                                            <h2 class="text-center text-white" style="background-color:#e52a2a">
+                                                Payment Details</h2>
+                                            <!--Total amount-->
+                                            <div class="form-group text-white text-white ">
+                                                <label for="txtTAmount"><b>Total Amount:</b>
+                                                    <span style="color: red;">*</span> </label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                                    <span class="input-group-text ">
+                                                                        <i class="fas fa-sort-numeric-up"></i></span>
+                                                    </div>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           id="txtTAmount"
+                                                           placeholder="Enter the Total Amount"
+                                                           required
+                                                           data-toggle="tooltip"
+                                                           data-placement="bottom"
+                                                           title=""
+                                                           onkeyup="textFieldBinder(txtTAmount,'^[0-9]{2,5}[.][0-9]{2}$','reservation','totalamount','oldreservation')">
+                                                </div>
+                                            </div>
+                                            <!--Discount Ratio-->
+                                            <div class="form-group  text-white">
+                                                <label for="txtDiscountRatio"> <b>Discount Ratio:</b>
+
+                                                </label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                                    <span class="input-group-text ">
+                                                                        <i class="fas fa-sort-numeric-up"></i></span>
+                                                    </div>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           id="txtDiscountRatio"
+                                                           placeholder="Enter the Discount Ratio"
+                                                           required
+                                                           data-toggle="tooltip"
+                                                           data-placement="bottom"
+                                                           title=""
+                                                           onkeyup="textFieldBinder(txtDiscountRatio,'^[0-9]{1,2}$','reservation','discountratio','oldreservation')">
+                                                </div>
+                                            </div>
+                                            <!--Last Price-->
+                                            <div class="form-group   text-white">
+                                                <label class="" for="txtLastPrice"><b>Last Price :</b>
+                                                    <span style="color: red;">*</span> </label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                                    <span class="input-group-text ">
+                                                                        <i class="fas fa-user-edit"></i></span>
+                                                    </div>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           id="txtLastPrice"
+                                                           placeholder="Enter the Last Price"
+                                                           required
+                                                           data-toggle="tooltip"
+                                                           data-placement="bottom"
+                                                           title=""
+                                                           onkeyup="textFieldBinder(txtLastPrice,'^[0-9]{2,5}[.][0-9]{2}$','reservation','lastprice','oldreservation')"/>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="row m-2 p-3"
+                                         style="border-radius: 10px;background-color:  rgba(33, 35, 35, 0.47);height: 100px;">
+
+                                        <div class="col-md-4">
+                                            <div class="form-group   text-white ">
+                                                <label for="cmbAddedBy" class="  "><b>Added By
+                                                    : <span style="color: red;">*</span></b> </label>
+                                                <select id="cmbAddedBy" class="form-control" required>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group   text-white ">
+                                                <label for="cmbStatus" class="  "><b>Status
+                                                    : <span style="color: red;">*</span></b> </label>
+                                                <select id="cmbStatus" class="form-control" required>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group   text-white ">
+                                                <label for="dteAddedDate" class="  "><b>Added Date
+                                                    : <span style="color: red;">*</span></b> </label>
+                                                <input type="date" id="dteAddedDate" class="form-control"
+                                                       required>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2 p-2">
+                                        <div class="col-md-12">
+
+                                            <div class="text-right">
+                                                <button class="btn btnClear" type="button" id="btnClear"
+                                                        style="width: 25%">
+                                                    <i class="fas fa-recycle mr-2"></i> Clear
+                                                </button>
+                                                <button class="btn btnUpdate" type="submit" id="btnUpdate"
+                                                        style="width: 25%"><i class="fas fa-edit mr-2"></i>
+                                                    Update
+                                                </button>
+                                                <button class="btn btnAdd" style="width: 25%" type="submit"
+                                                        id="btnAdd">
+                                                    <i class='fas fa-plus-circle mr-2'></i>Add
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row p-3 formcontent" style="background-color: antiquewhite" id="divTable">
+                            <div class="container-fluid">
+                                <input type="button" class="btn tblbtnprint   " value="Print Table"
+                                       id="btnPrintTable" onclick="btnPrintTableMC()"/>
+                                <div class="float-right">
+                                    <input placeholder="Search" class="form-control txtSearchName" type="text"
+                                           id="txtSearchName"/>
+                                </div>
+                            </div>
+                            <hr/>
+
+                            <div class="table-responsive" id="tableParent" class=" ml-2">
+                                <script>
+                                    //getRegCustomerName- Null customers/Not registered customers
+                                    function getRegCustomerName(ob) {
+                                        var customername = "";
+                                        if (ob.customer_id != null) {
+                                            customername = ob.customer_id.fname + " ( " + ob.customer_id.regno + " ) "
+                                        }
+
+                                        return customername;
+                                    }
+
+                                    var metadata = [
+                                        {
+                                            name: 'Reservationno',
+                                            search: true,
+                                            datatype: 'text',
+                                            property: 'reservationno'
+                                        },
+
+
+                                        //getRegCustomerName- Null customers/Not registered customers
+                                        {
+                                            name: 'Registered Customer',
+                                            search: true,
+                                            datatype: 'text',
+                                            property: getRegCustomerName
+                                        },
+                                        {name: 'Cname', search: true, datatype: 'text', property: 'cname'},
+                                        {name: 'Cmobile', search: true, datatype: 'text', property: 'cmobile'},
+                                        {
+                                            name: 'Totalamount',
+                                            search: true,
+                                            datatype: 'amount',
+                                            property: 'totalamount'
+                                        },
+                                        {
+                                            name: 'Discountratio',
+                                            search: true,
+                                            datatype: 'text',
+                                            property: 'discountratio'
+                                        },
+                                        {
+                                            name: 'Status',
+                                            search: true,
+                                            datatype: 'text',
+                                            property: 'reservationstatus_id.name'
+                                        }
+                                    ];
+                                    table("tableParent", "tblReservation", metadata, true);
+                                </script>
+                            </div>
+
+                            <div>
+                                <div style="display: inline-block ; float: left">
+                                    <select class="form-control input" id="cmbPageSize"
+                                            style="width: 80px;">
+                                        <option selected value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="30">30</option>
+                                        <option value="500">500</option>
+                                        <option value="1000">1000</option>
+                                    </select>
+                                    <script>
+                                        cmbPageSize.onchange = function chnagePageSize() {
+                                            activepage = 1;
+                                            btnSearchMC();
+                                        };
+                                    </script>
+                                </div>
+                                <div style="display: inline-block; margin-left: 10px;">
+                                    <ul id="pagination" class="pagination"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div id="err" >
+                            <h3>Error Log</h3>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+</div>
+
+<!-- Deliver Details -->
+<div class="modal fade" id="DeliveryDetailModal" tabindex="-1"
+     role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #e52a2a">
+                <h5 class="modal-title"
+                >Deliver Details</h5>
+                <button type="button" class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card border-danger m-4 p-2"
+                     style="max-width:35rem;background-color: antiquewhite">
+
+                    <div class="card-body text-dark">
+
+                        <form>
+                            <div class="form-group   text-dark row">
+                                <label for="cmbAddedBy" class="  "><b>CP
+                                    Name
+                                    : <span style="color: red;">*</span></b> </label>
+
+                                    <input type="text"
+                                           class="form-control form-control "
+                                           id="txtCPName"
+                                           onkeyup="textFieldBinder(txtCPName,'^([A-Z][a-z]+)$','reservationHasService','cpname','oldreservationHasService')">
+
+                            </div>
+
+                            <div class="form-group text-dark row">
+                                <label for="txtCPMobile" class="  "><b>CP
+                                    Mobile
+                                    : <span style="color: red;">*</span></b> </label>
+
+                                    <input type="text"
+                                           class="form-control form-control "
+                                           id="txtCPMobile"
+                                           onkeyup="textFieldBinder(txtCPMobile,'^0\\d{9}$','reservationHasService','cpmobile','oldreservationHasService')">
+
+                            </div>
+
+                            <div class="form-group text-dark row">
+                                <label for="txtAddress" class="  "><b>Deliver
+                                    Address
+                                    : <span style="color: red;">*</span></b> </label>
+
+                                    <input type="text"
+                                           class="form-control form-control "
+                                           id="txtAddress"
+                                           onchange="textFieldBinder(txtAddress,'^.*$','reservationHasService','deliveryaddress','oldreservationHasService')">
+
+                            </div>
+                            <div class="form-group text-dark row">
+                                <label for="txtServiceCharge" class="  "><b>Service Charge
+                                    : <span style="color: red;">*</span></b> </label>
+
+                                    <input type="text"
+                                           class="form-control form-control "
+                                           id="txtServiceCharge"
+                                           onkeyup="textFieldBinder(txtServiceCharge,'^[0-9]{2,5}[.][0-9]{2}$','reservationHasService','servicecharge','oldreservationHasService')">
+
+                            </div>
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn border-danger text-white"
+                    data-dismiss="modal">Close
+            </button>
+            <button type="button" class="btn btn-danger text-white">
+                Save changes
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Menu -->
+<div class="modal fade" id="MenuModal" tabindex="-1"
+     role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #f62626">
+                <h5 class="modal-title" id="MenuModalLabel">
+                    Menus and Sub menus</h5>
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="background-color: antiquewhite">
+                <h2>Lunch/Dinner Menus</h2>
+                <div class="p-3">
+                    <div class="row row-cols-1 row-cols-md-2 g-4">
+                        <div class="col-md-3">
+                            <div class="card" style="background-color: rgba(232,162,105,0.76);height:650px;">
+                                <div class="card-body">
+                                    <h5 class="card-title">Menu 1</h5>
+                                    <ul>
+                                        <li>Basmathi Fried Rice</li>
+                                        <li>Samba Plain Rice</li>
+                                        <li>Fried Chicken curry</li>
+                                        <li>Fish Embul Thiyal</li>
+                                        <li>Tempered Potatoes</li>
+                                        <li>Dhal Curry</li>
+                                        <li>Batu Morju</li>
+                                        <li>Maley Achcharu</li>
+                                        <li>Cachew Mashroom Curry</li>
+                                        <li>Devilled Prawns</li>
+                                        <li>Salad Leaves</li>
+                                        <li>Cutlet</li>
+                                        <li>Papadam</li>
+                                        <li>Fruit Drink</li>
+                                        <h6>Dessert</h6>
+                                        <li>Caramel pudding</li>
+                                        <li>Fruit Salad</li>
+                                        <li>Ice cream</li>
+
+                                    </ul>
+                                    <h4> Price = Rs. Perhead </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card" style="background-color: rgba(232,162,105,0.76);height:650px;">
+
+                                <div class="card-body">
+                                    <h5 class="card-title">Menu 2</h5>
+                                    <ul>
+                                        <li>Basmathi Fried Rice</li>
+                                        <li>Samba Plain Rice</li>
+                                        <li>Devilled Chicken</li>
+                                        <li>Fish Embul Thiyal</li>
+                                        <li>Potatoes curry</li>
+                                        <li> Tempered Dhal Curry</li>
+                                        <li>Batu Morju</li>
+                                        <li>Maley Achcharu</li>
+                                        <li>Cachew Mashroom Curry</li>
+                                        <li>Cutlet</li>
+                                        <li>Salad Leaves</li>
+                                        <li>Devilled Gotukola</li>
+                                        <li>Papadam</li>
+                                        <li>Fruit Drink</li>
+                                        <h6>Dessert</h6>
+                                        <li>Watalappan</li>
+                                        <li>Fruit Salad</li>
+                                        <li>Ice cream</li>
+
+                                    </ul>
+                                    <h4> Price = Rs. Perhead </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card" style="background-color: rgba(232,162,105,0.76);height:650px;">
+
+                                <div class="card-body">
+                                    <h5 class="card-title">Menu 3</h5>
+                                    <ul>
+                                        <li>Basmathi Fried Rice</li>
+                                        <li>Samba Plain Rice</li>
+                                        <li>Chicken curry</li>
+                                        <li>Fish Stew</li>
+                                        <li>Tempered Potatoes</li>
+                                        <li>Cachew Mashroom Curry</li>
+                                        <li>Dhal curry</li>
+                                        <li>Batu Morju</li>
+                                        <li>Cutlet</li>
+                                        <li>Egg Salad</li>
+                                        <li>Papadam</li>
+                                        <li>Fruit Drink</li>
+                                        <h6>Dessert</h6>
+                                        <li>Watalappan</li>
+                                        <li>Fruits(Papaya,Banana,Pine Apple,Grapes)</li>
+
+                                    </ul>
+                                    <h4> Price = Rs. Perhead </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card" style="background-color: rgba(232,162,105,0.76);height:650px;">
+                                <div class="card-body">
+                                    <h5 class="card-title">Menu 4</h5>
+                                    <ul>
+                                        <li>Basmathi Fried Rice</li>
+                                        <li>Samba Plain Rice</li>
+                                        <li>Chicken curry</li>
+                                        <li>Fish Ambul Thiyal</li>
+                                        <li>Tempered Potatoes</li>
+                                        <li>Maley Achcharu</li>
+                                        <li>Beans Curry</li>
+                                        <li>Fried Sprats</li>
+                                        <li>Cutlet</li>
+                                        <li>Papadam</li>
+                                        <li>Fruit Drink</li>
+                                        <h6>Dessert</h6>
+                                        <li>Watalappan</li>
+                                        <li>Ice Cream</li>
+
+                                    </ul>
+
+                                    <h4> Price = Rs. Perhead </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-cols-1 row-cols-md-2 g-4">
+                        <div class="col-md-3">
+                            <div class="card" style="background-color: rgba(232,162,105,0.76);height:550px;">
+
+                                <div class="card-body">
+                                    <h5 class="card-title">Menu 5</h5>
+                                    <ul>
+                                        <li>Basmathi Fried Rice</li>
+                                        <li>Red Samba Rice</li>
+                                        <li>White Rice</li>
+                                        <li>Chicken curry</li>
+                                        <li>Cabbage curry</li>
+                                        <li>Fried peanuts</li>
+                                        <li>Friend Potatos</li>
+                                        <li>Vegetable Salad</li>
+                                        <li>Cutlet</li>
+                                        <li>Papadam</li>
+                                        <li>Fried Chilies</li>
+                                        <h6>Dessert</h6>
+                                        <li>Fruits(Papaya,Banana,Pine Apple,Grapes)</li>
+                                        <li>Ice Cream</li>
+                                    </ul>
+                                    <h4> Price = Rs. Perhead </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card" style="background-color: rgba(232,162,105,0.76);height:550px;">
+
+                                <div class="card-body">
+                                    <h5 class="card-title">Menu 6</h5>
+                                    <ul>
+                                        <li>Basmathi Fried Rice</li>
+                                        <li>Red Samba Rice</li>
+                                        <li>White Samba Rice</li>
+                                        <li>Chicken curry</li>
+                                        <li>Fish curry</li>
+                                        <li>Potato Curry</li>
+                                        <li>Chashew Curry</li>
+                                        <li>Batu Morgu</li>
+                                        <li>Vegetable salad</li>
+                                        <li>Papadam</li>
+                                        <li>Cutlet</li>
+                                        <h6>Dessert</h6>
+                                        <li>Fruits(Papaya,Banana,Pine Apple,Grapes)</li>
+                                    </ul>
+                                    <h4> Price = Rs. Perhead </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card" style="background-color: rgba(232,162,105,0.76);height:550px;">
+
+                                <div class="card-body">
+                                    <h5 class="card-title">Menu 7</h5>
+                                    <ul>
+                                        <li>Chicken Biriyani</li>
+                                        <li>Fried Eggs</li>
+                                        <li>Minchi Sambola</li>
+                                    </ul>
+                                    <h4> Price = Rs. Perhead </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-3">
+                    <h2>Breakfast Menus</h2>
+                    <div class="row row-cols-1 row-cols-md-2 g-4">
+                        <div class="col-md-3">
+                            <div class="card" style="background-color: rgba(232,162,105,0.76);height:400px;">
+
+                                <div class="card-body">
+                                    <h5 class="card-title">Menu 8</h5>
+                                    <ul>
+                                        <li>Milk Rice</li>
+                                        <li>String hoppers</li>
+                                        <li>Pittu</li>
+                                        <li>Fish Embulthiyal</li>
+                                        <li>Lunumiris</li>
+                                        <li>Seeni Sambol</li>
+                                        <li>Coconut Sambol</li>
+                                        <li>Dhal Curry</li>
+
+                                        <h6>Dessert</h6>
+                                        <li>Banana</li>
+
+                                    </ul>
+                                    <h4> Price = Rs.640/- Perhead </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card" style="background-color: rgba(232,162,105,0.76);height:400px;">
+
+                                <div class="card-body">
+                                    <h5 class="card-title">Menu 9</h5>
+                                    <ul>
+
+                                        <li>String hoppers</li>
+                                        <li>Red rice Samba</li>
+                                        <li>Dharl Curry</li>
+                                        <li>Chicken curry</li>
+                                        <li>Kiri Hodi</li>
+                                        <li>Coconut Sambol</li>
+
+                                        <h6>Dessert</h6>
+                                        <li>Watallappan/Caramel</li>
+
+                                    </ul>
+                                    <h4> Price = Rs.590/- Perhead </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card" style="background-color: rgba(232,162,105,0.76);height:400px;">
+
+                                <div class="card-body">
+                                    <h5 class="card-title">Menu 11</h5>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card" style="background-color: rgba(232,162,105,0.76);height:400px;">
+
+                                <div class="card-body">
+                                    <h5 class="card-title">Menu 12</h5>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-3">
+                    <h2>Sub Menus</h2>
+                    <pre>
+    Breakfast
+                Egg Rice And Curry half          	465
+                Vegi Rice And Curry half	        420
+                Fish Rice And Curry half	        465
+                Chicken Rice And Curry half	        495
+                Vegi Rice And Curry full	        465
+                Fish Rice And Curry full	        525
+                Chicken Rice And Curry full	        570
+                10 String Hoppers	                155
+                3 Parata	                        340
+                1 Egg Rotti	                        185
+                Thosai with Sambaru	                220
+                2 Pieces Of Milk Rice	            340
+                Vegi Noodles 	                    340
+                Fish Noodles	                    495
+                Chicken Noodles	                    570
+                Egg Noodles	                        420
+                1 Coconut Rotti	                    185
+                Chicken Parts	                    620
+                Egg Omlet (One Egg)	                235
+    Lunch/Dinner
+                Vegi Rice And Curry half	        420
+                Fish Rice And Curry half	        465
+                Egg Rice And Curry half	            465
+                Chicken Rice And Curry half	        495
+                Vegi Rice And Curry full	        465
+                Fish Rice And Curry full	        525
+                Egg Rice And Curry full	            525
+                Chicken Rice And Curry full	        570
+                Vegi Fried Rice half	            495
+                Fish Fried Rice half	            650
+                Egg Fried Rice half	                620
+                Chicken fried Rice half	            725
+                Vegi Fried Rice full	            570
+                Fish Fried Rice full	            725
+                Egg Fried Rice full	                695
+                Chicken Fried Rice full	            800
+                Chiken Biriyani half	            955
+                Chiken Biriyani full	            1110
+                Fish Koththu half	                650
+                Fish Koththu full 	                955
+                Egg Koththu half	                495
+                Egg Koththu full	                650
+                Chicken Koththu half	            650
+                Chicken Koththu full	            1035
+                1 Hopper	                        95
+                1 Egg Hopper	                    185
+                Cheese Koththu half	                1110
+                Cheese Koththu full	                1265
+                Egg Dolphin Koththu	                650
+                Fish Dolphin Koththu 	            800
+                Chicken Dolphin Koththu	            880
+                5 Parata with Gravy	                650
+                20 String Hoppers with Garvy and Sambol 	                        495
+                20 String Hoppers with Chicken Curry and Sambol	                    650
+
+                Curries
+                Dhall Curry	                        340
+                Potato Curry	                    340
+                Sprats Curry	                    420
+                Chicken Curry	                    495
+                White Fish Curry	                420
+                Chilly Fish Curry	                420
+                Egg Curry	                        340
+
+
+                Chinese Rolls	                    185
+                Chicken Devilled	                800
+                Chicken parts	                    650
+
+</pre>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                    Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal view item -->
+<div class="modal fade" id="ReservationViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #e52a2a">
+                <h5 class="modal-title text-white" id="exampleModalLabel">View Reservation Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="printformtable" class="mt-5 table table-bordered table-striped"
+                       style="background-color:rgba(255,208,208,0.76) ">
+                    <tbody>
+                    <tr>
+                        <td>Reservation No :</td>
+                        <td id="tdResNo"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Reserved Date:</td>
+                        <td id="tdReservedDate"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Registered Customer :</td>
+                        <td id="tdRegCus"></td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Customername :</td>
+                        <td id="tdcname"></td>
+                    </tr>
+                    <tr>
+                        <td>Customer Mobile :</td>
+                        <td id="tdcmobile"></td>
+                    </tr>
+                    <tr>
+                        <td>Description :</td>
+                        <td id="tddescription"></td>
+                    </tr>
+                    <tr>
+                        <td>Total amount :</td>
+                        <td id="tdtamount">
+                        <td>
+                    </tr>
+                    <tr>
+                        <td>Discount ratio :</td>
+                        <td id="tddiscountratio"></td>
+                    </tr>
+
+
+                    <tr>
+                        <td> Last Price :</td>
+                        <td id="tdlastprice"></td>
+                    </tr>
+                    <tr>
+                        <td> Added date :</td>
+                        <td id="tdaddeddate"></td>
+                    </tr>
+
+                    <tr>
+                        <td> Status :</td>
+                        <td id="tdrstatus"></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn border-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" onclick="btnPrintRowMC()">Print</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="overlay"></div>
+
+<!-- Settings Modal-->
+<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog"
+     aria-labelledby="settingsModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content" id="modalContent">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle"><i
+                        class="fas fa-cog"></i> Settings</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form id="changePasswordForm" onsubmit="return false">
+                    <div class="form-row">
+                        <!-- Username -->
+                        <div class="form-group   col-md-12">
+                            <label for="txtUsernameView" class="text-blue">
+                                <b>Username</b>
+                            </label>
+                            <div readonly class="form-control-plaintext"
+                                 id="txtUsernameView"></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <!-- Current Password -->
+                        <div class="form-group    col-md-12">
+                            <label for="txtCurrentPassword"
+                                   class="text-blue"><b>Current Password</b> <i
+                                    class="fas fa-question-circle text-primary ml-1"
+                                    data-toggle="tooltip" data-placement="right"
+                                    title=""></i></label>
+                            <input type="password"
+                                   class="form-control form-control  changePasswordFields"
+                                   id="txtCurrentPassword"
+                                   onkeyup="textFieldBinder(txtCurrentPassword, '^[0-9]{5,}$', 'changePassword', 'currentPassword', 'oldChangePassword')">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <!-- New Password -->
+                        <div class="form-group    col-md-12">
+                            <label for="txtNewPassword" class="text-blue"><b>New
+                                Password</b><i
+                                    class="fas fa-question-circle text-primary ml-1"
+                                    data-toggle="tooltip" data-placement="right"
+                                    title=""></i></label>
+                            <input type="password"
+                                   class="form-control form-control  changePasswordFields"
+                                   id="txtNewPassword"
+                                   onkeyup="passwordFieldBinder(txtNewPassword, txtConfirmPassword, '^[0-9]{5,}$', 'changePassword', '', 'oldChangePassword')">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <!-- Confirm Password -->
+                        <div class="form-group    col-md-12">
+                            <label for="txtConfirmPassword"
+                                   class="text-blue"><b>Confirm
+                                Password</b><i
+                                    class="fas fa-question-circle text-primary ml-1"
+                                    data-toggle="tooltip" data-placement="right"
+                                    title=""></i></label>
+                            <input type="password"
+                                   class="form-control form-control  changePasswordFields"
+                                   id="txtConfirmPassword"
+                                   onkeyup="passwordFieldBinder(txtNewPassword, txtConfirmPassword, '^[0-9]{5,}$', 'changePassword', 'newPassword', 'oldChangePassword')">
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="brnClosechnagepasswordmodle" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary"
+                        onclick="btnSaveChangePasswordMC()">Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+

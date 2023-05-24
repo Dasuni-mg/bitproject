@@ -1,0 +1,108 @@
+.inputBox {
+  position: relative;
+  width: 250px;
+}
+
+.inputBox input {
+  width: 100%;
+  padding: 5px;
+  border: 2px solid rgba(255, 255, 255, 0);
+  background: white;
+  border-radius: 5px;
+  outline: none;
+  color: #000000;
+  font-size: 1em;
+}
+
+.inputBox select {
+  width: 90%;
+  padding: 5px;
+  border: 2px solid rgba(255, 255, 255, 0);
+  background: rgba(102, 101, 98, 0.329);
+  border-radius: 5px;
+  outline: none;
+  color: #fff;
+  font-size: 1em;
+}
+
+.inputBox span {
+  padding: 10px;
+  font-size: 1em;
+  color: #fff;
+}
+
+.inputBox input:valid ~ span,
+.inputBox input:focus ~ span {
+  color: blueviolet;
+  transform: translate(10px) translateY(-7px);
+  font-size: 1em;
+  padding: 0 10px;
+  background: var(--clr);
+  border-left: 2px solid blueviolet;
+  border-right: 2px solid blueviolet;
+}
+
+.inputBox select:valid ~ span,
+.inputBox select:focus ~ span {
+  color: blueviolet;
+  transform: translate(10px) translateY(-7px);
+  font-size: 1em;
+  padding: 0 10px;
+  background: var(--clr);
+  border-left: 2px solid blueviolet;
+  border-right: 2px solid blueviolet;
+}
+
+.inputBox select:valid,
+.inputBox select:focus {
+  border: 2px solid blueviolet;
+}
+
+.inputBox1 {
+  position: relative;
+  width: 350px;
+}
+
+.inputBox1 input {
+  width: 100%;
+  padding: 5px;
+  border: 2px solid rgba(255, 255, 255);
+
+  border-radius: 5px;
+  outline: none;
+  color: #fff;
+  font-size: 1em;
+}
+.inputBox1 span {
+  padding: 10px;
+  font-size: 1em;
+  color: black;
+}
+
+.inputBox1 input:valid ~ span,
+.inputBox1 input:focus ~ span {
+  color: blueviolet;
+  transform: translate(10px) translateY(-7px);
+  font-size: 1em;
+  padding: 0 10px;
+  background: var(--clr);
+  border-left: 2px solid blueviolet;
+  border-right: 2px solid blueviolet;
+}
+
+.inputBox1 select:valid ~ span,
+.inputBox1 select:focus ~ span {
+  color: blueviolet;
+  transform: translate(10px) translateY(-7px);
+  font-size: 1em;
+  padding: 0 10px;
+  background: var(--clr);
+  border-left: 2px solid blueviolet;
+  border-right: 2px solid blueviolet;
+}
+.inputBox1 select:valid,
+.inputBox1 select:focus {
+  border: 2px solid blueviolet;
+}
+
+

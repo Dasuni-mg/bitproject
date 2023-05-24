@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIT Project 2021 : Login Form </title>
+
+
+    <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css">
+    <script src="resources/jquery/jquery-3.4.1.min.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="resources/fontawesome/css/all.css">
+    <script src="resources/jquery/popper.min.js" type="application/javascript"></script>
+    <script src="resources/bootstrap/js/bootstrap.bundle.min.js" type="application/javascript"></script>
+
+
+    <script src="resources/script/common.bitproject.js" type="application/javascript"></script>
+    <script src="resources/script/sweetalert.min.js" type="application/javascript"></script>
+
+    <link rel="stylesheet" href="resources/style/login.css">
+
+    <style>
+        img {
+            border-radius: 300px;
+        }
+    </style>
+
+
+    <script>
+        window.addEventListener("load", initialize);
+
+        if (window.location.href == "http://localhost:8080/login") {
+            sessionStorage.clear();
+        }
+
+        function btnLogin() {
+
+            if (username.value != "" && password.value != "") {
+                loginuser.loginusername = username.value;
+                session.setObject("loginuser", loginuser);
+            }
+
+        }
+
+
+        //Initializing Functions
+
+        function initialize() {
+            console.log("login form");
+            valid = "2px solid #28a745";
+            invalid = "2px solid #dc3545";
+            initial = "1px solid #6c757d";
+
+            loginuser = new Object();
+            session.setObject("loginuser", new Object());
+
+            var url = window.location.href;
+            if (url == "http://localhost:8080/login?error=detailserr") {
+                $("#lblErrDetails").css("display", "block");
+                $("#lblErrUInactive").css("display", "none");
+            } else if (url == "http://localhost:8080/login?error=notactive") {
+                $("#lblErrDetails").css("display", "none");
+                $("#lblErrUInactive").css("display", "block");
+            }
+
+        }
+
+        function btnSubmitForgotPassword() {
+            ob = new Object();
+            ob.email = txtEmailForgotPassword.value;
+
+            var response = httpRequest("/forgotpassword", "POST", ob);
+            // var response = "0";
+            if (response == "0") {
+                swal({
+                    title: "Code send successfully",
+                    text: "Please check your email",
+                    icon: "success",
+                    buttons: true,
+                    closeOnClickOutside: false
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        showcodeUI();
+                    }
+
+                });
+            } else {
+                swal({
+                    title: "Failed to send email",
+                    text: "Response - " + response,
+                    icon: "error",
+                    closeOnClickOutside: false
+                });
+            }
+        }
+
+        function showcodeUI() {
+            emailview.style.display = "none";
+            codeview.style.display = "block";
+        }
+
+        function btnSubmitCode() {
+            obnew = new Object();
+            obnew.hint = txtCode.value;
+            obnew.email = txtEmailForgotPassword.value;
+            console.log(obnew);
+
+            var response = httpRequest("/forgotpassword", "PUT", obnew);
+            //   var response = "0";
+            if (response == "0") {
+                swal({
+                    title: "Code Check successfully",
+                    text: "",
+                    icon: "success",
+                    buttons: true,
+                    closeOnClickOutside: false
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        showpasswordchangeUI();
+                    }
+
+                });
+            } else {
+                swal({
+                    title: "Failed to send email",
+                    text: "Response - " + response,
+                    icon: "error",
+                    closeOnClickOutside: false
+                });
+            }
+        }
+
+        function showpasswordchangeUI() {
+            passwordchangeview.style.display = "block";
+            codeview.style.display = "none";
+        }
+
+        function txtNewPasswordKU() {
+
+            var pattern = new RegExp("^[0-9]{5,}$");
+            var newpassword = txtNewPassword.value;
+            if (pattern.test(newpassword)) {
+                txtNewPassword.style.border = valid;
+            } else {
+                txtNewPassword.style.border = invalid;
+            }
+        }
+
+        function txtConfirmPasswordKU() {
+            var pattern = new RegExp("^[0-9]{5,}$");
+            var newpassword = txtNewPassword.value;
+            var retypepassword = txtConfirmPassword.value;
+            if (pattern.test(newpassword) && newpassword == retypepassword) {
+                txtConfirmPassword.style.border = valid;
+                btnChagePassword.disabled = false;
+
+            } else {
+                txtConfirmPassword.style.border = invalid;
+                btnChagePassword.disabled = true;
+            }
+        }
+
+        function btnChagePasswordMC() {
+            obcp = new Object();
+            obcp.hint = txtCode.value;
+            obcp.email = txtEmailForgotPassword.value;
+            obcp.newPassword = txtConfirmPassword.value;
+            console.log(obcp);
+            var response = httpRequest("/changepassword", "PUT", obcp);
+            var response = "0";
+            if (response == "0") {
+                swal({
+                    title: "Password Change successfully",
+                    text: "",
+                    icon: "success",
+                    buttons: true,
+                    closeOnClickOutside: false
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        txtCode.value = "";
+                        txtEmailForgotPassword.value = "";
+                        txtNewPassword.value = "";
+                        txtConfirmPassword.value = "";
+                        window.location.assign('/logout');
+                    }
+
+                });
+            } else {
+                swal({
+                    title: "Failed to send email",
+                    text: "Response - " + response,
+                    icon: "error",
+                    closeOnClickOutside: false
+                });
+            }
+        }
+    </script>
+
+</head>
+
+<body >
+
+<div class="row body">
+    <div class="col-7 BodyImg" >
+        <div class="col-md-12" style=" margin-top:100px;background-color: rgba(128,0,128,0.29); margin-bottom:50px;">
+            <p class="text-center text-white" style="font-family: 'Nunito', sans-serif;font-size: 80px;">
+                The Best Delicious foods</p>
+
+            <p class="text-center text-white" style="font-family: 'Nunito', sans-serif;font-size: 70px;">
+                Gamage Restaurant</p>
+            <p class="text-center text-white" style="font-family: 'Nunito', sans-serif;font-size: 25px;">
+                -Exclusively for all food needs-</p>
+        </div>
+    </div>
+    <div class="col-5 Bubble">
+        <form  style="margin-top: 160px; margin-right: 40px;margin-left: 40px" action="/login" method="POST">
+
+
+
+            <input type="text" name="username" style="border-color: #5a085e; margin-bottom: 25px"  class="form-control "  id="username"
+                   placeholder="Username" required>
+
+            <input type="password" name="password" style="border-color: #5a085e; " class="form-control p-3" id="password"
+                   placeholder="Password" required>
+            <div align="center" id="lblErrDetails" style="display: none">
+                <small style=" color: #FF1C19;">User Name or Password is incorrect</small>
+
+            </div>
+
+            <div align="center" id="lblErrUInactive" style="display: none">
+                <small style=" color: #FF1C19;">User Acount is disabled, please Contact Admin</small>
+                <p style="font-size: 20px; color: #FF1C19;"></p>
+
+                <a class style="color:rgba(91,26,2,0.66)" href="#" data-toggle="modal" data-target="#exampleModal"
+                   data-backdrop="static" data-keyboard="false" style="color: #1b1e21">Forgot password?</a>
+
+
+                </button>
+            </div>
+
+            <button type="submit" class="btn button-92 d-flex justify-content-end btn-sm mt-3 mr-5" name="" value="Login"
+                    id="btnlogin"
+                    onclick="btnLogin()">Login</button>
+        </form>
+    </div>
+
+
+</div>
+
+<!-- Forgot Password Modal Start -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModal"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="forgotPasswordModal">Forgot Password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <!--  emailview    -->
+                <div class="row" id="emailview">
+                    <div class="col">
+                        <div class="card-header bg-primary">
+                            <h4>Email Verificcation</h4>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="txtEmailForgotPassword">Email address</label>
+                                    <input type="email" class="form-control" id="txtEmailForgotPassword"
+                                           placeholder="Enter email">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" onclick="btnSubmitForgotPassword()">Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!--  codeview   -->
+                <div class="row" id="codeview" style="display: none">
+                    <div class="col">
+                        <div class="card-header bg-primary">
+                            <h4>Code Verificcation</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="txtCode">Code : </label>
+                                <input type="text" class="form-control" id="txtCode" placeholder="XXXX">
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-success" onclick="btnSubmitCode()">Submit</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!--   passwordchangeview    -->
+                <div class="row" id="passwordchangeview" style="display: none">
+                    <div class="col">
+                        <div class="card-header bg-primary">
+                            <h4>Change Password</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="txtNewPassword">New Password</label>
+                                <input type="password" class="form-control" id="txtNewPassword"
+                                       placeholder="Enter password" onkeyup="txtNewPasswordKU()">
+                            </div>
+                            <div class="form-group">
+                                <label for="txtConfirmPassword">Confirm Password</label>
+                                <input type="password" class="form-control" id="txtConfirmPassword"
+                                       onkeyup="txtConfirmPasswordKU()" placeholder="Enter password">
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-success" disabled id="btnChagePassword"
+                                    onclick="btnChagePasswordMC()">Submit
+                            </button>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Forgot Password Modal End -->
+</div>
+<div id="err"></div>
+
+
+</body>
+
+</html>

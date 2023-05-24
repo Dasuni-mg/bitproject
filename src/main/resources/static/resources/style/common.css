@@ -1,0 +1,136 @@
+/* Validation Colors for Input Controls */
+.rowbcolor{
+    margin-top: 5px;
+    border-bottom: 2px solid rgba(28, 99, 206, 0.94);
+}
+
+.thradcolor{
+    color: white;
+    background-color: #5e1e5e;
+}
+.btntablef{
+    color: white;
+    background-color: #702470;
+
+    margin: 5px;
+}
+.btnheadsize{
+    padding: 8px;
+}
+.btntablet{
+    color: white;
+    margin: 5px;
+    background-color:#5e1e5e;
+}
+
+.btntablep{
+    color: white;
+    margin:5px;
+    background-color: #421542;
+}
+
+.cbody{
+    overflow: hidden;
+    transition: height 1s, width 1s, padding 1s, visibility 1s, opacity 0.5s ease-out;
+}
+
+
+
+/*.formcontent{
+    border: 2px solid #0b142e;
+    border-radius: 5px;
+     background-color: rgb(252, 250, 250);
+}
+*/
+
+
+
+.cardstyleImg{
+    border: 2px solid rgba(91, 26, 2, 0.66);
+    background-image: url("../image/food-background.jpeg");
+    background-size: cover;
+}
+
+
+.cardstylesupmat{
+background-color: black;
+}
+.tblbtnprint{
+    background-color: rgb(246, 167, 133);
+    color: black;
+    z-index:initial;
+    border:2px solid #f62626;
+}
+
+
+.txtSearchName{
+    max-resolution: 5px;;
+    border:2px solid rgba(91, 26, 2, 0.66);
+
+}
+
+
+.invalid .form-control{
+    background-color: #f6f6f8;
+}
+.valid .form-control{
+    background-color: #f6f6f8;
+}
+.updated .form-control{
+    background-color: khaki;
+}
+
+
+.file-box{
+    height: 87px;
+    margin-bottom: 7px;
+    border:1px solid #ffffff;
+    padding: 5px;
+    position: relative;
+}
+
+.file-box>img{
+    position: absolute;
+    height: 75px;
+    top: 5px;
+    left: 5px;
+}
+
+.file-box>ul{
+    position: absolute;
+    top: 5px;
+    left: 87px;
+    right: 5px;
+    padding: 0px;
+    list-style: none;
+    color: #fffcfc;
+    text-align: right;
+}
+
+
+/* Profile Image */
+
+.bntVisibity{
+    cursor: not-allowed;
+}
+
+
+.profileImage {
+    width: 60px;
+    height: 60px;
+
+    border-radius: 50%;
+}
+
+/*table*/
+.table-container {
+    width: auto;
+    overflow-x: scroll !important;
+    border: black;
+}
+
+
+input{
+    background: #edeeef;
+}
+
