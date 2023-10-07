@@ -24,7 +24,6 @@ function initialize() {
     txtPAmount.addEventListener("keyup", txtPAmountCH);
 
 
-
     privilages = httpRequest("../privilage?module=RESERVATION", "GET");
 
     //Make arrays  get list for combop box
@@ -40,17 +39,17 @@ function initialize() {
     submenus = httpRequest("../submenu/list", "GET");
 
     cpmethods = httpRequest("../cpmethod/listbymethod", "GET");
+    cpstatus = httpRequest("../cpstatus/list", "GET");
     //services should be implemented to get services then write services to get list
     //2.make controller and repository
 
 
     //colours
-    valid = "3px solid #078D27B2";
-    invalid = "3px solid red";
-    initial = "3px solid #d6d6c2";
+    valid = "2px solid #078D27B2";
+    invalid = "2px solid red";
+    initial = " 2px solid #d6d6c2";
     updated = "3px solid #ff9900";
-    active = "rgba(250,210,11,0.7)";
-
+    active = "rgba(7,141,39,0.6)";
 
     loadView();
     //calling load view function for load view side
@@ -100,8 +99,20 @@ function loadTable(page, size, query) {
     reservations = new Array();          //reservation list
 
     //Request to get reservation  list from URL
-    var data = httpRequest("/reservation/findAll?page=" + page + "&size=" + size + query, "GET");
+    var data = httpRequest("/reservation/findtakeaway?page=" + page + "&size=" + size + query, "GET");
 
+
+    // for(index in data.content){
+    //     var resobj = new Object();
+    //
+    //
+    //     // resobj.paidmount = data.content[0];
+    //     // resobj.balanceamount = data.content[1];
+    //     // resobj.reservationamount = data.content[2];
+    //     // resobj.reservationstatus_id = data.content[3];
+    //     // reservations.push(resobj);
+    //
+    // }
     if (data.content != undefined) reservations = data.content;
     createPagination('pagination', data.totalPages, data.number + 1, paginate);
 
@@ -118,12 +129,14 @@ function loadTable(page, size, query) {
 function viewres(res, rowno) {
 
     reservation = JSON.parse(JSON.stringify(res));
+    customerpayment = httpRequest("/customerpayment/getbyreservation?reservationid=" + reservation.id, "GET");
+    console.log("CUP ", customerpayment)
 
-
-    tddiscount.innerHTML = reservation.reservationno;
-    tdtamount.innerHTML = reservation.totalamount;
-    tdtPmount.innerHTML = reservation.totalamount;
-    tdtBmount.innerHTML = reservation.totalamount;
+    tdResNO.innerHTML = reservation.reservationno;
+    tddiscount.innerHTML = reservation.discountratio;
+    tdtamount.innerHTML = parseFloat(reservation.totalamount).toFixed(2);
+    tdtPmount.innerHTML = parseFloat(reservation.paidamount).toFixed(2);
+    tdtBmount.innerHTML = parseFloat(customerpayment.balanceamount).toFixed(2);
 
     $('#ReservationViewModal').modal('show')
 
@@ -149,7 +162,6 @@ function btnPrintRowMC() {
 }
 
 
-
 //Menu-Filterings---------------------------------------------------------------------------------------------
 //Menus categorized by menucategory id
 function cmbMenuCategoryCH() {
@@ -169,7 +181,7 @@ function cmbMenuCH() {
     reservationHasService.menuprice = txtMenuprice.value;
     txtMenuprice.style.border = valid;
 
-    if(oldreservationHasService !=null && reservationHasService.menuprice != oldreservationHasService.menuprice){
+    if (oldreservationHasService != null && reservationHasService.menuprice != oldreservationHasService.menuprice) {
         txtMenuprice.style.border = updated;
 
     }
@@ -179,7 +191,6 @@ function cmbMenuCH() {
     txtMenuOrderCount.style.border = initial;
 
     txtMLineTotal.value = "00.00";
-
 
 
     txtMenuprice.disabled = true;
@@ -192,19 +203,32 @@ function cmbMenuCH() {
 
 //Menu Line Total
 function txtMenuOrderCountCH() {
-    txtMLineTotal.value = toDecimal(txtMenuOrderCount.value * txtMenuprice.value);
-    txtMLineTotal.style.border = valid;
-    reservationHasService.linetotal = txtMLineTotal.value;
 
-    if (txtMenuOrderCount.value > 0) {
+
+    if ((txtMenuOrderCount.value > 0)) {
+        txtMenuOrderCount.style.border = valid;
+        txtMLineTotal.style.border = valid;
         btnInnerAdd.disabled = false;
+        txtMLineTotal.value = toDecimal(txtMenuOrderCount.value * txtMenuprice.value);
+        reservationHasService.linetotal = txtMLineTotal.value;
+    } else {
+        txtMenuOrderCount.style.border = invalid;
+        txtMLineTotal.style.border = invalid;
+        btnInnerAdd.disabled = true;
+        txtMLineTotal.value = parseFloat(0).toFixed(2);
+
     }
 
-    if(oldreservationHasService !=null && reservationHasService.ordercount != oldreservationHasService.ordercount){
+    if (innermodifyupdate && (txtMenuOrderCount.value > 0)) {
+        btnInnerAdd.disabled = true;
+    }
+
+
+    if (oldreservationHasService != null && reservationHasService.ordercount != oldreservationHasService.ordercount) {
         txtMenuOrderCount.style.border = updated;
     }
 
-    if(oldreservationHasService !=null && reservationHasService.linetotal != oldreservationHasService.linetotal){
+    if (oldreservationHasService != null && reservationHasService.linetotal != oldreservationHasService.linetotal) {
         txtMLineTotal.style.border = updated;
     }
 
@@ -234,11 +258,10 @@ function cmbSMenuCH() {
 
     // txtSMOrderCount.value = "0";
     // txtSMOrderCount.style.border = initial;
-    if(oldreservationHasService !=null && reservationHasService.submenuprice != oldreservationHasService.submenuprice){
+    if (oldreservationHasService != null && reservationHasService.submenuprice != oldreservationHasService.submenuprice) {
         txtSMPrice.style.border = updated;
 
     }
-
 
 
     txtSMLineTotal.value = "00.00";
@@ -252,21 +275,32 @@ function cmbSMenuCH() {
     txtSMLineTotal.style.border = valid;
 
 
-
 }
 
 //Sub Menu Line Total
 function txtSMOrderCountCH() {
-    txtSMLineTotal.value = toDecimal(txtSMOrderCount.value * txtSMPrice.value);
-    txtSMLineTotal.style.border = valid;
-    reservationHasService.linetotal = txtSMLineTotal.value;
 
-
-    if (txtSMOrderCount.value > 0) {
+    if ((txtSMOrderCount.value > 0)) {
+        txtSMOrderCount.style.border = valid;
+        txtSMLineTotal.style.border = valid;
         btnInnerAdd2.disabled = false;
+        txtSMLineTotal.value = toDecimal(txtSMOrderCount.value * txtSMPrice.value);
+        txtSMLineTotal.style.border = valid;
+        reservationHasService.linetotal = txtSMLineTotal.value;
+    } else {
+        txtSMOrderCount.style.border = invalid;
+        txtSMLineTotal.style.border = invalid;
+        btnInnerAdd2.disabled = true;
+        txtSMLineTotal.value = parseFloat(0).toFixed(2);
+
     }
 
-    if(oldreservationHasService !=null && reservationHasService.linetotal != oldreservationHasService.linetotal){
+    if (innermodifyupdate && (txtSMOrderCount.value > 0)) {
+        btnInnerAdd2.disabled = true;
+    }
+
+
+    if (oldreservationHasService != null && reservationHasService.linetotal != oldreservationHasService.linetotal) {
         txtSMLineTotal.style.border = updated;
 
     }
@@ -278,9 +312,11 @@ function txtDiscountRatioCH() {
     let tamount = parseFloat(txtTAmount.value);
     let discount = parseFloat(txtDiscountRatio.value);
 
-    txtLastPrice.value = (tamount - (tamount * discount / 100)).toFixed(2);
+    txtLastPrice.value = parseFloat(tamount - (tamount * discount / 100)).toFixed(2);
     txtLastPrice.style.border = valid;
     reservation.lastprice = txtLastPrice.value;
+    txtPAmount.disabled = false
+
 }
 
 //calculate the line totals related to the discount ratios
@@ -309,30 +345,45 @@ function txtTAmountCH() {
     }
 }
 
-function txtPAmountCH(){
+function txtPAmountCH() {
+    if (parseFloat(txtLastPrice.value) <= parseFloat(txtPAmount.value)) {
 
-    txtBAmount.value=toDecimal(txtPAmount.value - txtLastPrice.value);
-    txtBAmount.style.border=valid;
-    reservationHasService.balanceamount = txtBAmount.value;
+        txtBAmount.value = ((parseFloat(txtPAmount.value).toFixed(2)) - (parseFloat(txtLastPrice.value).toFixed(2)));
+        console.log("BALA ", txtBAmount.value)
+
+        customerpayment.balanceamount = txtBAmount.value;
+        // customerpayment.balanceamount = parseFloat(customerpayment.balanceamount).toFixed(2);
+        console.log("ZE", customerpayment.balanceamount)
+        txtBAmount.style.border = valid;
+        btnAdd.disabled = false;
+    } else {
+
+        txtPAmount.style.border = invalid;
+        txtBAmount.style.border = invalid;
+        txtBAmount.value = ""
+        btnAdd.disabled = true;
+    }
 }
 
 function loadForm() {
     reservation = new Object();
     oldreservation = null;
 
-    customerpayment=new Object()
-    oldcustomerpayment=null;
+    customerpayment = new Object()
+    oldcustomerpayment = null;
 
 
     reservation.reservationHasServiceList = new Array();
 
-    fillCombo(cmbPMethod, "Select Payment method", cpmethods, "name", "");
-
-
+    fillCombo(cmbPMethod, "", cpmethods, "name", "Cash");
+    customerpayment.cpmethod_id = JSON.parse(cmbPMethod.value);
+    cmbPMethod.disabled = true;
 
 
     // Get Next Number Form Data Base
     var nextNumber = httpRequest("/reservation/nextrn", "GET");
+
+    reservation.reservationno = nextNumber.reservationno
 
     //text field empty
 
@@ -340,17 +391,21 @@ function loadForm() {
     txtTAmount.value = "";
     txtLastPrice.value = "";
 
+    txtPAmount.value = "";
+    txtBAmount.value = "";
 
     //Initially the value of discountration=0
     txtDiscountRatio.value = "0";
     reservation.discountratio = txtDiscountRatio.value;
 
 
+    // txtBAmount.disable=true
+
     // set field to initial color
     setStyle(initial);
 
     txtDiscountRatio.style.border = valid;
-
+    cmbPMethod.style.border = valid;
 
     disableButtons(false, true, true);
 
@@ -365,12 +420,15 @@ function refreshInnerForm() {
     reservationHasService = new Object();
     oldreservationHasService = null;
 
+    innermodifyupdate = false;
+
     var totalamount = 0.00;
+
+
     //inner form
 
     btnInnerUpdate.disabled = true;
     btnInnerUpdateSM.disabled = true;
-
 
     txtMenuprice.value = "";
     txtMenuOrderCount.value = "";
@@ -422,10 +480,10 @@ function refreshInnerForm() {
     if (reservationHasService.ordercount == null) {
         txtMenuOrderCount.style.border = initial;
     }
-        if (reservationHasService.linetotal == null) {
+    if (reservationHasService.linetotal == null) {
         txtMLineTotal.style.border = initial;
     }
-        if (reservationHasService.submenucategory_id == null) {
+    if (reservationHasService.submenucategory_id == null) {
         cmbSMenuCategory.style.border = initial;
     }
     if (reservationHasService.submenu_id == null) {
@@ -473,22 +531,19 @@ function refreshInnerForm() {
 
 
     if (oldreservation != null && reservation.totalamount != oldreservation.totalamount) {
-        txtTAmount.style.border =updated;
+        txtTAmount.style.border = updated;
     } else {
         txtTAmount.style.border = valid;
     }
 
 
     if (oldreservation != null && reservation.discountratio != oldreservation.discountratio) {
-        txtDiscountRatio.style.border =updated;
+        txtDiscountRatio.style.border = updated;
     } else {
         txtDiscountRatio.style.border = valid;
     }
 
     txtTAmountCH();
-
-
-
 
 
     reservation.servicecharge = toDecimal("300.00");
@@ -498,7 +553,7 @@ function refreshInnerForm() {
     txtDiscountRatioCH();
 
     if (oldreservation != null && reservation.lastprice != oldreservation.lastprice) {
-        txtLastPrice.style.border =updated;
+        txtLastPrice.style.border = updated;
     } else {
         txtLastPrice.style.border = valid;
     }
@@ -509,207 +564,232 @@ function refreshInnerForm() {
 function btnInnerAddMC() {
 
 
-    var resv = false;
-    for (var index in reservation.reservationHasServiceList) {
-        if (reservation.reservationHasServiceList[index].menu_id != null) {
+    swal({
+        title: "Are you sure...?",
+        text: "Add Following Details ... \n" +
 
-            if (reservation.reservationHasServiceList[index].menu_id.menuname == reservationHasService.menu_id.menuname) {
-                resv = true;
-                break;
-            }
+            "\n Menu Category: " + reservationHasService.menucategory_id.name +
+
+            "\n Menu Price : " + reservationHasService.menuprice,
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+        className: "purple-swal"
+    }).then((willDelete) => {
+        if (willDelete) {
+            swal({
+                title: "Save Successfully...!",
+                text: "\n",
+                icon: "success",
+                buttons: false,
+                timer: 1500,
+            });
+
+
+            reservation.reservationHasServiceList.push(reservationHasService);
+            refreshInnerForm();
+
         }
-    }
+    });
 
-
-    if (resv) {
-        swal({
-            title: "Already exist!",
-            icon: "warning",
-            text: '\n',
-            button: false,
-            timer: 1200,
-        });
-    } else {
-
-        reservation.reservationHasServiceList.push(reservationHasService);
-        refreshInnerForm();
-    }
 
 }
 
 
 //Add Menu Inner table
 function btnInnerAddMC2() {
-    var resv = false;
 
 
-    for (var index in reservation.reservationHasServiceList) {
-        if (reservation.reservationHasServiceList[index].submenu_id != null) {
+    swal({
+        title: "Are you sure...?",
+        text: "Add Following Details ... \n" +
 
-            if (reservation.reservationHasServiceList[index].submenu_id.submenuname == reservationHasService.submenu_id.submenuname) {
-                resv = true;
-                break;
-            }
+            "\n Sub Menu Name: " + reservationHasService.submenu_id.submenuname +
+            "\n Sub Menu Price : " + reservationHasService.submenuprice,
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+        className: "purple-swal"
+    }).then((willDelete) => {
+        if (willDelete) {
+            swal({
+                title: "Save Successfully...!",
+                text: "\n",
+                icon: "success",
+                buttons: false,
+                timer: 1500,
+            });
+
+
+            reservation.reservationHasServiceList.push(reservationHasService);
+            refreshInnerForm();
         }
-    }
-    if (resv) {
-        swal({
-            title: "Already exist!",
-            icon: "warning",
-            text: '\n',
-            button: false,
-            timer: 1200,
-        });
-    } else {
-        reservation.reservationHasServiceList.push(reservationHasService);
-        refreshInnerForm();
-    }
+    });
+
+    // var resv = false;
+    //
+    //
+    // for (var index in reservation.reservationHasServiceList) {
+    //     if (reservation.reservationHasServiceList[index].submenu_id != null) {
+    //
+    //         if (reservation.reservationHasServiceList[index].submenu_id.submenuname == reservationHasService.submenu_id.submenuname) {
+    //             resv = true;
+    //             break;
+    //         }
+    //     }
+    // }
+    // if (resv) {
+    //     swal({
+    //         title: "Already exist!",
+    //         icon: "warning",
+    //         text: '\n',
+    //         button: false,
+    //         timer: 1200,
+    //         className: "purple-swal"
+    //     });
+    // } else {
+    //     reservation.reservationHasServiceList.push(reservationHasService);
+    //     refreshInnerForm();
+    // }
 
 }
 
 
-function getMenuInnerErrors(){
+function getMenuInnerErrors() {
 
 
     var innerErrors = "";
     var inneraddvalue = "";
 
-    if(reservationHasService.menu_id== null){
-        innerErrors = innerErrors +"\n"+ "Select the Menu";
+    if (reservationHasService.menu_id == null) {
+        innerErrors = innerErrors + "\n" + "Select the Menu";
         cmbMenu.style.border = invalid;
-    }else{
+    } else {
         inneraddvalue = 1;
     }
 
-    if(reservationHasService.menucategory_id== null){
-        innerErrors = innerErrors +"\n"+ "Select the Menu Category";
+    if (reservationHasService.menucategory_id == null) {
+        innerErrors = innerErrors + "\n" + "Select the Menu Category";
         cmbMenuCategory.style.border = invalid;
-    }else{
+    } else {
         inneraddvalue = 1;
     }
 
-    if(reservationHasService.menuprice== null){
-        innerErrors = innerErrors +"\n"+ "Enter the Menu Price";
+    if (reservationHasService.menuprice == null) {
+        innerErrors = innerErrors + "\n" + "Enter the Menu Price";
         txtMenuprice.style.border = invalid;
-    }else{
+    } else {
         inneraddvalue = 1;
     }
 
 
-
-    if(reservationHasService.ordercount== null){
-        innerErrors = innerErrors +"\n"+ "Select the Order count";
+    if (reservationHasService.ordercount == null) {
+        innerErrors = innerErrors + "\n" + "Select the Order count";
         txtMenuOrderCount.style.border = invalid;
-    }else{
+    } else {
         inneraddvalue = 1;
     }
 
-    if(reservationHasService.linetotal== null){
-        innerErrors = innerErrors +"\n"+ "Select the Line total";
+    if (reservationHasService.linetotal == null) {
+        innerErrors = innerErrors + "\n" + "Select the Line total";
         txtMLineTotal.style.border = invalid;
-    }else{
+    } else {
         inneraddvalue = 1;
     }
-
 
 
     return innerErrors;
 }
 
 
-
-
-function getSubMenuInnerErrors(){
+function getSubMenuInnerErrors() {
 
 
     var innerErrors = "";
     var inneraddvalue = "";
 
-    if(reservationHasService.submenucategory_id== null){
-        innerErrors = innerErrors +"\n"+ "Select the Sub menu Category";
+    if (reservationHasService.submenucategory_id == null) {
+        innerErrors = innerErrors + "\n" + "Select the Sub menu Category";
         cmbSMenuCategory.style.border = invalid;
-    }else{
+    } else {
         inneraddvalue = 1;
     }
 
-    if(reservationHasService.submenu_id== null){
-        innerErrors = innerErrors +"\n"+ "Select the Menu";
+    if (reservationHasService.submenu_id == null) {
+        innerErrors = innerErrors + "\n" + "Select the Menu";
         cmbSMenu.style.border = invalid;
-    }else{
+    } else {
         inneraddvalue = 1;
     }
-    if(reservationHasService.submenuprice== null){
-        innerErrors = innerErrors +"\n"+ "Enter the Sub menu Price";
+    if (reservationHasService.submenuprice == null) {
+        innerErrors = innerErrors + "\n" + "Enter the Sub menu Price";
         txtSMPrice.style.border = invalid;
-    }else{
+    } else {
         inneraddvalue = 1;
     }
 
-    if(reservationHasService.ordercount== null){
-        innerErrors = innerErrors +"\n"+ "Enter the Order Count";
+    if (reservationHasService.ordercount == null) {
+        innerErrors = innerErrors + "\n" + "Enter the Order Count";
         txtSMOrderCount.style.border = invalid;
-    }else{
+    } else {
         inneraddvalue = 1;
     }
 
-    if(reservationHasService.linetotal== null){
-        innerErrors = innerErrors +"\n"+ "Enter the Line Total";
+    if (reservationHasService.linetotal == null) {
+        innerErrors = innerErrors + "\n" + "Enter the Line Total";
         txtSMLineTotal.style.border = invalid;
-    }else{
+    } else {
         inneraddvalue = 1;
     }
-
-
-
 
 
     return innerErrors;
 }
 
 
-function getinnerMenuupdate(){
+function getinnerMenuupdate() {
 
     var innerupdate = "";
 
-    if(reservationHasService !=null && oldreservationHasService !=null){
+    if (reservationHasService != null && oldreservationHasService != null) {
 
         //menu
         if (reservationHasService.menu_id.menuname != oldreservationHasService.menu_id.menuname)
-            innerupdate = innerupdate + "\nMenu is changed from " + oldreservationHasService.menu_id.menuname + " to " + reservationHasService.menu_id.menuname ;
+            innerupdate = innerupdate + "\nMenu is changed from " + oldreservationHasService.menu_id.menuname + " to " + reservationHasService.menu_id.menuname;
 
         if (reservationHasService.menucategory_id.name != oldreservationHasService.menucategory_id.name)
-            innerupdate = innerupdate + "\nMenu Category is changed from " + oldreservationHasService.menucategory_id.name + " to " + reservationHasService.menucategory_id.name ;
+            innerupdate = innerupdate + "\nMenu Category is changed from " + oldreservationHasService.menucategory_id.name + " to " + reservationHasService.menucategory_id.name;
 
         if (reservationHasService.menuprice != oldreservationHasService.menuprice)
-            innerupdate = innerupdate + "\nMenu Price is changed from " + oldreservationHasService.menuprice + " to " + reservationHasService.menuprice ;
+            innerupdate = innerupdate + "\nMenu Price is changed from " + oldreservationHasService.menuprice + " to " + reservationHasService.menuprice;
 
         if (reservationHasService.ordercount != oldreservationHasService.ordercount)
-            innerupdate = innerupdate + "\nOrder Count is changed from " + oldreservationHasService.ordercount + " to " + reservationHasService.ordercount ;
+            innerupdate = innerupdate + "\nOrder Count is changed from " + oldreservationHasService.ordercount + " to " + reservationHasService.ordercount;
 
         if (reservationHasService.linetotal != oldreservationHasService.linetotal)
-            innerupdate = innerupdate + "\nLine Total is changed from " + oldreservationHasService.linetotal + " to " + reservationHasService.linetotal ;
+            innerupdate = innerupdate + "\nLine Total is changed from " + oldreservationHasService.linetotal + " to " + reservationHasService.linetotal;
 
     }
     return innerupdate;
 }
 
 
-function getinnerSubMenuupdate(){
+function getinnerSubMenuupdate() {
 
     var innerupdate = "";
 
-    if(reservationHasService !=null && oldreservationHasService !=null){
+    if (reservationHasService != null && oldreservationHasService != null) {
 
 
         //sub menu
         if (reservationHasService.submenucategory_id != oldreservationHasService.submenucategory_id)
-            innerupdate = innerupdate + "\nSub Menu is changed from " + oldreservationHasService.submenucategory_id.name + " to " + reservationHasService.submenucategory_id.name ;
+            innerupdate = innerupdate + "\nSub Menu is changed from " + oldreservationHasService.submenucategory_id.name + " to " + reservationHasService.submenucategory_id.name;
 
         if (reservationHasService.submenu_id != oldreservationHasService.submenu_id)
-            innerupdate = innerupdate + "\nSub Menu Category is changed from " + oldreservationHasService.submenu_id.submenuname+ " to " + reservationHasService.submenu_id.submenuname ;
+            innerupdate = innerupdate + "\nSub Menu Category is changed from " + oldreservationHasService.submenu_id.submenuname + " to " + reservationHasService.submenu_id.submenuname;
 
         if (reservationHasService.submenuprice != oldreservationHasService.submenuprice)
-            innerupdate = innerupdate + "\nSub Menu Price is changed from " + oldreservationHasService.submenuprice + " to " + reservationHasService.submenuprice ;
+            innerupdate = innerupdate + "\nSub Menu Price is changed from " + oldreservationHasService.submenuprice + " to " + reservationHasService.submenuprice;
 
         if (reservationHasService.ordercount != oldreservationHasService.ordercount)
             innerupdate = innerupdate + "\nOrder Count is changed from " + oldreservationHasService.ordercount + " to " + reservationHasService.ordercount;
@@ -721,22 +801,23 @@ function getinnerSubMenuupdate(){
 }
 
 //Update Sub Menu Inner Table
-function btnInnerUpdateSubMenuMC(){
+function btnInnerUpdateSubMenuMC() {
     var innerErrors = getSubMenuInnerErrors();
-    if(innerErrors == ""){
+    if (innerErrors == "") {
         var innerUpdate = getinnerSubMenuupdate();
-        if(innerUpdate ==""){
+        if (innerUpdate == "") {
             swal({
                 title: 'Nothing Updated..!', icon: "warning",
                 text: '\n',
                 button: false,
-                timer: 1200
+                timer: 1200,
+                className: "purple-swal"
             });
-        }else{
+        } else {
             swal({
                 title: "Are you sure to inner form update following details...?",
                 text: "\n" + innerUpdate,
-                icon: "warning", buttons: true, dangerMode: true,
+                icon: "warning", buttons: true, dangerMode: true, className: "purple-swal"
             })
 
 
@@ -758,7 +839,7 @@ function btnInnerUpdateSubMenuMC(){
                     }
                 });
         }
-    }else{
+    } else {
         swal({
             title: 'You have following errors in your form', icon: "error",
             text: '\n ' + getSubMenuInnerErrors(),
@@ -768,22 +849,23 @@ function btnInnerUpdateSubMenuMC(){
 }
 
 //Update Menu Inner Table
-function btnInnerUpdateMenuMC(){
+function btnInnerUpdateMenuMC() {
     var innerErrors = getMenuInnerErrors();
-    if(innerErrors == ""){
+    if (innerErrors == "") {
         var innerUpdate = getinnerMenuupdate();
-        if(innerUpdate ==""){
+        if (innerUpdate == "") {
             swal({
                 title: 'Nothing Updated..!', icon: "warning",
                 text: '\n',
                 button: false,
-                timer: 1200
+                timer: 1200,
+                className: "purple-swal"
             });
-        }else{
+        } else {
             swal({
                 title: "Are you sure to inner form update following details...?",
                 text: "\n" + innerUpdate,
-                icon: "warning", buttons: true, dangerMode: true,
+                icon: "warning", buttons: true, dangerMode: true, className: "purple-swal"
             })
 
 
@@ -805,17 +887,22 @@ function btnInnerUpdateMenuMC(){
                     }
                 });
         }
-    }else{
+    } else {
         swal({
             title: 'You have following errors in your form', icon: "error",
             text: '\n ' + getMenuInnerErrors(),
-            button: true
+            button: true,
+            className: "purple-swal"
         });
     }
 }
 
 
 function innerModify(ob, innerrowno) {
+
+    //disable add when update inner form
+
+    innermodifyupdate = true;
 
     btnInnerUpdate.disabled = false;
     btnInnerUpdate.style.cursor = "pointer";
@@ -842,7 +929,7 @@ function innerModify(ob, innerrowno) {
         fillCombo(cmbMenu, "Select Menu", menus, "menuname", reservationHasService.menu_id.menuname);
         fillCombo(cmbMenuCategory, "Select Menu category", menucategories, "name", reservationHasService.menucategory_id.name);
 
-        cmbMenu.disabled=false;
+        cmbMenu.disabled = false;
         txtMenuOrderCount.style.border = valid;
         txtMenuprice.style.border = valid;
         txtMLineTotal.style.border = valid;
@@ -852,7 +939,7 @@ function innerModify(ob, innerrowno) {
         txtMLineTotal.value = parseFloat(reservationHasService.linetotal).toFixed(2);
 
         txtMenuOrderCount.disabled = false;
-        txtMenuOrderCount.style.border=valid;
+        txtMenuOrderCount.style.border = valid;
 
         // txtSMLineTotal.style.border = valid;
         // txtSMPrice.style.border = valid;
@@ -876,15 +963,15 @@ function innerModify(ob, innerrowno) {
         txtSMLineTotal.style.border = valid;
         txtSMPrice.style.border = valid;
         txtSMOrderCount.disabled = false;
-        txtSMOrderCount.style.border=valid;
+        txtSMOrderCount.style.border = valid;
     }
     //if menu and submenu both are not null
-    if (reservationHasService.menu_id !=null && reservationHasService.menucategory_id !=null && reservationHasService.submenu_id != null && reservationHasService.submenucategory_id != null) {
+    if (reservationHasService.menu_id != null && reservationHasService.menucategory_id != null && reservationHasService.submenu_id != null && reservationHasService.submenucategory_id != null) {
 
-        if(reservationHasService.menu_id){
+        if (reservationHasService.menu_id) {
             changeTabMandS('menu');
         }
-        if(reservationHasService.submenu_id){
+        if (reservationHasService.submenu_id) {
             changeTabMandS('submenu');
         }
         // fillCombo(cmbMenu, "Select Menu", menus, "menuname", reservationHasService.menu_id.menuname);
@@ -921,7 +1008,29 @@ function btninnerClearMC() {
         swal({
             title: "Form has some values, updates values... Are you sure to discard the form ?",
             text: "\n",
-            icon: "warning", buttons: true, dangerMode: true,
+            icon: "warning", buttons: true, dangerMode: true, className: "purple-swal"
+        }).then((willDelete) => {
+            if (willDelete) {
+                loadForm();
+            }
+
+        });
+    }
+
+}
+
+
+function btninnerClearMC2() {
+    //Get Cofirmation from the User window.confirm();
+    checkerr = getErrors();
+
+    if (oldreservationHasService == null && addvalue == "") {
+        loadForm();
+    } else {
+        swal({
+            title: "Form has some values, updates values... Are you sure to discard the form ?",
+            text: "\n",
+            icon: "warning", buttons: true, dangerMode: true, className: "purple-swal"
         }).then((willDelete) => {
             if (willDelete) {
                 loadForm();
@@ -933,18 +1042,43 @@ function btninnerClearMC() {
 }
 
 function innerDelete(innerob, innerrow) {
-    swal({
-        title: "Are you sure to remove Item?",
-        text: "\nItem Name : " + innerob.reservation_id.name,
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-    }).then((willDelete) => {
-        if (willDelete) {
-            reservation.reservationHasServiceList.splice(innerrow, 1);
-            refreshInnerForm();
-        }
-    });
+
+
+    if (innerob.menu_id != null) {
+        swal({
+            title: "Are you sure to remove Menu ?",
+            text: "\nItem Name : " + innerob.menu_id.menuname,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            className: "purple-swal"
+        }).then((willDelete) => {
+            if (willDelete) {
+                reservation.reservationHasServiceList.splice(innerrow, 1);
+                refreshInnerForm();
+            }
+        });
+
+    } else if (submenu_id != null) {
+
+        swal({
+            title: "Are you sure to remove Sub Menu?",
+            text: "\nItem Name : " + innerob.menu_id.submenuname,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            className: "purple-swal"
+        }).then((willDelete) => {
+            if (willDelete) {
+                reservation.reservationHasServiceList.splice(innerrow, 1);
+                refreshInnerForm();
+            }
+        });
+
+
+    }
+
+
 }
 
 function setStyle(style) {
@@ -960,7 +1094,7 @@ function setStyle(style) {
     txtLastPrice.style.border = style;
     txtPAmount.style.border = style;
     txtBAmount.style.border = style;
-
+    cmbPMethod.style.border = style;
 
 
 }
@@ -1002,12 +1136,13 @@ function disableButtons(add, upd, del) {
     // select deleted data row
     for (index in reservations) {
         if (reservations[index].reservationstatus_id.name == "Deleted") {
-            tblTakeAway.children[1].children[index].style.color = "#f00";
-            tblTakeAway.children[1].children[index].style.border = "2px solid red";
+            tblTakeAway.children[1].children[index].style.color = "rgb(9,9,9)";
+            tblTakeAway.children[1].children[index].style.backgroundColor = "rgba(238,114,114,0.66)";
             tblTakeAway.children[1].children[index].lastChild.children[1].disabled = true;
             tblTakeAway.children[1].children[index].lastChild.children[1].style.cursor = "not-allowed";
 
         }
+        tblTakeAway.children[1].children[index].lastChild.children[0].style.display = "none"
     }
 
 }
@@ -1017,7 +1152,6 @@ function getErrors() {
 
     var errors = "";
     addvalue = "";
-
 
 
     if (reservation.totalamount == null) {
@@ -1040,18 +1174,15 @@ function getErrors() {
         txtPAmount.style.border = invalid;
     } else addvalue = 1;
 
-    if (reservation.balanceamount == null) {
+    if (customerpayment.balanceamount == null) {
         errors = errors + "\n" + "Balance Amount is Not Entered";
         txtBAmount.style.border = invalid;
     } else addvalue = 1;
 
-    if (  reservation.cpmethod_id== null) {
+    if (customerpayment.cpmethod_id == null) {
         errors = errors + "\n" + "Payment Method Not Selected";
         cmbPMethod.style.border = invalid;
     } else addvalue = 1;
-
-
-
 
 
     return errors;
@@ -1060,13 +1191,14 @@ function getErrors() {
 
 function btnAddMC() {
     if (getErrors() == "") {
-        if ( txtDiscountRatio.value == "") {
+        if (txtDiscountRatio.value == "") {
             swal({
                 title: "Are you sure to continue...?",
                 text: "Form has some empty fields.....",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
+                className: "purple-swal"
             }).then((willDelete) => {
                 if (willDelete) {
                     savedata();
@@ -1082,6 +1214,7 @@ function btnAddMC() {
             text: "\n" + getErrors(),
             icon: "error",
             button: true,
+            className: "purple-swal"
         });
 
     }
@@ -1092,21 +1225,41 @@ function savedata() {
     swal({
         title: "Are you sure to add following reservation...?",
         text:
-            "\n Total Amount  : " + reservation.totalamount +
-            "\n Discount ratio : " + reservation.discountratio +
             "\n Last price : " + reservation.lastprice +
-            "\n Service Charge: " + reservation.servicecharge+
-        "\n Paid Amount : " + reservation.paidamount +
-            "\n Balance Amount: " + reservation.balanceamount+
-            "\n Payment Method: " +   reservation.cpmethod_id.name,
+            "\n Discount ratio : " + reservation.discountratio +
+            "\n Service Charge: " + parseFloat(reservation.servicecharge).toFixed(2) +
+            "\n Total Amount  : " + parseFloat(reservation.totalamount).toFixed(2) +
+            "\n Paid Amount : " + parseFloat(reservation.paidamount).toFixed(2) +
+            "\n Balance Amount: " + parseFloat(customerpayment.balanceamount).toFixed(2) +
+            "\n Payment Method: " + customerpayment.cpmethod_id.name,
 
         icon: "warning",
         buttons: true,
         dangerMode: true,
+        className: "purple-swal"
     }).then((willDelete) => {
         if (willDelete) {
-            var response = httpRequest("/reservation", "POST", reservation);
-            if (response == "0") {
+
+            // save resavertion
+            var responsereservation = httpRequest("/reservation", "POST", reservation);
+
+            //save una reservation eke reseration no ekata adalawa reservation object eka gennagena
+            customerpayment.reservation_id = httpRequest("/reservation/byreservationcode/" + reservation.reservationno, "GET");
+
+            //set required fields and feild that set from th e reservation to customer payment
+            customerpayment.reservationamount = reservation.lastprice;
+            customerpayment.paidamount = reservation.paidamount;
+            customerpayment.currentamount = parseFloat(0).toFixed(2);
+            //set next customerpayment no
+            let nextcp = httpRequest("../customerpayment/nextcp", "GET");
+            customerpayment.billno = nextcp.billno;
+            console.log(customerpayment)
+
+            //call customer payment post mapping
+            var responseCPayment = httpRequest("/customerpayment", "POST", customerpayment);
+
+            //if post mapping success returns string from the controller
+            if (responsereservation == "0" && responseCPayment == "0") {
                 swal({
                     position: 'center',
                     icon: 'success',
@@ -1123,7 +1276,8 @@ function savedata() {
             } else swal({
                 title: 'Save not Success... , You have following errors', icon: "error",
                 text: '\n ' + response,
-                button: true
+                button: true,
+                className: "purple-swal"
             });
         }
     });
@@ -1140,12 +1294,11 @@ function btnClearMC() {
         swal({
             title: "Form has some values, updates values... Are you sure to discard the form ?",
             text: "\n",
-            icon: "warning", buttons: true, dangerMode: true,
+            icon: "warning", buttons: true, dangerMode: true, className: "purple-swal"
         }).then((willDelete) => {
             if (willDelete) {
                 loadForm();
             }
-
         });
     }
 
@@ -1160,7 +1313,7 @@ function fillForm(res, rowno) {
         swal({
             title: "Form has some values, updates values... Are you sure to discard the form ?",
             text: "\n",
-            icon: "warning", buttons: true, dangerMode: true,
+            icon: "warning", buttons: true, dangerMode: true, className: "purple-swal"
         }).then((willDelete) => {
             if (willDelete) {
                 filldata(res);
@@ -1173,22 +1326,33 @@ function fillForm(res, rowno) {
 
 function filldata(res) {
 
-    clearSelection(tblDelivery);
-    selectRow(tblDelivery, activepage, active);
+    clearSelection(tblTakeAway);
+    selectRow(tblTakeAway, activepage, active);
 
     reservation = JSON.parse(JSON.stringify(res));
     console.log("RES ", reservation);
     oldreservation = JSON.parse(JSON.stringify(res));
 
-
-
-
-
     txtDiscountRatio.value = reservation.discountratio;
     txtLastPrice.value = reservation.lastprice;
 
 
+    customerpayment = httpRequest("/customerpayment/getbyreservation?reservationid=" + reservation.id, "GET");
 
+    customerpayment = JSON.parse(JSON.stringify(customerpayment));
+    oldcustomerpayment = JSON.parse(JSON.stringify(customerpayment));
+
+    console.log("CUS PAY ", customerpayment);
+
+    fillCombo(cmbPMethod, "Select Payment Method", cpmethods, "name", customerpayment.cpmethod_id.name);
+
+    txtPAmount.disabled = true;
+    cmbPMethod.disabled = true;
+    txtPAmount.value = parseFloat(customerpayment.paidamount).toFixed(2);
+    txtBAmount.value = parseFloat(customerpayment.balanceamount).toFixed(2);
+
+    disableButtons(true, false, false);
+    setStyle(valid);
 
 
     refreshInnerForm();
@@ -1236,13 +1400,14 @@ function btnUpdateMC() {
                 title: 'Nothing Updated..!', icon: "warning",
                 text: '\n',
                 button: false,
-                timer: 1200
+                timer: 1200,
+                className: "purple-swal"
             });
         else {
             swal({
                 title: "Are you sure to update following reservation details...?",
                 text: "\n" + getUpdates(),
-                icon: "warning", buttons: true, dangerMode: true,
+                icon: "warning", buttons: true, dangerMode: true, className: "purple-swal"
             })
                 .then((willDelete) => {
                     if (willDelete) {
@@ -1268,7 +1433,8 @@ function btnUpdateMC() {
         swal({
             title: 'You have following errors in your form', icon: "error",
             text: '\n ' + getErrors(),
-            button: true
+            button: true,
+            className: "purple-swal"
         });
 
 }
@@ -1281,10 +1447,17 @@ function btnDeleteMC(res) {
         title: "Are you sure to delete following reservation...?",
         text: "\n Reservation No : " + reservation.reservationno +
             "\n Customer Name : " + reservation.cname,
-        icon: "warning", buttons: true, dangerMode: true,
+        icon: "warning", buttons: true, dangerMode: true, className: "purple-swal"
     }).then((willDelete) => {
         if (willDelete) {
             var responce = httpRequest("/reservation", "DELETE", reservation);
+            //  customerpayment.reservation_id = httpRequest("/reservation/byreservationcode/" + reservation.reservationno, "GET");
+            //  console.log("CP STATUS ",cpstatus[2])
+            // let deletestatus = cpstatus[2]
+            //  customerpayment.cpstatus_id = deletestatus;
+            //
+            //  var responseCPayment = httpRequest("/customerpayment", "PUT", customerpayment);
+
             if (responce == 0) {
                 swal({
                     title: "Deleted Successfully....!",
@@ -1297,7 +1470,7 @@ function btnDeleteMC(res) {
                 swal({
                     title: "You have following erros....!",
                     text: "\n\n" + responce,
-                    icon: "error", button: true,
+                    icon: "error", button: true, className: "purple-swal"
                 });
             }
         }
@@ -1329,7 +1502,7 @@ function btnPrintTableMC(reservation) {
 
     //open new tab in the browser
     var newwindow = window.open();
-    formattab = tblDelivery.outerHTML;
+    formattab = tblTakeAway.outerHTML;
 
 
     //write print table in the new tab
@@ -1337,7 +1510,7 @@ function btnPrintTableMC(reservation) {
         "<html>" +
         "<head><style type='text/css'>.google-visualization-table-th {text-align: left;} .modifybutton{display: none} .isort{display: none}</style>" +
         "<link rel='stylesheet' href='resources/bootstrap/css/bootstrap.min.css'/></head>" +
-        "<body><div style='margin-top: 150px; '> <h1>reservation Details : </h1></div>" +
+        "<body><div style='margin-top: 150px; '> <h1>Take Away-Reservation Details : </h1></div>" +
         "<div>" + formattab + "</div>" +
         "</body>" +
         "</html>");
@@ -1377,11 +1550,11 @@ function sortTable(cind) {
             }
         );
     }
-    fillTable('tblDelivery', employees, fillForm, btnDeleteMC, viewitem);
-    clearSelection(tblDelivery);
+    fillTable('tblTakeAway', employees, fillForm, btnDeleteMC, viewitem);
+    clearSelection(tblTakeAway);
     loadForm();
 
-    if (activerowno != "") selectRow(tblDelivery, activerowno, active);
+    if (activerowno != "") selectRow(tblTakeAway, activerowno, active);
 
 
 }

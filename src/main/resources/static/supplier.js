@@ -10,33 +10,36 @@ function initialize() {
     btnClear.addEventListener("click", btnClearMC);
     btnUpdate.addEventListener("click", btnUpdateMC);
     txtSearchName.addEventListener("keyup", btnSearchMC);
+    cmbInnerMaterialCat.addEventListener("change", cmbInnerMaterialCatMC);
+
 
     privilages = httpRequest("../privilage?module=SUPPLIER", "GET");
 
-    //Make arrays as supplierstatuses and employees to get list for combop box
-    supplierstatuses = httpRequest("../supplierstatus/list", "GET");
-    employees = httpRequest("../employee/list", "GET");
-
+    // //Make arrays as supplierstatuses and employees to get list for combop box
+    // supplierstatuses = httpRequest("../supplierstatus/list", "GET");
+    // employees = httpRequest("../employee/list", "GET");
+    bankbranches = httpRequest("../bankbranch/list", "GET");
+    banknames = httpRequest("../bankname/list", "GET");
 
     //inner-materials array
     materials = httpRequest("../material/list", "GET");
-
+    materialcategories = httpRequest("../materialcategory/list", "GET");
     //services should be implemented to get services then write services to get list
     //2.make controller and repository
 
-
     //colours
-    valid = "3px solid #00f000";
-    invalid = "3px solid red";
-    initial = "3px solid #d6d6c2";
+    valid = "2px solid #078D27B2";
+    invalid = "2px solid red";
+    initial = "1px solid #d6d6c2";
     updated = "3px solid #ff9900";
-    active = "rgba(246,215,52,0.7)";
+    active = "rgba(7,141,39,0.6)";
+
 
     loadView();
     //calling load view function for load view side
     loadForm();
     //calling load view function for load view side
-    changeTab('form');
+    // changeTab('form');
     //calling form tab
 }
 
@@ -107,17 +110,168 @@ function viewsup(sup, rowno) {
     tdemail.innerHTML = supplier.email;
     tdaddress.innerHTML = supplier.address;
     tdaddeddate.innerHTML = supplier.addeddate;
-    tddescription.innerHTML = supplier.description;
+    // tddescription.innerHTML = supplier.description;
     tdbankholdername.innerHTML = supplier.bankholdername;
     tdbankname.innerHTML = supplier.bankname;
     tdbankbranchname.innerHTML = supplier.bankbranchname;
     tdbankaccountno.innerHTML = supplier.bankholdername;
     tdarreasamount.innerHTML = supplier.arreasamount;
 
-    $('#dataViewModal').modal('show')
+    $('#SpplierViewModal').modal('show')
 
 }
 
+function cmbInnerMaterialCatMC() {
+
+    materialbymaterialcategory = httpRequest("/material/materiallistbymateriallcategory?materialcategoryid=" + JSON.parse(cmbInnerMaterialCat.value).id, "GET");
+    fillCombo(cmbInnerMaterial, "Select Material", materialbymaterialcategory, "materialname", "");
+    cmbInnerMaterial.style.border = initial;
+}
+
+
+function supplierMobileBinder(){
+
+    var val = txtConNo1.value.trim();
+
+
+    if(val !=""){
+
+        var regpattern = new RegExp('^0\\d{9}$');
+        //test eken krnne api input krna mobileno ekai set krla thiyena regex pattern ekai equal da kiyla
+        if(regpattern.test(val)){
+
+            var response = httpRequest("customer/byMobile?mobileno="+val,"GET")
+            console.log(response);
+            if(response == ""){
+                supplier.contactno1 = val;
+                if(oldsupplier !=null && supplier.contactno1 != oldsupplier.contactno1){
+                    txtConNo1.style.border = updated;
+                }else{
+                    txtConNo1.style.border = valid;
+                }
+
+
+            }else{
+                swal({
+                    title: "This Contact No is  Already Exist....!",
+                    text: "\n\n",
+                    icon: "warning",
+                    button: false,
+                    timer:1500,
+                    className: "purple-swal"
+                });
+            }
+
+        }else{
+            txtConNo1.style.border = invalid;
+            supplier.contactno1 = null;
+        }
+    }else{
+        if(txtConNo1.required){
+            txtConNo1.style.border = invalid;
+        }else{
+            txtConNo1.style.border = initial;
+        }
+        supplier.contactno1 = null;
+    }
+
+}
+
+function supplierMobileBinder2(){
+
+    var val = txtConNo2.value.trim();
+
+
+    if(val !=""){
+
+        var regpattern = new RegExp('^0\\d{9}$');
+        //test eken krnne api input krna mobileno ekai set krla thiyena regex pattern ekai equal da kiyla
+        if(regpattern.test(val)){
+
+            var response = httpRequest("customer/byMobile?mobileno="+val,"GET")
+            console.log(response);
+            if(response == ""){
+                supplier.contactno2 = val;
+                if(oldsupplier !=null && supplier.contactno2 != oldsupplier.contactno2){
+                    txtConNo2.style.border = updated;
+                }else{
+                    txtConNo2.style.border = valid;
+                }
+
+
+            }else{
+                swal({
+                    title: "This Contact No is  Already Exist....!",
+                    text: "\n\n",
+                    icon: "warning",
+                    button: false,
+                    timer:1500,
+                    className: "purple-swal"
+                });
+            }
+
+        }else{
+            txtConNo2.style.border = invalid;
+            supplier.contactno2 = null;
+        }
+    }else{
+        if(txtConNo2.required){
+            txtConNo2.style.border = invalid;
+        }else{
+            txtConNo2.style.border = initial;
+        }
+        supplier.contactno2 = null;
+    }
+
+}
+
+function supplierEmailBinder(){
+
+    var val = txtEmail.value.trim();
+
+
+    if(val !=""){
+
+        var regpattern = new RegExp('^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$');
+        //test eken krnne api input krna mobileno ekai set krla thiyena regex pattern ekai equal da kiyla
+        if(regpattern.test(val)){
+
+            var response = httpRequest("customer/byMobile?mobileno="+val,"GET")
+            console.log(response);
+            if(response == ""){
+                supplier.email = val;
+                if(oldsupplier !=null && supplier.email != oldsupplier.email){
+                    txtEmail.style.border = updated;
+                }else{
+                    txtEmail.style.border = valid;
+                }
+
+
+            }else{
+                swal({
+                    title: "This Email is  Already Exist....!",
+                    text: "\n\n",
+                    icon: "warning",
+                    button: false,
+                    timer:1500,
+                    className: "purple-swal"
+                });
+            }
+
+        }else{
+            txtEmail.style.border = invalid;
+            supplier.email = null;
+        }
+    }else{
+        if(txtEmail.required){
+            txtEmail.style.border = invalid;
+        }else{
+            txtEmail.style.border = initial;
+        }
+        supplier.email = null;
+    }
+
+}
 //Print row (as a table)
 function btnPrintRowMC() {
 
@@ -143,40 +297,45 @@ function loadForm() {
 
     supplier.supplierhasmaterialList = new Array();
 
-    //Auto fill combo box
-    fillCombo(cmbSupplierStatus, "", supplierstatuses, "name", "Available");
-    fillCombo(cmbAddedBy, "", employees, "callingname", session.getObject('activeuser').employeeId.callingname);
-
-    supplier.supplierstatus_id = JSON.parse(cmbSupplierStatus.value);
-    cmbSupplierStatus.disabled = true;
-
-    supplier.employee_id = JSON.parse(cmbAddedBy.value);
-    cmbAddedBy.disabled = true;
-
-    //create date object
-
-    var today = new Date();
-    //get month--> array(0-11)
-    var month = today.getMonth() + 1;
-    //browser format of month is YYYY-MM-DD(jan-01,feb-02,..)
-    if (month < 10) month = "0" + month;//YYYY-MM-DD
-    //browser format of date is YYYY-MM-DD(01,02,..)
-    //get date-->range(1-31)
-    var date = today.getDate();
-    if (date < 10) date = "0" + date;//YYYY-MM-DD
-
-    dteAddeddate.value = today.getFullYear() + "-" + month + "-" + date;
-    supplier.doassignment = dteAddeddate.value;
-    dteAddeddate.disabled = true;
-
-    //Auto selected Registered No
-    nextsup = httpRequest("../supplier/nextsup","GET");
-    txtRegNo.value = nextsup.regno;
-    supplier.regno = txtRegNo.value;
-    txtRegNo.disabled = true;
-
+    // //Auto fill combo box
+    // fillCombo(cmbSupplierStatus, "", supplierstatuses, "name", "Available");
+    // fillCombo(cmbAddedBy, "", employees, "callingname", session.getObject('activeuser').employeeId.callingname);
+    //
+    // supplier.supplierstatus_id = JSON.parse(cmbSupplierStatus.value);
+    // cmbSupplierStatus.disabled = true;
+    //
+    // supplier.employee_id = JSON.parse(cmbAddedBy.value);
+    // cmbAddedBy.disabled = true;
+    //
+    // //create date object
+    //
+    // var today = new Date();
+    // //get month--> array(0-11)
+    // var month = today.getMonth() + 1;
+    // //browser format of month is YYYY-MM-DD(jan-01,feb-02,..)
+    // if (month < 10) month = "0" + month;//YYYY-MM-DD
+    // //browser format of date is YYYY-MM-DD(01,02,..)
+    // //get date-->range(1-31)
+    // var date = today.getDate();
+    // if (date < 10) date = "0" + date;//YYYY-MM-DD
+    //
+    // dteAddeddate.value = today.getFullYear() + "-" + month + "-" + date;
+    // supplier.doassignment = dteAddeddate.value;
+    // dteAddeddate.disabled = true;
+    //
+    // //Auto selected Registered No
+    // nextsup = httpRequest("../supplier/nextsup","GET");
+    // txtRegNo.value = nextsup.regno;
+    // supplier.regno = txtRegNo.value;
+    // txtRegNo.disabled = true;
+    //
 
     //text field empty
+    fillCombo(cmbBankBranchName, "Select Bank Branch", bankbranches, "name", "");
+    cmbBankBranchName.style.border = initial;
+
+    fillCombo(cmbBankName, "Select Bank Name", banknames, "name", "");
+    cmbBankName.style.border = initial;
 
     txtFullname.value = "";
     txtConNo2.value = "";
@@ -184,17 +343,12 @@ function loadForm() {
     txtCPName.value = "";
     txtEmail.value = "";
     txtAddress.value = "";
-    txtDescription.value = "";
     txtBAccNo.value = "";
 
 
     // set field to initial color
     setStyle(initial);
-    txtRegNo.style.border = valid;
-    cmbSupplierStatus.style.border = valid;
-    dteAddeddate.style.border = valid;
-    // txtRegNo.style.border=valid;
-    cmbAddedBy.style.border = valid;
+
 
     disableButtons(false, true, true);
 
@@ -212,17 +366,28 @@ function refreshInnerForm() {
     fillCombo(cmbInnerMaterial, "Select Material", materials, "materialname", "");
     cmbInnerMaterial.style.border = initial;
 
+    fillCombo(cmbInnerMaterialCat, "Select Material Category", materialcategories, "name", "");
+    cmbInnerMaterialCat.style.border = initial;
+
 
     //Inner table
     fillInnerTable('tblInnerMaterial', supplier.supplierhasmaterialList, innerModify, innerDelete, innerrview);
 
-    if (supplier.supplierhasmaterialList.length != 0) {
-        for (var index in supplier.supplierhasmaterialList) {
-            tblInnerMaterial.children[1].children[index].lastChild.children[0].style.display = "none";
-        }
-    }
+    btnInnerUpdate.disabled = true;
+    btnInnerUpdate.style.cursor = "not-allowed";
+
+    btnInnerAdd.disabled = false;
+    btnInnerAdd.style.cursor = "pointer";
 
 
+    // if (submenuHasMaterial.materialcategory_id == null) {
+    //     fillCombo(cmbInnerMaterial, "Select Material", materials, "materialname", "");
+    //     cmbInnerMaterial.style.border = initial;
+    // } else {
+    //
+    //     cmbInnerMaterialCatMC();
+    //     cmbInnerMaterial.style.border = initial;
+    // }
 }
 
 function getErrorsInner() {
@@ -235,8 +400,29 @@ function getErrorsInner() {
         errors = errors + "\n" + "Material Not Selected";
     } else addvalue = 1;
 
+    if (Supplierhasmaterial.materialcategory_id == null) {
+        cmbInnerMaterialCat.style.border = invalid;
+        errors = errors + "\n" + "Material Category Not Selected";
+    } else addvalue = 1;
+
     return errors;
 
+}
+
+function getinnerupdate() {
+
+    var innerupdate = "";
+
+    if (Supplierhasmaterial != null && oldSupplierhasmaterial != null) {
+
+        if (Supplierhasmaterial.material_id.materialname != oldSupplierhasmaterial.material_id.materialname)
+            innerupdate = innerupdate + "\nMaterail .." + oldSupplierhasmaterial.material_id.materialname + " into " + Supplierhasmaterial.material_id.materialname;
+
+        if (Supplierhasmaterial.materialcategory_id.name != oldSupplierhasmaterial.materialcategory_id.name)
+            innerupdate = innerupdate + "\nMaterail Category .." + oldSupplierhasmaterial.materialcategory_id.name + " into " + Supplierhasmaterial.materialcategory_id.name;
+
+    }
+    return innerupdate;
 }
 
 function btnInnerAddMC() {
@@ -256,6 +442,7 @@ function btnInnerAddMC() {
                 text: '\n',
                 button: false,
                 timer: 1200,
+                className: "purple-swal",
             });
         } else {
             supplier.supplierhasmaterialList.push(Supplierhasmaterial);
@@ -266,7 +453,7 @@ function btnInnerAddMC() {
             title: "You have following errors",
             text: "\n" + getErrorsInner(),
             icon: "error",
-            buttons: true,
+            buttons: true, className: "purple-swal",
         })
     }
 }
@@ -274,15 +461,16 @@ function btnInnerAddMC() {
 function btnInnerClearMC() {
 
     console.log(Supplierhasmaterial.material_id != null);
-    if(Supplierhasmaterial.material_id != null) {
+    if (Supplierhasmaterial.material_id != null || Supplierhasmaterial.materialcategory_id != null ) {
         swal({
             title: "Are you sure to clear Material?",
             text: "\n",
             icon: "warning",
             buttons: true,
             dangerMode: true,
+            className: "purple-swal",
         }).then((willDelete) => {
-            if(willDelete) {
+            if (willDelete) {
                 refreshInnerForm();
             }
         });
@@ -291,7 +479,66 @@ function btnInnerClearMC() {
     }
 }
 
-function innerModify() {
+function btnSupplierInnerUpdateMC() {
+
+    var innerErrors = getErrorsInner();
+    if (innerErrors == "") {
+        var innerUpdate = getinnerupdate();
+        if (innerUpdate == "") {
+            swal({
+                title: 'Nothing Updated..!', icon: "warning",
+                text: '\n',
+                button: true,
+                timer: 1200,
+                className: "purple-swal",
+            });
+        } else {
+            swal({
+                title: "Are you sure to inner form update following details...?",
+                text: "\n" + innerUpdate,
+                icon: "warning", buttons: true, dangerMode: true, className: "purple-swal",
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Your work has been Done \n Update SuccessFully..!',
+                            text: '\n',
+                            button: false,
+                            timer: 1200,
+
+                        });
+                        supplier.supplierhasmaterialList[innerrow] = Supplierhasmaterial;
+                        refreshInnerForm();
+                    }
+                });
+        }
+    } else {
+        swal({
+            title: 'You have following errors in your form', icon: "error",
+            text: '\n ' + getErrorsInner(),
+            button: true,
+            className: "purple-swal",
+        });
+    }
+}
+
+function innerModify(ob, innerrowno) {
+    btnInnerUpdate.disabled = false;
+    btnInnerUpdate.style.cursor = "pointer";
+    btnInnerAdd.disabled = true;
+
+    innerrow = innerrowno
+
+    Supplierhasmaterial = JSON.parse(JSON.stringify(ob));
+    oldSupplierhasmaterial = JSON.parse(JSON.stringify(ob));
+
+    // const subMenulist = menuHasSubmenu.submenu_id;
+
+    fillCombo(cmbInnerMaterialCat, "Select Material Category", materialcategories, "name", Supplierhasmaterial.materialcategory_id.name);
+
+    fillCombo(cmbInnerMaterial, "Select material", materials, "materialname", Supplierhasmaterial.material_id.materialname);
 
 }
 
@@ -301,7 +548,7 @@ function innerDelete(innerob, innerrow) {
         text: "\nItem Name : " + innerob.material_id.materialname,
         icon: "warning",
         buttons: true,
-        dangerMode: true,
+        dangerMode: true, className: "purple-swal",
     }).then((willDelete) => {
         if (willDelete) {
             supplier.supplierhasmaterialList.splice(innerrow, 1);
@@ -315,23 +562,15 @@ function innerrview() {
 }
 
 function setStyle(style) {
-
-
-    txtRegNo.style.border = style;
     txtFullname.style.border = style;
     txtConNo2.style.border = style;
     txtConNo1.style.border = style;
     txtCPName.style.border = style;
     txtEmail.style.border = style;
     txtAddress.style.border = style;
-    txtDescription.style.border = style;
     txtBAccNo.style.border = style;
     txtBHName.style.border = style;
-    txtBName.style.border = style;
-    txtBBName.style.border = style;
-    txtArreasAmount.style.border = style;
-
-
+    // txtArreasAmount.style.border = style;
 }
 
 function disableButtons(add, upd, del) {
@@ -371,14 +610,20 @@ function disableButtons(add, upd, del) {
     // select deleted data row
     for (index in suppliers) {
         if (suppliers[index].supplierstatus_id.name == "Deleted") {
-            tblSupplier.children[1].children[index].style.color = "#f00";
-            tblSupplier.children[1].children[index].style.border = "2px solid red";
-            tblSupplier.children[1].children[index].lastChild.children[1].disabled = true;
-            tblSupplier.children[1].children[index].lastChild.children[1].style.cursor = "not-allowed";
+            {
+                tblSupplier.children[1].children[index].style.color = "rgb(9,9,9)";
+                tblSupplier.children[1].children[index].style.backgroundColor = "rgba(238,114,114,0.66)";
+
+                //disable update when deleted
+                tblSupplier.children[1].children[index].lastChild.children[0].disabled = true;
+                tblSupplier.children[1].children[index].lastChild.children[0].style.cursor = "not-allowed";
+
+                tblSupplier.children[1].children[index].lastChild.children[1].disabled = true;
+                tblSupplier.children[1].children[index].lastChild.children[1].style.cursor = "not-allowed";
+            }
 
         }
     }
-
 }
 
 //Add- Display Errors
@@ -402,7 +647,7 @@ function getErrors() {
         txtCPName.style.border = invalid;
     } else addvalue = 1;
 
-       if (supplier.email == null) {
+    if (supplier.email == null) {
         errors = errors + "\n" + "Email Not Entered";
         txtEmail.style.border = invalid;
     } else addvalue = 1;
@@ -412,8 +657,18 @@ function getErrors() {
         txtAddress.style.border = invalid;
     } else addvalue = 1;
 
+    if (supplier.bankname_id == null) {
+        errors = errors + "\n" + "Bank Name Not Selected";
+        cmbBankName.style.border = invalid;
+    } else addvalue = 1;
+
+    if (supplier.bankbranch_id == null) {
+        errors = errors + "\n" + "Bank Branch Name Not Selected";
+        cmbBankBranchName.style.border = invalid;
+    } else addvalue = 1;
+
     // msg for fill data in innertable
-    if (supplier.supplierhasmaterialList.length != 0) {
+    if (supplier.supplierhasmaterialList.length == 0) {
         cmbInnerMaterial.style.border = invalid;
         errors = errors + "\n" + "Supplier material not added";
 
@@ -426,28 +681,14 @@ function getErrors() {
 
 function btnAddMC() {
     if (getErrors() == "") {
-        if (txtDescription.value == "" || txtArreasAmount.value == "") {
-            swal({
-                title: "Are you sure to continue...?",
-                text: "Form has some empty fields.....",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
-                    savedata();
-                }
-            });
-
-        } else {
-            savedata();
-        }
+        savedata();
     } else {
         swal({
             title: "You have following errors",
             text: "\n" + getErrors(),
             icon: "error",
             button: true,
+            className: "purple-swal",
         });
 
     }
@@ -457,18 +698,15 @@ function savedata() {
     console.log(supplier)
     swal({
         title: "Are you sure to add following supplier...?",
-        text: "\n Reg No: " + supplier.regno +
-            "\n Full Name : " + supplier.fullname +
+        text: "\n Full Name : " + supplier.fullname +
             "\n Contact No : " + supplier.contactno1 +
             "\n Contact Person Name  : " + supplier.cpname +
+            "\n Bank Name  : " + supplier.bankname_id.name +
             "\n Email : " + supplier.email +
-            "\n Address : " + supplier.address +
-            "\nAdded Date : " + supplier.addeddate +
-            "\n Supplier status: " + supplier.supplierstatus_id.name,
-
+            "\n Address : " + supplier.address,
         icon: "warning",
         buttons: true,
-        dangerMode: true,
+        dangerMode: true, className: "purple-swal",
     }).then((willDelete) => {
         if (willDelete) {
             var response = httpRequest("/supplier", "POST", supplier);
@@ -485,11 +723,12 @@ function savedata() {
                 activerowno = 1;
                 loadSearchedTable();
                 loadForm();
-                changeTab('table');
+                // changeTab('table');
+                $('#tableview').modal('show')
             } else swal({
                 title: 'Save not Success... , You have following errors', icon: "error",
                 text: '\n ' + response,
-                button: true
+                button: true, className: "purple-swal",
             });
         }
     });
@@ -506,7 +745,7 @@ function btnClearMC() {
         swal({
             title: "Form has some values, updates values... Are you sure to discard the form ?",
             text: "\n",
-            icon: "warning", buttons: true, dangerMode: true,
+            icon: "warning", buttons: true, dangerMode: true, className: "purple-swal",
         }).then((willDelete) => {
             if (willDelete) {
                 loadForm();
@@ -526,7 +765,7 @@ function fillForm(sup, rowno) {
         swal({
             title: "Form has some values, updates values... Are you sure to discard the form ?",
             text: "\n",
-            icon: "warning", buttons: true, dangerMode: true,
+            icon: "warning", buttons: true, dangerMode: true, className: "purple-swal",
         }).then((willDelete) => {
             if (willDelete) {
                 filldata(sup);
@@ -545,32 +784,30 @@ function filldata(sup) {
     supplier = JSON.parse(JSON.stringify(sup));
     oldsupplier = JSON.parse(JSON.stringify(sup));
 
+    console.log("Sup ", supplier)
 
-    txtRegNo.value = supplier.regno;
     txtFullname.value = supplier.fullname;
     txtConNo2.value = supplier.contactno1;
     txtConNo1.value = supplier.cpname;
     txtCPName.value = supplier.cpname;
     txtEmail.value = supplier.email;
     txtAddress.value = supplier.address;
-    txtDescription.value = supplier.description;
     txtBAccNo.value = supplier.bankaccountno;
-    dteAddeddate.value = supplier.addeddate;
+    txtBHName.value = supplier.bankholdername;
+    // txtArreasAmount.value = supplier.arreasamount;
 
 
-    fillCombo(cmbAddedBy, "Select Employee", employees, "name", supplier.employee_id.name);
-    fillCombo(cmbSupplierStatus, "Select Supplier", suppliers, "name", supplier.supplierstatus_id.name);
+
+    fillCombo(cmbBankName, "Select Bank Name", banknames, "name", supplier.bankname_id.name);
+    fillCombo(cmbBankBranchName, "Select Bank Branch", bankbranches, "name", supplier.bankbranch_id.name);
 
 
     disableButtons(true, false, false);
     setStyle(valid);
 
     refreshInnerForm()
-    changeTab('form');
+    $('#tableview').modal('hide')
 
-    //Optional fields initial colour
-    if(supplier.description == null)
-        txtDescription.style.border= initial;
 }
 
 //Update-Display updated values msg
@@ -579,10 +816,6 @@ function getUpdates() {
     var updates = "";
 
     if (supplier != null && oldsupplier != null) {
-
-        if (supplier.regno != oldsupplier.regno)
-            updates = updates + "\n Registration No is Changed";
-
         if (supplier.fullname != oldsupplier.fullname)
             updates = updates + "\nFullname is Changed";
 
@@ -601,30 +834,30 @@ function getUpdates() {
         if (supplier.address != oldsupplier.address)
             updates = updates + "\n Address is Changed";
 
-        if (supplier.addeddate != oldsupplier.addeddate)
-            updates = updates + "\n Added Date is Changed";
-
-        if (supplier.description != oldsupplier.description)
-            updates = updates + "\n Description is Changed";
-
         if (supplier.bankholdername != oldsupplier.bankholdername)
             updates = updates + "\n Bankholder Name is Changed";
 
-        if (supplier.bankbranchname != oldsupplier.bankbranchname)
-            updates = updates + "\n Bank branch is Changed";
+        if (supplier.bankname_id.name != oldsupplier.bankname_id.name )
+            updates = updates + "\nBank Name is Changed";
+
+        if (supplier.bankbranch_id.name != oldsupplier.bankbranch_id.name)
+            updates = updates + "\nBank Branch is Changed";
+
 
         if (supplier.bankaccountno != oldsupplier.bankaccountno)
             updates = updates + "\n Bank Account No is Changed";
 
-        if (supplier.arreasamount != oldsupplier.arreasamount)
-            updates = updates + "\n Arreas Amount is Changed";
-        if (supplier.supplierstatus_id.name != oldsupplier.supplierstatus_id.name)
-            updates = updates + "\n Supplier status is Changed";
+        // if (supplier.arreasamount != oldsupplier.arreasamount)
+        //     updates = updates + "\n Arreas Amount is Changed";
 
-        if (supplier.employee_id.name != oldsupplier.employee_id.name)
-            updates = updates + "\n Employee is Changed";
+        // console.log("OLD",oldsupplier.oldSupplierhasmaterial);
+        // console.log("New",supplier.Supplierhasmaterial);
+        console.log("New", supplier.Supplierhasmaterial);
+        console.log("New", oldsupplier.oldSupplierhasmaterial);
 
-
+        if (isEqual(supplier.supplierhasmaterialList, oldsupplier.supplierhasmaterialList, 'material_id')) {
+            updates = updates + "\nMaterial is changed !";
+        }
     }
 
     return updates;
@@ -640,13 +873,13 @@ function btnUpdateMC() {
                 title: 'Nothing Updated..!', icon: "warning",
                 text: '\n',
                 button: false,
-                timer: 1200
+                timer: 1200, className: "purple-swal",
             });
         else {
             swal({
                 title: "Are you sure to update following supplier details...?",
                 text: "\n" + getUpdates(),
-                icon: "warning", buttons: true, dangerMode: true,
+                icon: "warning", buttons: true, dangerMode: true, className: "purple-swal",
             })
                 .then((willDelete) => {
                     if (willDelete) {
@@ -662,7 +895,7 @@ function btnUpdateMC() {
                             });
                             loadSearchedTable();
                             loadForm();
-                            changeTab('table');
+                            $('#tableview').modal('show')
 
                         } else window.alert("Failed to Update as \n\n" + response);
                     }
@@ -672,7 +905,7 @@ function btnUpdateMC() {
         swal({
             title: 'You have following errors in your form', icon: "error",
             text: '\n ' + getErrors(),
-            button: true
+            button: true, className: "purple-swal",
         });
 
 }
@@ -685,7 +918,7 @@ function btnDeleteMC(sup) {
         title: "Are you sure to delete following supplier...?",
         text: "\n Reg No : " + supplier.regno +
             "\n suppliernam : " + supplier.fullname,
-        icon: "warning", buttons: true, dangerMode: true,
+        icon: "warning", buttons: true, dangerMode: true, className: "purple-swal",
     }).then((willDelete) => {
         if (willDelete) {
             var responce = httpRequest("/supplier", "DELETE", supplier);
@@ -701,7 +934,7 @@ function btnDeleteMC(sup) {
                 swal({
                     title: "You have following erros....!",
                     text: "\n\n" + responce,
-                    icon: "error", button: true,
+                    icon: "error", button: true, className: "purple-swal",
                 });
             }
         }
@@ -727,7 +960,6 @@ function btnSearchMC() {
     activepage = 1;
     loadSearchedTable();
 }
-
 
 function btnPrintTableMC(supplier) {
 

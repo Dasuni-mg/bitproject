@@ -76,4 +76,6 @@ public class Menu {
 
         this.menucode=menucode;
     }
+
+
 }

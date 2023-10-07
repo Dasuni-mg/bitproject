@@ -4,14 +4,12 @@
     <!-- Required meta tags -->
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="icon" type="image/x-icon" href="./resources/image/cart/chef.png">
 
-    <!-- Bootstrap CSS -->
-    <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-            crossorigin="anonymous"
-    />
+    <!--bootstrap 5-->
+    <link rel="stylesheet" type="text/css" href="resources/b5/bootstrap-5.1.3-dist/css/bootstrap.min.css"/>
+    <script src="/resources/b5/bootstrap-5.1.3-dist/js/bootstrap.bundle.js"></script>
+    <script src="/resources/b5/bootstrap-5.1.3-dist/js/bootstrap.min.js"></script>
 
     <!--Fontawesome-most popular icon set and toolkit-->
     <script defer src="resources/fontawesome/js/solid.js"></script>
@@ -28,14 +26,13 @@
     <link rel="stylesheet" href="resources/select2/css/select2.min.css">
     <script src="resources/select2/js/select2.min.js"></script>
     <script src="resources/script/sweetalert.min.js"></script>
-    <link rel="stylesheet" href="resources/style/common.css">
 
     <script src="resources/datatable/js/datatables.min.js"></script>
     <script src="resources/script/innertablefunctions.js"></script>
     <script src="resources/script/common.bitproject.js"></script>
     <script src="dine_in.js"></script>
     <script src="customer.js"></script>
-
+    <!--    <script src="tableallocationtable1.js"></script>-->
 
     <title>Hello,Gamage!</title>
 </head>
@@ -58,7 +55,7 @@
 
             <ul>
                 <li class="list">
-                    <a href="#">
+                    <a href="./dashboard.html">
                 <span class="icon"
                 ><ion-icon name="home-outline"></ion-icon
                 ></span>
@@ -74,7 +71,7 @@
                     </a>
                 </li>
                 <li class="list">
-                    <a href="#">
+                    <a  href="http://localhost:8080/changepassword">
                 <span class="icon"
                 ><ion-icon name="settings-outline"></ion-icon
                 ></span>
@@ -82,7 +79,8 @@
                     </a>
                 </li>
                 <li class="list">
-                    <a href="#">
+                    <a onclick="btnSignoutMC()">
+
                 <span class="icon"
                 ><ion-icon name="log-out-outline"></ion-icon
                 ></span>
@@ -90,7 +88,8 @@
                     </a>
                 </li>
                 <li class="list">
-                    <a href="#" onclick="handalNavigationModel()">
+                    <a data-toggle="modal"
+                       data-target="#navModal">
                 <span class="icon"
                 ><ion-icon name="menu-outline"></ion-icon
                 ></span>
@@ -117,11 +116,11 @@
     <!--Form-->
     <div class="bgForm">
         <div class="row  text-black ">
-            <h3 class="p-3">
+            <h3 class="px-3">
                 Dine In Management
             </h3>
         </div>
-        <div class="row m-8 ">
+        <div class="row mx-8 ">
             <div class="col-md-9">
                 <div class=" col-md-12">
                     <div class="card" style="background-color: transparent;">
@@ -130,28 +129,14 @@
 
                             <div class="row ">
                                 <form class="" id="customerform" onsubmit="return false">
-                                    <div class="row ">
+                                    <div class="row mt-2 ">
                                         <div class="col-md-2"></div>
                                         <!--form-->
-                                        <div class="col-md-12 pb-3">
-                                            <div class="row m-2 p-3"   >
-
-                                                <!-- Delivery No-->
-                                                <div class="col-md-3">
-                                                    <div class="form-group text-dark ">
-                                                        <label for="txtReservationNo" class=" "><b>Delivery No:
-                                                            <span style="color: red;">*</span></b> </label>
-                                                        <div class="input-group">
-                                                            <input type="text"
-                                                                   class="form-control"
-                                                                   id="txtReservationNo"
-                                                                   required>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        <div class="col-md-12 px-3">
+                                            <div class="row mx-2 px-3">
 
                                                 <!-- Registerd customer-->
-                                                <div class="col-md-3" >
+                                                <div class="col-md-6">
                                                     <div class="form-group text-dark  ">
                                                         <label for="cmbRegCustomer" class=""><b>Registered Cus_TP :</b>
                                                         </label>
@@ -168,16 +153,12 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                                 <!-- Customer name-->
-                                                <div class="col-md-3">
+                                                <div class="col-md-6">
                                                     <div class="form-group text-dark ">
                                                         <label for="txtCName" class="  "> <b>Customer Name:
                                                         </b> <span style="color: red;">*</span></label>
                                                         <div class="input-group">
-
-
-
                                                             <input type="text"
                                                                    class="form-control"
                                                                    id="txtCName"
@@ -185,61 +166,63 @@
                                                                    required data-toggle="tooltip"
                                                                    data-placement="bottom"
                                                                    title="Eg:Kamal"
-                                                                   onkeyup="textFieldBinder(txtCName,'','reservation','cname','oldreservation')">
+                                                                   onkeyup="textFieldBinder(txtCName,'^([A-Z][a-z]{3,10})$','reservation','cname','oldreservation')">
                                                         </div>
                                                     </div>
                                                 </div>
 
 
+                                            </div>
+                                            <div class="row mx-2 px-3">
                                                 <!-- Reserved Date-->
-                                                <div class="col-md-3">
+                                                <div class="col-md-6">
                                                     <div class="form-group text-dark ">
-                                                        <label for="txtRDate" class="  "> <b>Reserved Date:
+                                                        <label for="txtRDate" class="  "> <b>Reserved Date & Time:
                                                         </b> <span style="color: red;">*</span></label>
                                                         <div class="input-group">
 
-                                                            <input type="date"
+                                                            <input type="datetime-local"
                                                                    class="form-control"
                                                                    id="txtRDate"
 
                                                                    required data-toggle="tooltip"
                                                                    data-placement="bottom"
                                                                    title="Eg:2023-09-10"
-                                                                   onchange="textFieldBinder(txtRDate,'^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$','reservation','reserveddate','oldreservation')">
+                                                                   onchange="textFieldBinder(txtRDate,'^[0-9]{4}[-][0-9]{2}[-][0-9]{2}T[0-9]{2}:[0-9]{2}$','reservation','receiveddate','oldreservation')">
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!--Inner form-->
-                                            <div class="card m-4" style="background-color:  transparent;">
+                                            <div class="card mx-4" style="background-color:  transparent;">
                                                 <div class="card-body">
                                                     <div style=" margin:5px;">
-                                                        <div class="row p-4">
+                                                        <div class="row px-4">
                                                             <ul class="nav nav-pills align-items-center">
-                                                                <li class="nav-item m-2" onclick="changeTab2('menu')">
+                                                                <li class="nav-item mx-2" onclick="changeTab2('menu')">
                                                                     <a class="nav-link active bg-dark text-white"
                                                                        id="tbMenu"
                                                                        href="#tbMenu">Menu</a>
                                                                 </li>
-                                                                <li class="nav-item m-2"
+                                                                <li class="nav-item mx-2"
                                                                     onclick="changeTab2('submenu')">
                                                                     <a class="nav-link  bg-dark  text-white"
                                                                        id="tbSubMenu"
                                                                        href="#tbSubMenu">Sub
                                                                         Menu</a>
                                                                 </li>
-                                                                <li class="nav-item m-2"  data-toggle="modal"
-                                                                    data-target="#MenuModal">
-                                                                    <a class="nav-link  bg-dark  text-white">
+                                                                <li class="nav-item mx-2" >
+                                                                    <a class="nav-link  bg-dark   text-white" href="index.html">
                                                                         View
                                                                         Menu</a>
 
                                                                 </li>
-                                                              
+
+
                                                             </ul>
                                                         </div>
-                                                        <div id="divmenu" class="p-5 m-3"
+                                                        <div id="divmenu" class="p-4 m-3"
                                                              style="background-color:  rgba(155,66,214,0.4);border-radius: 10px;">
                                                             <!--menu-->
                                                             <div class="col-md-4">
@@ -360,7 +343,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div id="divsubmenu" class="p-5 m-3"
+                                                        <div id="divsubmenu" class="p-4 m-3"
                                                              style="background-color:  rgba(155,66,214,0.4);border-radius: 10px;">
                                                             <!--sub menu-->
                                                             <div class="col-md-4">
@@ -465,6 +448,7 @@
                                                                         <button class="btn button btnClear "
                                                                                 type="button"
                                                                                 id="btnInnerClear2"
+                                                                                onclick="btninnerClearMC2()"
                                                                                 style="width: 25%">
                                                                             <i class="fas fa-recycle mr-2"></i>
                                                                             Clear
@@ -472,10 +456,10 @@
                                                                         <button class="btn button btnAdd"
                                                                                 style="width: 25%" type="button"
                                                                                 id="btnInnerAdd2"
-                                                                                onclick="btnInnerAddMC()">
+                                                                                onclick="btnInnerAddMC2()">
                                                                             <i class='fas fa-plus-circle mr-2'></i>Add
                                                                         </button>
-                                                                        <button class="btn button btnAdd"
+                                                                        <button class="btn button btnUpdate"
                                                                                 style="width: 25%" type="button"
                                                                                 id="btnInnerUpdateSM"
                                                                                 onclick="btnInnerUpdateSubMenuMC()">
@@ -549,10 +533,10 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row m-2 p-3"   >
+                                            <div class="row mx-2 px-3">
 
                                                 <!--Service-->
-                                                <div class="col-md-3">
+                                                <div class="col-md-6">
                                                     <div class="form-group text-dark ">
                                                         <label for="txtSCharge"><b>Service Charge:</b>
                                                             <span style="color: red;">*</span> </label>
@@ -571,7 +555,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-6">
                                                     <div class="form-group text-dark ">
                                                         <label for="txtTAmount"><b>Total Amount:</b>
                                                             <span style="color: red;">*</span> </label>
@@ -590,7 +574,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                            </div>
+                                            <div class="row mx-2 px-3">
+                                                <div class="col-md-6">
                                                     <!--Discount Ratio-->
                                                     <div class="form-group  text-dark">
                                                         <label for="txtDiscountRatio"> <b>Discount Ratio:</b>
@@ -599,8 +585,8 @@
                                                         <div class="input-group">
 
 
-
                                                             <input type="text"
+                                                                   readonly
                                                                    class="form-control"
                                                                    id="txtDiscountRatio"
                                                                    placeholder="Enter the Discount Ratio"
@@ -612,7 +598,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-6">
 
                                                     <!--Last Price-->
                                                     <div class="form-group   text-dark">
@@ -635,11 +621,12 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row m-2 p-3"   >
+                                            <div class="row mx-2 px-3">
                                                 <!--payment method-->
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group text-black ">
-                                                        <label for="cmbPMethod" class="font-weight-bold"><b>Payment method :
+                                                        <label for="cmbPMethod" class="font-weight-bold"><b>Payment
+                                                            method :
                                                             <span style="color: red;">*</span></b> </label>
                                                         <select id="cmbPMethod"
                                                                 class="form-control"
@@ -647,7 +634,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
 
                                                     <!--Paid amount-->
                                                     <div class="form-group   text-dark">
@@ -669,11 +656,13 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
-
+                                            </div>
+                                            <div class="row mx-2 px-3">
+                                                <div class="col-md-6">
                                                     <!--Balance amount-->
                                                     <div class="form-group   text-dark">
-                                                        <label class="" for="txtBAmount"><b>Balance amount :</b> </label>
+                                                        <label class="" for="txtBAmount"><b>Balance amount :</b>
+                                                        </label>
                                                         <span style="color: red;">*</span> </label>
                                                         <div class="input-group">
                                                             <input type="text"
@@ -686,14 +675,12 @@
                                                                    data-toggle="tooltip"
                                                                    data-placement="bottom"
                                                                    title=""
-                                                                   onkeyup="textFieldBinder(txtBAmount,'^[0-9]{2,5}[.][0-9]{2}$','customerpayment','balanceamount','oldcustomerpayment')"/>
+                                                                   onkeyup="textFieldBinder(txtBAmount,'^[0-9]{2,5}$','customerpayment','balanceamount','oldcustomerpayment')"/>
 
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-
-
                                         </div>
 
 
@@ -823,8 +810,8 @@
                     </div>
                 </div>
                 <div>
-                    <button class="btn button btn-border-dark btn-lg m-3 btn-block" data-toggle="modal"
-                            data-target="#exampleModal">Table Allocation
+                    <button class="btn button btn-border-dark btn-lg m-3 btn-block"
+                            onclick="window.open('http://localhost:8080/tableallocation1')">Table Allocation
                     </button>
                 </div>
 
@@ -858,24 +845,7 @@
                                                         <div class="col-md-12 p-3">
                                                             <!--Registration NO/first name-->
                                                             <div class="row mt-2 ">
-                                                                <div class="col-md-4">
-                                                                    <div class="form-group text-black">
-                                                                        <label for="txtRegNo"><b>Registration
-                                                                            No:
-                                                                            <span style="color: red;">*</span></b></label>
-                                                                        <div class="input-group">
-                                                                            <input type="text" class="form-control"
-                                                                                   id="txtRegNo"
-                                                                                   placeholder="Enter Registration No"
-                                                                                   required
-                                                                                   data-toggle="tooltip"
-                                                                                   data-placement="bottom"
-                                                                                   title="Enter five digits for Registration No-Eg: 12345"
-                                                                                   onkeyup="textFieldBinder(txtRegNo,'^[0-9]{5}$','customer','regno','olditem')">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4">
+                                                                <div class="col-md-6">
                                                                     <div class="form-group text-black">
                                                                         <label for="txtFname"><b>First
                                                                             Name: <span
@@ -892,7 +862,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-md-4">
+                                                                <div class="col-md-6">
                                                                     <div class="form-group text-black ">
                                                                         <label for="txtLname"><b>Last
                                                                             Name: <span
@@ -901,7 +871,8 @@
 
                                                                             <input type="text" class="form-control"
                                                                                    id="txtLname"
-                                                                                   placeholder="Enter Last Name" required
+                                                                                   placeholder="Enter Last Name"
+                                                                                   required
                                                                                    data-toggle="tooltip"
                                                                                    data-placement="bottom"
                                                                                    title="First Letter of the last name shoud be capital Eg:Gamage"
@@ -929,7 +900,7 @@
                                                                                    data-toggle="tooltip"
                                                                                    data-placement="bottom"
                                                                                    title="Number must have 10 numbers  Eg: 0768354408"
-                                                                                   onkeyup="textFieldBinder(txtmno1,'^0\\d{9}$','customer','mobileno','oldcustomer')">
+                                                                                   onkeyup="customerMobileBinder();">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -957,7 +928,8 @@
                                                                 <div class="col-md-4">
                                                                     <div class="form-group text-black ">
 
-                                                                        <label for="txtNic"><b>NIC:</b>
+                                                                        <label for="txtNic"><b>NIC:<span
+                                                                                style="color: red;">*</span></b>
                                                                         </label>
                                                                         <div class="input-group">
 
@@ -966,8 +938,9 @@
                                                                                    placeholder="Enter NIC"
                                                                                    data-toggle="tooltip"
                                                                                    data-placement="bottom"
+                                                                                   required
                                                                                    title="9 digite plus vVxX or 12 digits  Eg:967751979V"
-                                                                                   onkeyup="textFieldBinder(txtNic,'^(([\\d]{9}[vVxX])|([\\d]{12}))$','customer','nic','oldcustomer')">
+                                                                                   onkeyup="customerNICBinder();">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -990,17 +963,17 @@
                                                                     </div>
                                                                 </div>
 
-<!--                                                                <div class="col-md-4">-->
-<!--                                                                    <div class="form-group text-black  ">-->
-<!--                                                                        <label for="cmbLoyalityType"><b>Loyality type: <span-->
-<!--                                                                                style="color: red;">*</span></b>-->
-<!--                                                                        </label>-->
-<!--                                                                        <select id="cmbLoyalityType" class="form-control"-->
-<!--                                                                                required-->
-<!--                                                                                onchange="comboBoxBinder(cmbLoyalityType,'','customer','loyalitytype_id','oldcustomer')">-->
-<!--                                                                        </select>-->
-<!--                                                                    </div>-->
-<!--                                                                </div>-->
+                                                                <!--                                                                <div class="col-md-4">-->
+                                                                <!--                                                                    <div class="form-group text-black  ">-->
+                                                                <!--                                                                        <label for="cmbLoyalityType"><b>Loyality type: <span-->
+                                                                <!--                                                                                style="color: red;">*</span></b>-->
+                                                                <!--                                                                        </label>-->
+                                                                <!--                                                                        <select id="cmbLoyalityType" class="form-control"-->
+                                                                <!--                                                                                required-->
+                                                                <!--                                                                                onchange="comboBoxBinder(cmbLoyalityType,'','customer','loyalitytype_id','oldcustomer')">-->
+                                                                <!--                                                                        </select>-->
+                                                                <!--                                                                    </div>-->
+                                                                <!--                                                                </div>-->
                                                             </div>
                                                         </div>
 
@@ -1073,6 +1046,292 @@
             </div>
         </div>
 
+        <!--Table Allocation - Modal -->
+        <!--        <div class="modal fade" id="tblAllocation" tabindex="-1" role="dialog"-->
+        <!--             aria-labelledby="exampleModalLabel"-->
+        <!--             aria-hidden="true">-->
+        <!--            <div class="modal-dialog modal-xl" role="document">-->
+        <!--                <div class="modal-content">-->
+
+        <!--                    <div class="modal-body">-->
+        <!--                        &lt;!&ndash;Form&ndash;&gt;-->
+        <!--                        <div class="row  text-black  ">-->
+        <!--                            <h2>-->
+        <!--                                Table Allocation Management-->
+        <!--                            </h2>-->
+        <!--                        </div>-->
+        <!--                        <div class="row m-8 divBody ">-->
+        <!--                            <div class="col-md-9">-->
+        <!--                                <div class=" col-md-12">-->
+        <!--                                    <div class="card ">-->
+
+        <!--                                        <div class=" card-body">-->
+
+        <!--                                            <div class="row ">-->
+        <!--                                                <form class="" id="alocationform" onsubmit="return false">-->
+        <!--                                                    <div class="row mt-2">-->
+        <!--                                                        <div class="col-md-2"></div>-->
+        <!--                                                        &lt;!&ndash;form&ndash;&gt;-->
+        <!--                                                        <div class="col-md-12 p-3">-->
+        <!--                                                            &lt;!&ndash;Allocation Code/Reservation/Reserved Date&ndash;&gt;-->
+        <!--                                                            <div class="row mt-2 ">-->
+
+        <!--                                                                <div class="col-md-6">-->
+        <!--                                                                    <div class="form-group text-black">-->
+        <!--                                                                        <label for="cmbReservation"><b>Reservation:-->
+        <!--                                                                            <span-->
+        <!--                                                                                    style="color: red;">*</span></b></label>-->
+        <!--                                                                        <div class="input-group">-->
+        <!--                                                                            <select id="cmbReservation"-->
+        <!--                                                                                    class="form-control"-->
+        <!--                                                                                    required-->
+        <!--                                                                                    data-toggle="tooltip"-->
+        <!--                                                                                    data-placement="bottom"-->
+        <!--                                                                                    onchange="comboBoxBinder(cmbReservation,'','tableallocation','reservation_id','oldtableallocation')">-->
+        <!--                                                                            </select>-->
+        <!--                                                                        </div>-->
+        <!--                                                                    </div>-->
+        <!--                                                                </div>-->
+        <!--                                                                <div class="col-md-6">-->
+        <!--                                                                    <div class="form-group text-black ">-->
+        <!--                                                                        <label for="txtRRDate"><b>Reserved-->
+        <!--                                                                            date: <span-->
+        <!--                                                                                    style="color: red;">*</span></b></label>-->
+        <!--                                                                        <div class="input-group">-->
+        <!--                                                                            <input type="date"-->
+        <!--                                                                                   class="form-control"-->
+        <!--                                                                                   id="txtRRDate"-->
+        <!--                                                                                   placeholder="Enter Reserved Date"-->
+        <!--                                                                                   required-->
+        <!--                                                                                   data-toggle="tooltip"-->
+        <!--                                                                                   data-placement="bottom"-->
+        <!--                                                                                   title="2022-05-04"-->
+        <!--                                                                                   onchange="textFieldBinder(txtRRDate,'^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$','tableallocation','reserveddate','oldstableallocation')"-->
+        <!--                                                                            >-->
+        <!--                                                                        </div>-->
+        <!--                                                                    </div>-->
+        <!--                                                                </div>-->
+        <!--                                                            </div>-->
+        <!--                                                            <div class="row mt-2 ">-->
+        <!--                                                                <div class="col-md-4">-->
+        <!--                                                                    <div class="form-group text-black">-->
+        <!--                                                                        <label for="txtRTime"><b>Reserved In-->
+        <!--                                                                            Time:-->
+        <!--                                                                            <span style="color: red;">*</span></b></label>-->
+        <!--                                                                        <div class="input-group">-->
+        <!--                                                                            <input type="time"-->
+        <!--                                                                                   class="form-control"-->
+        <!--                                                                                   id="txtRTime"-->
+        <!--                                                                                   placeholder="Enter the Time"-->
+        <!--                                                                                   required-->
+        <!--                                                                                   data-toggle="tooltip"-->
+        <!--                                                                                   data-placement="bottom"-->
+        <!--                                                                                   title="9.00 AM/PM"-->
+        <!--                                                                                   onchange="textFieldBinder(txtRTime,'^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$','tableallocation','reserveintime','oldtableallocation')"-->
+        <!--                                                                            >-->
+        <!--                                                                        </div>-->
+        <!--                                                                    </div>-->
+        <!--                                                                </div>-->
+        <!--                                                                <div class="col-md-4">-->
+        <!--                                                                    <div class="form-group text-black">-->
+        <!--                                                                        <label for="txtROTime"><b>Reserved Out-->
+        <!--                                                                            Time:-->
+        <!--                                                                            <span style="color: red;">*</span></b></label>-->
+        <!--                                                                        <div class="input-group">-->
+        <!--                                                                            <input type="time"-->
+        <!--                                                                                   class="form-control"-->
+        <!--                                                                                   id="txtROTime"-->
+        <!--                                                                                   placeholder="Enter the Time"-->
+        <!--                                                                                   required-->
+        <!--                                                                                   data-toggle="tooltip"-->
+        <!--                                                                                   data-placement="bottom"-->
+        <!--                                                                                   title="9.00 AM/PM"-->
+        <!--                                                                                   onchange="textFieldBinder(txtROTime,'^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$','tableallocation','reserveouttime','oldtableallocation')"-->
+        <!--                                                                            >-->
+        <!--                                                                        </div>-->
+        <!--                                                                    </div>-->
+        <!--                                                                </div>-->
+
+        <!--                                                                <div class="col-md-4">-->
+        <!--                                                                    <div class="form-group text-black ">-->
+        <!--                                                                        <label for="txtGCount"><b>Guest-->
+        <!--                                                                            Count:<span-->
+        <!--                                                                                    style="color: red;">*</span></b></label>-->
+        <!--                                                                        <div class="input-group">-->
+        <!--                                                                            <input type="number"-->
+        <!--                                                                                   class="form-control"-->
+        <!--                                                                                   id="txtGCount"-->
+        <!--                                                                                   placeholder="Enter Guest Count"-->
+        <!--                                                                                   required-->
+        <!--                                                                                   data-toggle="tooltip"-->
+        <!--                                                                                   data-placement="bottom"-->
+
+        <!--                                                                                   onchange="textFieldBinder(txtGCount,'^(?!0+$)\\d+$','tableallocation','guestcount','oldstableallocation')"-->
+        <!--                                                                            >-->
+        <!--                                                                        </div>-->
+        <!--                                                                    </div>-->
+        <!--                                                                </div>-->
+        <!--                                                            </div>-->
+
+        <!--                                                            <div class="card">-->
+        <!--                                                                <div class="card-header headding-inner m-3"-->
+        <!--                                                                >-->
+        <!--                                                                    <h4 class="text-black flex justify-content-center">-->
+        <!--                                                                        Table Detail</h4>-->
+        <!--                                                                </div>-->
+        <!--                                                                <div class="card-body">-->
+        <!--                                                                    <div class="row mt-2 p-3">-->
+        <!--                                                                        <div class="col-md-12">-->
+
+        <!--                                                                            <div class="row">-->
+        <!--                                                                                <div class="col-md-12">-->
+        <!--                                                                                    <div class="form-group text-dark ">-->
+        <!--                                                                                        <label for="cmbTablecode"-->
+        <!--                                                                                               class="font-weight-bold"><b>Table-->
+        <!--                                                                                            Code :-->
+        <!--                                                                                            <span-->
+        <!--                                                                                                    style="color: red;">*</span></b>-->
+        <!--                                                                                        </label>-->
+        <!--                                                                                        <select id="cmbTablecode"-->
+        <!--                                                                                                class="form-control"-->
+        <!--                                                                                                data-toggle="tooltip"-->
+        <!--                                                                                                data-placement="bottom"-->
+        <!--                                                                                                title="Please select Table Code"-->
+        <!--                                                                                                onchange="comboBoxBinder(cmbTablecode,'','tableallocationHastabledetail','tableddetail_id','oldtableallocationHastabledetail')"-->
+        <!--                                                                                        >-->
+        <!--                                                                                        </select>-->
+        <!--                                                                                    </div>-->
+        <!--                                                                                </div>-->
+
+
+        <!--                                                                            </div>-->
+        <!--                                                                            <div class="row mt-3">-->
+        <!--                                                                                <div class="col-md-12">-->
+        <!--                                                                                    <div class="text-right">-->
+        <!--                                                                                        <button class="btn button "-->
+        <!--                                                                                                type="button"-->
+        <!--                                                                                                id="btnInnerClearT"-->
+        <!--                                                                                                onclick="btnInnerClearMC()"-->
+        <!--                                                                                                style="width: 25%">-->
+        <!--                                                                                            <i class="fas fa-recycle mr-2"></i>-->
+        <!--                                                                                            Clear-->
+        <!--                                                                                        </button>-->
+        <!--                                                                                        <button class="btn button "-->
+        <!--                                                                                                type="button"-->
+        <!--                                                                                                id="btnInnerUpdate1"-->
+        <!--                                                                                                onclick="btnInnerUpdateMC()"-->
+        <!--                                                                                                style="width: 25%">-->
+        <!--                                                                                            <i class="fas fa-recycle mr-2"></i>-->
+        <!--                                                                                            Update-->
+        <!--                                                                                        </button>-->
+        <!--                                                                                        <button class="btn button"-->
+        <!--                                                                                                style="width: 25%"-->
+        <!--                                                                                                type="button"-->
+        <!--                                                                                                id="btnInnerAddT"-->
+        <!--                                                                                                onclick="btnInnerAddMCT()">-->
+        <!--                                                                                            <i class='fas fa-plus-circle mr-2'></i>Add-->
+        <!--                                                                                        </button>-->
+        <!--                                                                                    </div>-->
+        <!--                                                                                </div>-->
+        <!--                                                                            </div>-->
+        <!--                                                                        </div>-->
+        <!--                                                                    </div>-->
+
+        <!--                                                                    &lt;!&ndash; Inner table area&ndash;&gt;-->
+        <!--                                                                    <div class="row mt-3" id="innertableT">-->
+
+        <!--                                                                        <script>-->
+        <!--                                                                            var metadatainner = [-->
+
+        <!--                                                                                {-->
+        <!--                                                                                    name: 'Table detail',-->
+        <!--                                                                                    search: true,-->
+        <!--                                                                                    datatype: 'text',-->
+        <!--                                                                                    property: 'tableddetail_id.tableallcode'-->
+        <!--                                                                                },-->
+
+        <!--                                                                            ];-->
+        <!--                                                                            tableForInnerForm("innertableT", "tblInnertblAllocation", metadatainner, true);                                                            </script>-->
+        <!--                                                                    </div>-->
+        <!--                                                                </div>-->
+
+        <!--                                                            </div>-->
+
+        <!--                                                        </div>-->
+
+
+        <!--                                                    </div>-->
+        <!--                                                    <div class="col-md-2"></div>-->
+
+
+        <!--                                                </form>-->
+        <!--                                            </div>-->
+
+        <!--                                        </div>-->
+
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                            <div class="col-md-3 ">-->
+
+        <!--                                <div class="card mt-4">-->
+        <!--                                    <div class="card-body">-->
+        <!--                                        <h5 class="card-title">Table allocation History</h5>-->
+        <!--                                        <div class="d-flex justify-content-around align-items-center">-->
+        <!--                                            <img-->
+        <!--                                                    src="./resources/image/table.png"-->
+        <!--                                                    width="90px"-->
+        <!--                                                    height="90px"-->
+        <!--                                                    alt="tblallocation"-->
+        <!--                                            />-->
+        <!--                                            <a-->
+
+        <!--                                                    type="button"-->
+        <!--                                                    class="btn button-view"-->
+        <!--                                                    href="http://localhost:8080/tableallocation1"-->
+        <!--                                            >-->
+        <!--                                                View History-->
+        <!--                                            </a>-->
+        <!--                                        </div>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+
+        <!--                            </div>-->
+        <!--                        </div>-->
+
+        <!--                    </div>-->
+        <!--                    <div class="modal-footer bg-black">-->
+        <!--                        &lt;!&ndash;Clear/Update/Delete buttons&ndash;&gt;-->
+        <!--                        <div class="row mt-2 p-2">-->
+        <!--                            <div class="col-md-12">-->
+
+        <!--                                <div class="text-right">-->
+        <!--                                    <button class="btn button-86 " type="button" id="btnClear1"-->
+        <!--                                            style="width: 25%">-->
+        <!--                                        Clear-->
+        <!--                                    </button>-->
+
+        <!--                                    <button class="btn button-86" style="width: 25%" type="submit"-->
+        <!--                                            id="btnAdd2">-->
+        <!--                                        Add-->
+        <!--                                    </button>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                    <div class="modal-footer bg-black">-->
+        <!--                        <button type="button" class="btn btn-secondary"-->
+        <!--                                data-dismiss="modal" onclick="window.location.reload()">Close-->
+        <!--                        </button>-->
+
+        <!--                    </div>-->
+
+        <!--                </div>-->
+
+
+        <!--            </div>-->
+        <!--        </div>-->
+
         <!--Table- Modal -->
         <div class="modal fade" id="tableview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
@@ -1084,7 +1343,8 @@
                             <div class="container-fluid">
                                 <div class="row d-flex align-items-center">
                                     <div class="col-md-3">
-                                        <a class="btn button  font-weight-bold" href="http://localhost:8080/customer">Customer</a>
+                                        <a class="btn button  font-weight-bold" href="http://localhost:8080/dine_i">Dine
+                                            in</a>
 
                                     </div>
                                     <div class="col-md-3">
@@ -1139,10 +1399,6 @@
                                                             </tr>
 
                                                             <tr>
-                                                                <th>Customer Address :</th>
-                                                                <td id="tdaddress"></td>
-                                                            </tr>
-                                                            <tr>
                                                                 <th>Total Amount :</th>
                                                                 <td id="tdtamount"></td>
                                                             </tr>
@@ -1154,6 +1410,14 @@
                                                                 <th>Last price:</th>
                                                                 <td id="tdlastprice"></td>
                                                             </tr>
+                                                            <tr>
+                                                                <th>Paid Amount:</th>
+                                                                <td id="tdpamount"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Balance Amount:</th>
+                                                                <td id="tdbamount"></td>
+                                                            </tr>
                                                             <!--                                                    <tr>-->
                                                             <!--                                                        <th>Added Employee :</th>-->
                                                             <!--                                                        <td id="tdAddedEmployee"></td>-->
@@ -1164,9 +1428,7 @@
                                                         </table>
                                                     </div>
                                                     <div class="modal-footer bg-black">
-                                                        <button type="button" class="btn btn-secondary"
-                                                                data-dismiss="modal">Close
-                                                        </button>
+
                                                         <button type="button" class="btn btn-light"
                                                                 onclick="btnPrintRowMC()">Print
                                                         </button>
@@ -1175,9 +1437,6 @@
                                                 </table>
                                             </div>
                                         </div>
-
-
-
 
 
                                         <!--                                <div class="justify-content-between">-->
@@ -1213,11 +1472,16 @@
                                             }, {
                                                 name: 'Total Amount',
                                                 search: true,
-                                                datatype: 'text',
+                                                datatype: 'amount',
                                                 property: 'lastprice'
+                                            }, {
+                                                name: 'Dine in status',
+                                                search: true,
+                                                datatype: 'text',
+                                                property: 'reservationstatus_id.name'
                                             }];
                                             //table function
-                                            table("tableParent", "tblDelivery", metadata, true);
+                                            table("tableParent", "tblDinein", metadata, true);
                                         </script>
 
 
@@ -1226,9 +1490,9 @@
                                     <div>
                                         <div style="display: inline-block ; float: left">
                                             <select class="form-control input" id="cmbPageSize" style="width: 80px;">
-                                                <option selected value="10">10</option>
-                                                <option value="15">15</option>
-                                                <option value="30">30</option>
+                                                <option selected value="5">5</option>
+                                                <option value="10">10</option>
+                                                <option value="100">100</option>
                                                 <option value="500">500</option>
                                                 <option value="1000">1000</option>
                                             </select>
@@ -1246,7 +1510,10 @@
                                 </div>
 
                             </div>
-                            <div class="modal-footer">
+                            <div class="modal-footer bg-black">
+                                <button type="button-86" class="btn btn-secondary"
+                                        data-dismiss="modal" onclick="window.location.href ='dashboard.html'">Close
+                                </button>
 
                             </div>
                         </div>
@@ -1260,7 +1527,392 @@
 
         </div>
 
+        <!-- Settings Modal-->
+        <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog"
+             aria-labelledby="settingsModal" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content" id="modalContent">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle"><i
+                                class="fas fa-cog"></i> Settings</h5>
+                        <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
 
+                        <form id="changePasswordForm" onsubmit="return false">
+                            <div class="form-row">
+                                <!-- Username -->
+                                <div class="form-group text-black col-md-12">
+                                    <label for="txtUsernameView" class="text-blue">
+                                        <b>Username</b>
+                                    </label>
+                                    <div readonly class="form-control-plaintext"
+                                         id="txtUsernameView"></div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <!-- Current Password -->
+                                <div class="form-group text-black col-md-12">
+                                    <label for="txtCurrentPassword"
+                                           class="text-blue"><b>Current Password</b> <i
+                                            class="fas fa-question-circle  question ml-1"
+                                            data-toggle="tooltip" data-placement="right"
+                                            title=""></i></label>
+                                    <input type="password"
+                                           class="form-control form-control-sm changePasswordFields"
+                                           id="txtCurrentPassword"
+                                           onkeyup="textFieldBinder(txtCurrentPassword, '^[0-9]{5,}$', 'changePassword', 'currentPassword', 'oldChangePassword')">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <!-- New Password -->
+                                <div class="form-group text-black col-md-12">
+                                    <label for="txtNewPassword" class="text-blue"><b>New
+                                        Password</b><i
+                                            class="fas fa-question-circle question ml-1"
+                                            data-toggle="tooltip" data-placement="right"
+                                            title=""></i></label>
+                                    <input type="password"
+                                           class="form-control form-control-sm changePasswordFields"
+                                           id="txtNewPassword"
+                                           onkeyup="passwordFieldBinder(txtNewPassword, txtConfirmPassword, '^[0-9]{5,}$', 'changePassword', '', 'oldChangePassword')">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <!-- Confirm Password -->
+                                <div class="form-group text-black col-md-12">
+                                    <label for="txtConfirmPassword"
+                                           class="text-blue"><b>Confirm
+                                        Password</b><i
+                                            class="fas fa-question-circle question ml-1"
+                                            data-toggle="tooltip" data-placement="right"
+                                            title=""></i></label>
+                                    <input type="password"
+                                           class="form-control form-control-sm changePasswordFields"
+                                           id="txtConfirmPassword"
+                                           onkeyup="passwordFieldBinder(txtNewPassword, txtConfirmPassword, '^[0-9]{5,}$', 'changePassword', 'newPassword', 'oldChangePassword')">
+                                </div>
+                            </div>
+                        </form>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="brnClosechnagepasswordmodle" class="btn button" data-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="button" class="btn button"
+                                onclick="btnSaveChangePasswordMC()">Save changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Modal-->
+        <div class="modal fade" id="navModal" tabindex="-1" role="dialog"
+             aria-labelledby="settingsModal" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+                <div class="modal-content" id="">
+
+                    <div class="modal-body ml-5 bg-dark">
+
+                        <div class="row m-2 ml-5 flex justify-content-between dashboard">
+
+
+                            <div class="col-12  ">
+                                <div class="row ">
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/customer')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/customer.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Customer </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center   align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/take_away')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/away%20-%20Copy.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Take away </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/dinein')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/dinein.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Dine in </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/tableallocation1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/table.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Table Allocation</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/delivery')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/deliver.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Delivery </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/customerpayment')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/cpayment.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Customer Payment </h5>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row pl-5  ">
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/menu1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/menu.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Menu </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/submenu1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/submenu.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Sub Menu </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/supplier1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/supplier.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Supplier </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/qrequest')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="resources/image/cart/quotationReq.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Quotation Request </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/quotation1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/quotation.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Quotation </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/purchaseorder')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/porder.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Purchase Order </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12  ">
+                                <div class="row pl-5  ">
+
+
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/grn')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="resources/image/cart/grn.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                GRN </h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/spayment1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/spayment.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Suppier payment </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/material1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/material.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Material </h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2 text-center   align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/dailyremove')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/dailyremove.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Daily Remove </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/inventory')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/inventory.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Inventory </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center   align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/employee1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/employee.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Employee </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12  ">
+                                <div class="row pl-5  ">
+
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/user1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/user.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                User </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/privilage')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/previlage.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Previllage </h5>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

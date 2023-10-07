@@ -28,9 +28,9 @@ function initialize() {
 
 
     //colours
-    valid = "3px solid #078D27B2";
-    invalid = "3px solid red";
-    initial = "3px solid #d6d6c2";
+    valid = "2px solid #078D27B2";
+    invalid = "2px solid red";
+    initial = "1px solid #d6d6c2";
     updated = "3px solid #ff9900";
     active = "rgba(250,210,11,0.7)";
 
@@ -148,18 +148,21 @@ function loadForm() {
 
     fillCombo(cmbMCategory, "Select a Menu category", menucategories, "name", "");
 
+    nxtmenuname = httpRequest("/menu/nextmenuname","GET");
+    console.log("Menuname ",nxtmenuname.menucode)
+    txtMName.value = nxtmenuname.menucode;
+    menu.menuname = txtMName.value;
+    txtMName.style.border = valid;
+    txtMName.disabled = true;
 
 
 
-    nextmc = httpRequest("../menu/nextmc", "GET");
-    txtMcode.value = nextmc.menucode;
-    menu.menucode = txtMcode.value;
-    txtMcode.disabled = true;
+
 
 
     //text field empty
 
-    txtMName.value = "";
+
     txtPrice.value = "";
 
 
@@ -167,7 +170,6 @@ function loadForm() {
 
 
 
-    txtMcode.style.border = valid;
 
     disableButtons(false, true, true);
 
@@ -180,17 +182,16 @@ function refreshSubmenuInnerForm() {
     menuHasSubmenu = new Object();
     oldmenuHasSubmenu = null;
 
-
+    cmbInnerSubmenu.disabled = true;
     //inner form submenu
     //autofill combo box
-    cmbInnerSubmenu.disabled = true;
+
     fillCombo(cmbInnerSubmenu, "Select sub menu", submenus, "submenuname", "");
     fillCombo(cmbInnerSMcategory, "Select sub category", submenucategories, "name", "");
     console.log("Submenu ,",submenucategories)
 
     cmbInnerSubmenu.style.border = initial;
-    $('.cmdSubcategory .select2-selection').css('border',initial);
-    // cmbInnerSMcategory.style.border = initial;
+    cmbInnerSMcategory.style.border = initial;
 
 
     //Inner table
@@ -219,6 +220,7 @@ function saveInnerdata(){
             title: "Already exist!",
             icon: "warning",
             text: '\n',
+            customClass: "swal-bg",
             button: false,
             timer: 1200,
         });
@@ -231,24 +233,22 @@ function saveInnerdata(){
                 "\n Sub Menu  :"+ menuHasSubmenu.submenu_id.submenuname,
             icon: "warning",
             buttons: true,
+            html: true,
+            customClass: "swal-bg",
             dangerMode: true,
         }).then((willDelete) => {
             if (willDelete) {
                 swal({
                     title: "Are you sure..?",
                     text:"\n" ,
-
                     icon: "success",
                     buttons: false,
                     timer: 1500,
                 })
-
-
                 menu.menuHasSubmenuList.push(menuHasSubmenu);
                 refreshSubmenuInnerForm();
             }
         });
-
     }
 }
 
@@ -262,8 +262,7 @@ function getInnerErrors(){
     //
     if(menuHasSubmenu.submenucategory_id == null){
         innerErrors = innerErrors +"\n"+ "Select the Sub Menu Category";
-        $('.cmdSubcategory .select2-selection').css('border',invalid);
-        // cmbInnerSMcategory.style.border = invalid;
+        cmbInnerSMcategory.style.border = invalid;
     }else{
         inneraddvalue = 1;
     }
@@ -289,7 +288,7 @@ function getinnerupdate(){
         if (menuHasSubmenu.submenu_id.submenucategory_id.name != oldmenuHasSubmenu.submenu_id.submenucategory_id.name)
             innerupdate = innerupdate + "\nSub Menu Category .." + oldmenuHasSubmenu.submenu_id.submenucategory_id.name + " into " + menuHasSubmenu.submenu_id.submenucategory_id.name ;
 
-        if (menuHasSubmenu.submenu_id.submenuname!= oldmenuHasSubmenu.submenu_id.submenuname)
+        if (menuHasSubmenu.submenu_id.submenuname != oldmenuHasSubmenu.submenu_id.submenuname)
             innerupdate = innerupdate + "\nSub Menu is Changed.." + oldmenuHasSubmenu.submenu_id.submenuname+ " into " + menuHasSubmenu.submenu_id.submenuname;
 
     }
@@ -351,11 +350,8 @@ function btnSubmenuInnerUpdateMC(){
                 text: "\n" + innerUpdate,
                 icon: "warning", buttons: true, dangerMode: true,
             })
-
-
                 .then((willDelete) => {
                     if (willDelete) {
-
                         swal({
                             position: 'center',
                             icon: 'success',
@@ -367,7 +363,6 @@ function btnSubmenuInnerUpdateMC(){
                         menu.menuHasSubmenuList[innerrow] = menuHasSubmenu;
 
                         refreshSubmenuInnerForm();
-
                     }
                 });
         }
@@ -383,8 +378,8 @@ function btnSubmenuInnerUpdateMC(){
 function innerModify(ob,innerrowno) {
     btnInnerUpdateSMC.disabled = false;
     btnInnerUpdateSMC.style.cursor = "pointer";
-
-
+    cmbInnerSubmenu.disabled = false;
+    btnInnerAddSMC.disabled=true;
     innerrow =  innerrowno
 
     menuHasSubmenu = JSON.parse(JSON.stringify(ob));
@@ -415,7 +410,7 @@ function btnSubmenuInnerClearMC(){
 }
 
 function setStyle(style) {
-    txtMName.style.border = style;
+
 
     txtPrice.style.border = style;
 }
@@ -457,8 +452,9 @@ function disableButtons(add, upd, del) {
     // select deleted data row
     for (index in menus) {
         if (menus[index].menustatus_id.name == "Deleted") {
-            tblMenu.children[1].children[index].style.color = "#f00";
-            tblMenu.children[1].children[index].style.border = "2px solid red";
+            tblMenu.children[1].children[index].style.color = "rgb(9,9,9)";
+            tblMenu.children[1].children[index].style.backgroundColor = "rgba(238,114,114,0.66)";
+
             tblMenu.children[1].children[index].lastChild.children[0].disabled = true;
             tblMenu.children[1].children[index].lastChild.children[0].style.cursor = "not-allowed";
 
@@ -550,8 +546,7 @@ function savedata() {
         title: "Are you sure to add following Menu...?",
         text:
 
-            "\n Menu code : " + menu.menucode +
-            "\n Menu category : " + cmbMCategory.menucategory_id +
+            "\n Menu category : " + JSON.parse(cmbMCategory.value).name +
             "\n Menu Name : " + menu.menuname +
             "\n price : " + menu.price,
         icon: "warning",
@@ -631,7 +626,6 @@ function filldata(mnu) {
     menu = JSON.parse(JSON.stringify(mnu));
     oldmenu = JSON.parse(JSON.stringify(mnu));
 
-    txtMcode.value= menu. menucode;
     txtMName.value= menu.menuname ;
     txtPrice.value= menu.price ;
 
@@ -678,6 +672,9 @@ function getUpdates() {
 
         if (menu.menustatus_id.name != oldmenu.menustatus_id.name)
             updates = updates + "\nmenu status is Changed";
+
+        console.log("old",oldmenu.menuHasSubmenuList)
+        console.log("new",menu.menuHasSubmenuList)
 
         if(isEqual(menu.menuHasSubmenuList,oldmenu.menuHasSubmenuList,'submenucategory_id')){
             updates = updates + "\nSub Menu is Changed !";

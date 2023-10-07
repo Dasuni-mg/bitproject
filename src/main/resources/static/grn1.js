@@ -1,4 +1,4 @@
- window.addEventListener("load", initialize);
+window.addEventListener("load", initialize);
 
 //Initializing Functions- run when load the html
 
@@ -14,6 +14,8 @@ function initialize() {
     cmbSupplier.addEventListener("change", cmbSupplierMC);
     cmbPorder.addEventListener("change", cmbPorderMC);
     cmbMaterial.addEventListener("change", cmbMaterialCH);
+    txtTAmount.addEventListener("change", txtTAmountCH);
+    txtDisRatio.addEventListener("keyup", txtDisRatioCH);
 
     txtSearchName.addEventListener("keyup", btnSearchMC);
 
@@ -22,7 +24,7 @@ function initialize() {
 
     //Data list for fill combo box
     //request services and get
-    suppliers= httpRequest("../supplier/list", "GET");
+    suppliers = httpRequest("../supplier/list", "GET");
     porders = httpRequest("../purchaseorder/list", "GET");
     grnstatuses = httpRequest("../grnstatus/list", "GET");
     employees = httpRequest("../employee/list", "GET");
@@ -31,15 +33,12 @@ function initialize() {
     //Data list for fill Inner combo box
     materials = httpRequest("../material/list", "GET");
 
-
-
-    //colours
-    valid = "3px solid #078D27B2";
-    invalid = "3px solid red";
-    initial = "3px solid #d6d6c2";
+//colours
+    valid = "2px solid #078D27B2";
+    invalid = "2px solid red";
+    initial = "1px solid #d6d6c2";
     updated = "3px solid #ff9900";
-    active = "rgba(250,210,11,0.7)";
-
+    active = "rgba(7,141,39,0.6)";
 
     //calling load view function for load veiw side
     loadView();
@@ -108,13 +107,12 @@ function viewitem(grn, rowno) {
     tdGrnCode.innerHTML = grn.grncode;
     tdTAmount.innerHTML = grn.totalamount;
     tdSINo.innerHTML = grn.supplierinvoiceno;
-    tdRDate.innerHTML = grn.receiveddate;
     tdDisRatio.innerHTML = grn.discountratio;
     tdNetTotal.innerHTML = grn.nettotal;
-       tdporder.innerHTML = grn.porder_id.pordercode;
-        tdEmployee.innerHTML = grn.employee_id.callingname;
+    tdporder.innerHTML = grn.porder_id.pordercode;
+    tdEmployee.innerHTML = grn.employee_id.callingname;
 
-    $('#GRNViewModal').modal('show');
+    $('#dataViewModal').modal('show');
 
 }
 
@@ -138,66 +136,72 @@ function btnPrintRowMC() {
 }
 
 
-
-
-function cmbSupplierMC(){
+function cmbSupplierMC() {
 
     porderbysupplier = httpRequest("purchaseorder/porderlistbysupplier?supplierid=" + JSON.parse(cmbSupplier.value).id, "GET");
     fillCombo(cmbPorder, "Select porder", porderbysupplier, "pordercode", "");
-    cmbPorder.disabled=false;
+    cmbPorder.disabled = false;
 
-    cmbMaterial.disabled=true;
-    txtPPrice.value ="";
-    txtQty.value ="";
-    txtLtotal.value ="";
+    cmbMaterial.disabled = true;
+    txtPPrice.value = "";
+    txtQty.value = "";
+    txtLtotal.value = "";
     fillCombo(cmbMaterial, "Select Material", materials, "materialname", "");
     cmbMaterial.style.border = initial;
- }
+}
 
- function cmbPorderMC(){
-     materialbyporder = httpRequest("/material/materiallistbyporder?porderid=" + JSON.parse(cmbPorder.value).id, "GET");
-     fillCombo(cmbMaterial, "Select Material", materialbyporder, "materialname", "");
+function cmbPorderMC() {
+    materialbyporder = httpRequest("/material/materiallistbyporder?porderid=" + JSON.parse(cmbPorder.value).id, "GET");
+    fillCombo(cmbMaterial, "Select Material", materialbyporder, "materialname", "");
 
-     cmbMaterial.disabled=false;
-     txtPPrice.value ="";
-     txtQty.value ="";
-     txtLtotal.value ="";
+    cmbMaterial.disabled = false;
+    txtPPrice.value = "";
+    txtQty.value = "";
+    txtLtotal.value = "";
 
- }
+}
 
- function cmbMaterialCH(){
-     materialbyporder = httpRequest("/purchaseorderhasmaterial/purchaseorderbymaterial?porderid="+JSON.parse(cmbPorder.value).id + "&materialid=" + JSON.parse(cmbMaterial.value).id, "GET");
-     console.log(materialbyporder);
-     txtPPrice.value=materialbyporder.purchaseprice;
-     grnHasMaterial.purchaseprice=txtPPrice.value;
-     txtPPrice.style.border=valid;
-     txtPPrice.disabled=false;
+function cmbMaterialCH() {
+    materialbyporder = httpRequest("/purchaseorderhasmaterial/purchaseorderbymaterial?porderid=" + JSON.parse(cmbPorder.value).id + "&materialid=" + JSON.parse(cmbMaterial.value).id, "GET");
+    console.log(materialbyporder);
+    txtPPrice.value = materialbyporder.purchaseprice;
+    grnHasMaterial.purchaseprice = txtPPrice.value;
+    txtPPrice.style.border = valid;
+    txtPPrice.disabled = false;
 
- }
- function txtQtyCH(){
-     txtLtotal.value=toDecimal(txtPPrice.value*txtQty.value);
-     txtLtotal.style.border=valid;
-     grnHasMaterial.linetotal=txtLtotal.value;
- }
- function loadForm() {
+}
+
+function txtQtyCH() {
+    txtLtotal.value = toDecimal(txtPPrice.value * txtQty.value);
+    txtLtotal.style.border = valid;
+    grnHasMaterial.linetotal = txtLtotal.value;
+}
+
+function txtDisRatioCH() {
+
+    let tamount = parseFloat(txtTAmount.value);
+    let discount = parseFloat(txtDisRatio.value);
+
+
+    txtNTotal.value = (tamount - (tamount * (discount/100))).toFixed(2);
+    txtNTotal.style.border = valid;
+    grn.nettotal = txtNTotal.value;
+
+    // txtLastPriceCH()
+}
+function txtTAmountCH(){
+    txtDisRatioCH()
+}
+function loadForm() {
     grn = new Object();
     oldgrn = null;
     //create array list
     grn.grnHasMaterialList = new Array();
 
-     cmbMaterial.disabled=false;
+    cmbMaterial.disabled = false;
 
     fillCombo(cmbPorder, "Select porder", porders, "pordercode", "");
     fillCombo(cmbSupplier, "Select supplier", suppliers, "fullname", "");
-
-
-
-
-    nextgrn = httpRequest("../grn/nextgrn", "GET");
-    txtGRNCode.value = nextgrn.grncode;
-    grn.grncode = txtGRNCode.value;
-    txtGRNCode.disabled = true;
-
 
     txtTAmount.value = "0.00";
     txtTAmount.disabled = true;
@@ -217,7 +221,6 @@ function cmbSupplierMC(){
 
 // set field to initial color
     setStyle(initial);
-    txtGRNCode.style.border = valid;
     txtTAmount.style.border = valid;
     txtNTotal.style.border = valid;
     txtDisRatio.style.border = valid;
@@ -235,11 +238,11 @@ function refreshInnerForm() {
 
     var totalamount = 0.00;
 
-    txtPPrice.value =toDecimal("0");
-    txtPPrice.disabled=true;
-    txtQty.value ="0";
-    txtLtotal.value ="0";
-    txtLtotal.disabled =true;
+    txtPPrice.value = toDecimal("0");
+    txtPPrice.disabled = true;
+    txtQty.value = "0";
+    txtLtotal.value = "0";
+    txtLtotal.disabled = true;
 
     txtPPrice.style.border = initial;
     txtQty.style.border = initial;
@@ -248,27 +251,36 @@ function refreshInnerForm() {
 
     //inner form
     //autofill combo box
-    fillCombo(cmbMaterial, "Select Material", materials, "materialname", "");
-    cmbMaterial.style.border = initial;
+
+
+    if (grn.porder_id == null) {
+        fillCombo(cmbMaterial, "Select Material", materials, "materialname", "");
+        cmbMaterial.style.border = initial;
+    } else {
+
+        cmbPorderMC();
+        cmbMaterial.style.border = initial;
+    }
 
     //Inner table
-    fillInnerTable('tblInnerMaterial', grn.grnHasMaterialList, innerModify, innerDelete, false);
+    fillInnerTable('tblInnerMaterial', grn.grnHasMaterialList, innerModify, innerDelete, true);
 
-
+    btnInnerUpdate.disabled = true;
+    btnInnerUpdate.style.cursor = "not-allowed";
     //delete in inner table
     if (grn.grnHasMaterialList != 0) {
-         for (var index in grn.grnHasMaterialList) {
-             totalamount = parseFloat(totalamount) + parseFloat(grn.grnHasMaterialList[index].linetotal)
-         }
-     }
+        for (var index in grn.grnHasMaterialList) {
+            totalamount = parseFloat(totalamount) + parseFloat(grn.grnHasMaterialList[index].linetotal)
+        }
+    }
 
     txtTAmount.value = toDecimal(totalamount);
     txtTAmount.disabled = true;
     grn.totalamount = txtTAmount.value;
 
-    if(oldgrn != null &&  grn.totalamount !=  oldgrn.totalamount){
+    if (oldgrn != null && grn.totalamount != oldgrn.totalamount) {
         txtTAmount.style.border = updated;
-    }else {
+    } else {
         txtTAmount.style.border = valid;
     }
 }
@@ -316,7 +328,7 @@ function btnInnerAddMC() {
                 icon: "warning",
                 text: '\n',
                 button: false,
-                timer: 1200,
+                timer: 1200, className: "purple-swal",
             });
         } else {
             console.log()
@@ -328,21 +340,144 @@ function btnInnerAddMC() {
             title: "You have following errors",
             text: "\n" + getErrorsInner(),
             icon: "error",
-            buttons: true,
+            buttons: true, className: "purple-swal",
         })
     }
 }
+function innerModify(ob, innerrowno) {
+    btnInnerUpdate.disabled = false;
+    btnInnerUpdate.style.cursor = "pointer";
 
-function innerModify() {
+
+    innerrow = innerrowno
+
+    grnHasMaterial = JSON.parse(JSON.stringify(ob));
+    oldgrnHasMaterial = JSON.parse(JSON.stringify(ob));
+
+    // const subMenulist = menuHasSubmenu.submenu_id;
+
+
+    materialbyporder = httpRequest("/material/materiallistbyporder?porderid=" + JSON.parse(cmbPorder.value).id, "GET");
+    fillCombo(cmbMaterial, "Select Material", materialbyporder, "materialname", "");
+    cmbMaterial.style.border = valid;
+
+    txtPPrice.value = grnHasMaterial.purchaseprice;
+    txtPPrice.style.border = valid;
+
+    txtQty.value = grnHasMaterial.qty;
+    txtQty.style.border = valid;
+
+    txtLtotal.value = grnHasMaterial.linetotal;
+    txtLtotal.style.border = valid;
 }
 
+function btnInnerUpdateMC() {
+
+    var innerErrors = getInnerErrors();
+    if (innerErrors == "") {
+        var innerUpdate = getinnerupdate();
+        if (innerUpdate == "") {
+            swal({
+                title: 'Nothing Updated..!', icon: "warning",
+                text: '\n',
+                button: false,
+                timer: 1200,
+                className: "purple-swal"
+            });
+        } else {
+            swal({
+                title: "Are you sure to inner form update following details...?",
+                text: "\n" + innerUpdate,
+                icon: "warning", buttons: true, dangerMode: true, className: "purple-swal"
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        swal({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Your work has been Done \n Update SuccessFully..!',
+                            text: '\n',
+                            button: false,
+                            timer: 1200
+                        });
+                        grn.grnHasMaterialList[innerrow] = grnHasMaterial;
+                        refreshInnerForm();
+                    }
+                });
+        }
+    } else {
+        swal({
+            title: 'You have following errors in your form', icon: "error",
+            text: '\n ' + getInnerErrors(),
+            button: true, className: "purple-swal"
+        });
+    }
+}
+
+function getInnerErrors() {
+
+
+    var innerErrors = "";
+    var inneraddvalue = "";
+
+    //
+    if (grnHasMaterial.material_id == null) {
+        innerErrors = innerErrors + "\n" + "Select the Material";
+        cmbMaterial.style.border = invalid;
+    } else {
+        inneraddvalue = 1;
+    }
+    if (grnHasMaterial.purchaseprice == null) {
+        innerErrors = innerErrors + "\n" + "Enter Purchase Price";
+        txtPPrice.style.border = invalid;
+    } else {
+        inneraddvalue = 1;
+    }
+    if (grnHasMaterial.qty == null) {
+        innerErrors = innerErrors + "\n" + " Enter Quantity";
+        txtQty.style.border = invalid;
+    } else {
+        inneraddvalue = 1;
+    }
+
+    if (grnHasMaterial.linetotal == null) {
+        innerErrors = innerErrors + "\n" + " Enter Line Total";
+        txtLtotal.style.border = invalid;
+    } else {
+        inneraddvalue = 1;
+    }
+    return innerErrors;
+}
+
+function getinnerupdate() {
+
+    var innerupdate = "";
+
+    if (grnHasMaterial != null && oldgrnHasMaterial != null) {
+
+        if (grnHasMaterial.material_id.materialname != oldgrnHasMaterial.material_id.materialname)
+            innerupdate = innerupdate + "\nMaterial .." + oldgrnHasMaterial.material_id.materialname + " into " + grnHasMaterial.material_id.materialname;
+
+        if (grnHasMaterial.purchaseprice != oldgrnHasMaterial.purchaseprice)
+            innerupdate = innerupdate + "\nPurchase price .." + oldgrnHasMaterial.purchaseprice + " into " + grnHasMaterial.purchaseprice;
+
+        if (grnHasMaterial.qty != oldgrnHasMaterial.qty)
+            innerupdate = innerupdate + "\nQuantity .." + oldgrnHasMaterial.qty + " into " + grnHasMaterial.qty;
+
+        if (grnHasMaterial.linetotal != oldgrnHasMaterial.linetotal)
+            innerupdate = innerupdate + "\nLine Total .." + oldgrnHasMaterial.linetotal + " into " + grnHasMaterial.linetotal;
+
+    }
+    return innerupdate;
+}
 function innerDelete(innerob, innerrow) {
     swal({
         title: "Are you sure to remove Item?",
         text: "\nItem Name : " + innerob.material_id.materialname,
         icon: "warning",
         buttons: true,
-        dangerMode: true,
+        dangerMode: true, className: "purple-swal",
     }).then((willDelete) => {
         if (willDelete) {
             grn.grnHasMaterialList.splice(innerrow, 1);
@@ -354,7 +489,6 @@ function innerDelete(innerob, innerrow) {
 function setStyle(style) {
 
 
-    txtGRNCode.style.border = style;
     txtTAmount.style.border = style;
     txtSINo.style.border = style;
     dteRDate.style.border = style;
@@ -404,12 +538,16 @@ function disableButtons(add, upd, del) {
     // select deleted data row
     for (index in grns) {
         if (grns[index].grnstatus_id.name == "Deleted") {
-            tblGrn.children[1].children[index].style.color = "#f00";
-            tblGrn.children[1].children[index].style.border = "2px solid red";
-            tblGrn.children[1].children[index].lastChild.children[1].disabled = true;
-            tblGrn.children[1].children[index].lastChild.children[1].style.cursor = "not-allowed";
+            tblGrn.children[1].children[index].style.color = "rgb(9,9,9)";
+            tblGrn.children[1].children[index].style.backgroundColor = "rgba(238,114,114,0.66)";
+
 
         }
+        tblGrn.children[1].children[index].lastChild.children[1].style.display="none"
+        tblGrn.children[1].children[index].lastChild.children[1].style.cursor = "not-allowed";
+        tblGrn.children[1].children[index].lastChild.children[0].style.display="none"
+        tblGrn.children[1].children[index].lastChild.children[0].style.cursor = "not-allowed";
+
     }
 }
 
@@ -477,7 +615,6 @@ function checkValidation() {
     else addvalue = 1;
 
 
-
     if (grn.supplierinvoiceno == null)
         errors = errors + "\n" + "Supplier Invoice No not Enter";
     else addvalue = 1;
@@ -492,8 +629,8 @@ function checkValidation() {
 function btnAddMC() {
 
     if (getErrors() == "") {
-                    savedata();
-           } else {
+        savedata();
+    } else {
         swal({
             title: "You have following errors",
             text: "\n" + getErrors(),
@@ -521,7 +658,7 @@ function savedata() {
 
         icon: "warning",
         buttons: true,
-        dangerMode: true,
+        dangerMode: true, className: "purple-swal",
     }).then((willDelete) => {
         if (willDelete) {
             var response = httpRequest("/grn", "POST", grn);
@@ -542,7 +679,7 @@ function savedata() {
             } else swal({
                 title: 'Save not Success... , You have following errors', icon: "error",
                 text: '\n ' + response,
-                button: true
+                button: true, className: "purple-swal",
             });
         }
     });
@@ -559,15 +696,13 @@ function btnClearMC() {
         swal({
             title: "Form has some values, updates values... Are you sure to discard the form ?",
             text: "\n",
-            icon: "warning", buttons: true, dangerMode: true,
+            icon: "warning", buttons: true, dangerMode: true, className: "purple-swal",
         }).then((willDelete) => {
             if (willDelete) {
                 loadForm();
             }
-
         });
     }
-
 }
 
 //update
@@ -580,7 +715,7 @@ function fillForm(grnote, rowno) {
         swal({
             title: "Form has some values, updates values... Are you sure to discard the form ?",
             text: "\n",
-            icon: "warning", buttons: true, dangerMode: true,
+            icon: "warning", buttons: true, dangerMode: true, className: "purple-swal",
         }).then((willDelete) => {
             if (willDelete) {
                 filldata(grnote);
@@ -600,14 +735,13 @@ function filldata(grnote) {
     oldgrn = JSON.parse(JSON.stringify(grnote));
 
 
-    txtGRNCode.value = grn.grncode;
     txtTAmount.value = grn.totalamount;
     txtSINo.value = grn.supplierinvoiceno;
     dteRDate.value = grn.receiveddate;
     txtDisRatio.value = grn.discountratio;
     txtNTotal.value = grn.nettotal;
 
-
+    // fillCombo(cmbSupplier, "", suppliers, "fullname", supplier.supplier_id.fullname);
     fillCombo(cmbPorder, "", porders, "pordercode", grn.porder_id.pordercode);
 
 
@@ -646,7 +780,7 @@ function getUpdates() {
         if (grn.nettotal != oldgrn.nettotal)
             updates = updates + "\nNet total is Changed";
 
-               if (grn.porder_id.pordercode != oldgrn.porder_id.pordercode)
+        if (grn.porder_id.pordercode != oldgrn.porder_id.pordercode)
             updates = updates + "\nPorder is Changed";
 
         if (grn.employee_id.callingname != oldgrn.employee_id.callingname)
@@ -667,13 +801,13 @@ function btnUpdateMC() {
                 title: 'Nothing Updated..!', icon: "warning",
                 text: '\n',
                 button: false,
-                timer: 1200
+                timer: 1200, className: "purple-swal",
             });
         else {
             swal({
                 title: "Are you sure to update following Porder details...?",
                 text: "\n" + getUpdates(),
-                icon: "warning", buttons: true, dangerMode: true,
+                icon: "warning", buttons: true, dangerMode: true, className: "purple-swal",
             })
                 .then((willDelete) => {
                     if (willDelete) {
@@ -699,7 +833,7 @@ function btnUpdateMC() {
         swal({
             title: 'You have following errors in your form', icon: "error",
             text: '\n ' + getErrors(),
-            button: true
+            button: true, className: "purple-swal",
         });
 
 }
@@ -717,7 +851,6 @@ function btnDeleteMC(grn) {
             "\nReceived date : " + grn.receiveddate +
             "\nDiscount Ratio : " + grn.discountratio +
             "\nNet Total : " + grn.nettotal +
-
             "\nPorder: " + grn.porder_id.pordercode,
 
         icon: "warning", buttons: true, dangerMode: true,
@@ -736,12 +869,11 @@ function btnDeleteMC(grn) {
                 swal({
                     title: "You have following erros....!",
                     text: "\n\n" + responce,
-                    icon: "error", button: true,
+                    icon: "error", button: true, className: "purple-swal",
                 });
             }
         }
     });
-
 }
 
 function loadSearchedTable() {

@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="icon" type="image/x-icon" href="./resources/image/cart/chef.png">
+
+    <!--bootstrap 5-->
+    <link rel="stylesheet" type="text/css" href="resources/b5/bootstrap-5.1.3-dist/css/bootstrap.min.css"/>
+    <script src="/resources/b5/bootstrap-5.1.3-dist/js/bootstrap.bundle.js"></script>
+    <script src="/resources/b5/bootstrap-5.1.3-dist/js/bootstrap.min.js"></script>
+
+    <!--Fontawesome-most popular icon set and toolkit-->
+    <script defer src="resources/fontawesome/js/solid.js"></script>
+    <script defer src="resources/fontawesome/js/fontawesome.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="stylesheet" type="text/css" href="table.css"/>
+
+    <script src="resources/jquery/jquery.js"></script>
+    <script src="resources/bootstrap/js/bootstrap.bundle.js"></script>
+    <link rel="stylesheet" href="resources/datatable/css/datatables.min.css">
+
+    <!--    select2-->
+    <link rel="stylesheet" href="resources/select2/css/select2.min.css">
+    <script src="resources/select2/js/select2.min.js"></script>
+    <script src="resources/script/sweetalert.min.js"></script>
+
+
+    <script src="resources/datatable/js/datatables.min.js"></script>
+    <script src="resources/script/innertablefunctions.js"></script>
+    <script src="resources/script/common.bitproject.js"></script>
+    <script src="spayment.js"></script>
+    <!--    <link rel="stylesheet" href="resources/style/common.css">-->
+
+    <title>Hello,Gamage!</title>
+</head>
+<body>
+<!--script-->
+<script
+        type="module"
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+></script>
+<script
+        nomodule
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+></script>
+
+<div class="row w-100  ">
+    <!--Navigation-->
+    <div class="row s1 ">
+        <div class="navigation">
+            <h2 class="text-white"><span>Ga</span>mage <span>Re</span>staurant</h2>
+
+            <ul>
+                <li class="list">
+                    <a href="./dashboard.html">
+                <span class="icon"
+                ><ion-icon name="home-outline"></ion-icon
+                ></span>
+                        <span class="text"> Home</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#">
+                <span class="icon"
+                ><ion-icon name="notifications-outline"></ion-icon
+                ></span>
+                        <span class="text"> Notification</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a data-toggle="modal"
+                       data-target="#settingsModal">
+                <span class="icon"
+                ><ion-icon name="settings-outline"></ion-icon
+                ></span>
+                        <span class="text"> Settings</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a onclick="btnSignoutMC()">
+
+                <span class="icon"
+                ><ion-icon name="log-out-outline"></ion-icon
+                ></span>
+                        <span class="text"> Log out</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a data-toggle="modal"
+                       data-target="#navModal">
+                <span class="icon"
+                ><ion-icon name="menu-outline"></ion-icon
+                ></span>
+                        <span class="text"> Menu</span>
+                    </a>
+                </li>
+
+                <div class="indicator"></div>
+            </ul>
+        </div>
+    </div>
+    <!--Navigation movement-->
+    <script>
+        const list = document.querySelectorAll(".list");
+
+        function activeLink() {
+            list.forEach((item) => item.classList.remove("active"));
+            this.classList.add("active");
+        }
+
+        list.forEach((item) => item.addEventListener("click", activeLink));
+    </script>
+
+    <!--Form-->
+    <div class="bgForm">
+        <div class="row  text-black ">
+            <h3 class="p-3">
+                Supplier Payment Management
+            </h3>
+        </div>
+        <div class="row m-8 ">
+            <div class="col-md-9">
+                <div class=" col-md-12">
+                    <div class="card" style="background-color: transparent;">
+
+                        <div class=" card-body">
+
+                            <div class="row ">
+                                <form class="" id="customerform" onsubmit="return false">
+                                    <div class="row mt-2">
+
+                                        <!--form-->
+                                        <div class="col-md-12 p-3">
+
+                                            <div class="row mx-2 px-2">
+                                                <!--Supplier-->
+                                                <div class="col-md-4">
+                                                    <div class="form-group text-dark  ">
+                                                        <label for="cmbSupplier" class=""><b>
+                                                            Supplier:</b>
+                                                        </label>
+                                                        <div class="input-group">
+                                                            <select id="cmbSupplier"
+                                                                    class="form-control"
+                                                                    required
+                                                                    onchange="comboBoxBinder(cmbSupplier,'','spayment','supplier_id','oldspayment')">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!--GRN-->
+                                                <div class="col-md-4">
+                                                    <div class="form-group text-dark ">
+                                                        <label for="cmbGrnId" class="  "> <b>GRN
+                                                        </b> <span style="color: red;">*</span></label>
+                                                        <div class="input-group">
+                                                            <select id="cmbGrnId"
+                                                                    class="form-control"
+                                                                    onchange="comboBoxBinder(cmbGrnId,'[0-9]{5}$','spayment','grn_id','oldspayment')">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- GRN Amount-->
+                                                <div class="col-md-4 ">
+                                                    <div class="form-group text-dark ">
+                                                        <label for="txtgrnAmount" class="  "><b>GRN amount:
+                                                        </b> <span style="color: red;">*</span></label>
+                                                        <div class="input-group">
+                                                            <input type="text"
+                                                                   class="form-control"
+                                                                   id="txtgrnAmount"
+                                                                   placeholder="Enter GRN Amount"
+                                                                   required
+                                                                   data-toggle="tooltip"
+                                                                   data-placement="bottom"
+                                                                   title=""
+                                                                   onkeyup="textFieldBinder(txtgrnAmount,'^[0-9]{2,5}[.][0-9]{2}$','spayment','grnamount','oldspayment')">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mx-2 px-2">
+
+
+                                                <!--Total Amount-->
+                                                <div class="col-md-4">
+                                                    <div class="form-group text-dark ">
+                                                        <label for="txtTAmount" class=" "><b>Total Amount
+                                                            <span style="color: red;">*</span></b> </label>
+                                                        <div class="input-group">
+                                                            <input type="text"
+                                                                   class="form-control"
+                                                                   id="txtTAmount"
+                                                                   placeholder="Enter Total Amount"
+                                                                   required
+                                                                   data-toggle="tooltip"
+                                                                   data-placement="bottom"
+                                                                   title=""
+                                                                   onkeyup="textFieldBinder(txtTAmount,'[0-9]{2,5}[.][0-9]{2}$','spayment','totalamount','oldspayment')">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <!--Paid Amount-->
+                                                <div class="col-md-4">
+                                                    <div class="form-group text-dark ">
+                                                        <label for="txtPAmount" class=" "><b>Paid Amount
+                                                            <span style="color: red;">*</span></b> </label>
+                                                        <div class="input-group">
+                                                            <input type="text"
+                                                                   class="form-control"
+                                                                   id="txtPAmount"
+                                                                   placeholder="Enter Paid Amount"
+                                                                   required
+                                                                   data-toggle="tooltip"
+                                                                   data-placement="bottom"
+                                                                   title=""
+                                                                   onkeyup="textFieldBinder(txtPAmount,'^[0-9]{2,5}$','spayment','paidamount','oldspayment')">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!--BalanceAmount-->
+                                                <div class="col-md-4">
+                                                    <div class="form-group text-dark  ">
+                                                        <label for="txtBAmount" class=""><b>Balance Amount:</b>
+                                                        </label>
+                                                        <div class="input-group">
+                                                            <input type="text"
+                                                                   class="form-control"
+                                                                   id="txtBAmount"
+                                                                   placeholder="Enter Balance Amount"
+                                                                   required
+                                                                   data-toggle="tooltip"
+                                                                   data-placement="bottom"
+                                                                   title=""
+                                                                   onkeyup="textFieldBinder(txtBAmount,'^[0-9]{2,5}$','spayment','balanceamount','oldspayment')">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mx-2 px-2">
+                                                <!--Paid Date-->
+                                                <div class="col-md-4">
+                                                    <div class="form-group text-dark  ">
+                                                        <label for="dtePDate" class=""><b>Paid Date:</b>
+                                                        </label>
+                                                        <div class="input-group">
+                                                            <input type="date"
+                                                                   class="form-control"
+                                                                   id="dtePDate"
+                                                                   placeholder="Enter Paid Date"
+                                                                   data-toggle="tooltip"
+                                                                   data-placement="bottom"
+                                                                   title="Paid Date"
+                                                                   onchange="textFieldBinder(dtePDate,'^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$','spayment','paiddate','oldspayment')">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!--Payment Method-->
+                                                <div class="col-md-4">
+                                                    <div class="form-group text-dark ">
+                                                        <label for="cmbPMethod" class=" "><b>Payment Method
+                                                            <span style="color: red;">*</span></b> </label>
+                                                        <div class="input-group">
+                                                            <select id="cmbPMethod"
+                                                                    class="form-control"
+                                                                    onchange="comboBoxBinder(cmbPMethod,'','spayment','paymentmethod_id','oldspayment')">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <!--                                            <div class="row m-2 p-3"   >-->
+
+
+                                            <!--                                                &lt;!&ndash;Transfer Acc Name:&ndash;&gt;-->
+                                            <!--                                                <div class="col-md-3">-->
+                                            <!--                                                    <div class="form-group text-dark ">-->
+                                            <!--                                                        <label for="txtTACCname" class=" "><b>Transfer Acc Name:-->
+                                            <!--                                                            <span style="color: red;">*</span></b> </label>-->
+                                            <!--                                                        <div class="input-group">-->
+                                            <!--                                                            <input type="text"-->
+                                            <!--                                                                   class="form-control"-->
+                                            <!--                                                                   id="txtTACCname"-->
+                                            <!--                                                                   placeholder="Enter Transfer Acc Name"-->
+                                            <!--                                                            >-->
+                                            <!--                                                        </div>-->
+                                            <!--                                                    </div>-->
+                                            <!--                                                </div>-->
+
+
+                                            <!--                                            </div>-->
+
+                                            <div class="row m-2 p-3 flex justify-content-around">
+
+
+                                                <div class="col-md-4 button p-2">
+                                                    <button class="btn border-0 text-white font-weight-bold fs-5
+  " data-toggle="modal" data-target="#DepositeView">Deposit Information
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-4 button p-2">
+                                                    <button class="btn border-0 text-white font-weight-bold fs-5
+  " data-toggle="modal" data-target="#ChequeView">Cheque Information
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-4 button p-2">
+                                                    <button class="btn border-0 text-white font-weight-bold fs-5
+   " data-toggle="modal" data-target="#MoneyTView">Online Transfer Information
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-2"></div>
+
+                            <!--Clear/Update/Delete buttons-->
+                            <div class="row mt-2 p-2">
+
+                                <div class="col-md-12">
+
+                                    <div class="text-right">
+                                        <button class="btn button-86 " type="button" id="btnClear"
+                                                style="width: 25%">
+                                            <i class="fas fa-recycle mr-2"></i> Clear
+                                        </button>
+                                        <button class="btn button-86 " type="submit" id="btnUpdate"
+                                                style="width: 25%"><i class="fas fa-edit mr-2"></i>
+                                            Update
+                                        </button>
+                                        <button class="btn button-86" style="width: 25%" type="submit"
+                                                id="btnAdd">
+                                            <i class='fas fa-plus-circle mr-2'></i>Add
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-3 ">
+
+                <div class="datetime">
+                    <div class="time"></div>
+                    <div class="date"></div>
+                </div>
+
+                <script>
+                    const timeElement = document.querySelector(".time");
+                    const dateElement = document.querySelector(".date");
+
+                    /**
+                     * @param {Date} date
+                     */
+                    function formatTime(date) {
+                        const hours12 = date.getHours() % 12 || 12;
+                        const minutes = date.getMinutes();
+                        const isAm = date.getHours() < 12;
+
+                        return `${hours12
+                            .toString()
+                            .padStart(2, "0")}:${minutes.toString().padStart(2, "0")} ${
+                            isAm ? "AM" : "PM"
+                        }`;
+                    }
+
+                    /**
+                     * @param {Date} date
+                     */
+                    function formatDate(date) {
+                        const DAYS = [
+                            "Sunday",
+                            "Monday",
+                            "Tuesday",
+                            "Wednesday",
+                            "Thursday",
+                            "Friday",
+                            "Saturday",
+                        ];
+                        const MONTHS = [
+                            "January",
+                            "February",
+                            "March",
+                            "April",
+                            "May",
+                            "June",
+                            "July",
+                            "August",
+                            "September",
+                            "October",
+                            "November",
+                            "December",
+                        ];
+
+                        return `${DAYS[date.getDay()]}, ${
+                            MONTHS[date.getMonth()]
+                        } ${date.getDate()} ${date.getFullYear()}`;
+                    }
+
+                    setInterval(() => {
+                        const now = new Date();
+
+                        timeElement.textContent = formatTime(now);
+                        dateElement.textContent = formatDate(now);
+                    }, 200);
+                </script>
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Customer payment History</h5>
+                        <div class="d-flex justify-content-around align-items-center">
+                            <img
+                                    src="./resources/image/cart/spayment.png"
+                                    width="90px"
+                                    height="90px"
+                                    alt="deliver"
+                            />
+                            <a
+                                    href="http://localhost:8080/spayment1"
+                                    type="button"
+                                    class="btn button-view"
+                                    data-toggle="modal" data-target="#tableview"
+                            >
+                                View History
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!--Table- Modal -->
+        <div class="modal fade" id="tableview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-body">
+                        <div class="row p-5  formcontent w-100" style="background-color: white" id="divTable">
+                            <div class="container-fluid">
+                                <div class="row d-flex align-items-center">
+                                    <div class="col-md-3">
+                                        <a class="btn button  font-weight-bold" href="http://localhost:8080/spayment">S-Payment</a>
+
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="button" class="btn button  font-weight-bold" value="Print Table"
+                                               id="btnPrintTable" onclick="btnPrintTableMC()"/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input placeholder="Search"
+                                               class="my-3  form-control border border-2 border-dark txtSearchName"
+                                               type="text"
+                                               id="txtSearchName"/>
+                                    </div>
+                                </div>
+
+                                <div class="modal fade" id="qrViewModal" tabindex="-1" role="dialog"
+                                     aria-labelledby="exampleModalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content ">
+                                            <div class="modal-header bg-black text-white">
+                                                <img src="./resources/image/cart/chef.png" width="65" height="65"
+                                                     class="align-top mx-2" alt="">
+                                                <h2 class="text-white"><span>Ga</span>mage <span>Re</span>staurant</h2>
+
+                                            </div>
+                                            <div class="modal-body container-print">
+                                                <table id="tablePrintEmployee"
+                                                       class=" table table-striped shadow rounded">
+                                                    <thead class="text-white bg-black ">
+                                                    <h3> View Spayment</h3>
+                                                    </thead>
+                                                    <div class="modal-body">
+                                                        <table id="printformtable"
+                                                               class="mt-5 table table-bordered table-striped">
+                                                            <tbody>
+                                                            <tr>
+                                                                <th>Bill No :</th>
+                                                                <td id="tdBillNo"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Supplier :</th>
+                                                                <td id="tdSupplier"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>GRN :</th>
+                                                                <td id="tdGrn"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>GRN amount :</th>
+                                                                <td id="tdGRNAmount"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Total Amount:</th>
+                                                                <td id="tdTAmount"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Paidamount :</th>
+                                                                <td id="tdPaidamount"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Paymentmethod :</th>
+                                                                <td id="tdPaymentmethod"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Paymentstatus :</th>
+                                                                <td id="tdPaymentstatus"></td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="modal-footer bg-black">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Close
+                                                        </button>
+                                                        <button type="button" class="btn btn-light"
+                                                                onclick="btnPrintRowMC()">Print
+                                                        </button>
+                                                    </div>
+
+                                                </table>
+                                            </div>
+                                        </div>
+
+
+                                        <!--                                <div class="justify-content-between">-->
+                                        <!--                                   -->
+                                        <!--                                  -->
+
+                                        <!--                                </div>-->
+
+                                        <!--                                <div class="float-right">-->
+                                        <!--                                   -->
+                                        <!--                                </div>-->
+
+                                    </div>
+                                    <hr/>
+                                    <div class="table-responsive" id="tableParent" class="table-container m-5"
+                                    >
+
+
+                                        <script>
+
+                                            function getCustomerName(ob) {
+                                                return ob.fname + " " + ob.lname;
+                                            }
+
+                                            var metadata = [
+
+                                                {name: 'Bill No', search: true, datatype: 'text', property: 'billno'},
+                                                {
+                                                    name: 'Total Amount',
+                                                    search: true,
+                                                    datatype: 'text',
+                                                    property: 'totalamount'
+                                                },
+                                                {
+                                                    name: 'Paid Amount',
+                                                    search: true,
+                                                    datatype: 'text',
+                                                    property: 'paidamount'
+                                                },
+                                                {
+                                                    name: 'Balanced Amount',
+                                                    search: true,
+                                                    datatype: 'text',
+                                                    property: 'balanceamount'
+                                                },
+                                                {
+                                                    name: 'Paid Date',
+                                                    search: true,
+                                                    datatype: 'text',
+                                                    property: 'paiddate'
+                                                },
+                                                {
+                                                    name: 'Payment status',
+                                                    search: true,
+                                                    datatype: 'text',
+                                                    property: 'paymentstatus_id.name'
+                                                },
+
+                                            ];
+                                            //table function
+                                            table("tableParent", "tblSpayment", metadata, true);
+
+                                        </script>
+
+                                    </div>
+
+                                    <div>
+                                        <div style="display: inline-block ; float: left">
+                                            <select class="form-control input" id="cmbPageSize" style="width: 80px;">
+                                                <option selected value="5">5</option>
+                                                <option value="10">10</option>
+                                                <option value="100">100</option>
+                                                <option value="500">500</option>
+                                                <option value="1000">1000</option>
+                                            </select>
+                                            <script>
+                                                cmbPageSize.onchange = function chnagePageSize() {
+                                                    activepage = 1;
+                                                    btnSearchMC();
+                                                };
+                                            </script>
+                                        </div>
+                                        <div style="display: inline-block; margin-left: 10px;">
+                                            <ul id="pagination" class="pagination"></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer bg-black">
+                                <button type="button" class="btn button-86"
+                                        data-dismiss="modal" onclick="window.location.href ='dashboard.html'">Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Deposite Modal -->
+        <div class="modal fade position-absolute  " id="DepositeView" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Deposite Information</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <!--Bank Name-->
+                                    <div class="form-group text-dark ">
+                                        <label for="txtBname" class="  "><b>Bank Name:
+                                        </b> </label>
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="txtBname"
+                                                   placeholder="Enter Bank Name"
+                                            >
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <!--Bank Acc No-->
+                                    <div class="form-group text-dark ">
+                                        <label for="txtBAccNo" class="  "><b>Bank Acc No:
+                                        </b></label>
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="txtBAccNo"
+                                                   placeholder="Enter Bankaccount No"
+                                            >
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+
+                                    <!--Depositted Date/Time-->
+
+                                    <div class="form-group text-dark ">
+                                        <label for="dteDepodate" class="  "><b>Deposited
+                                            Date/Time:
+                                        </b> <span style="color: red;">*</span></label>
+                                        <div class="input-group">
+                                            <input type="datetime-local"
+                                                   class="form-control"
+                                                   id="dteDepodate"
+                                                   placeholder="Enter Deposited Date"
+                                            >
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-md-6">
+                                    <!--Holder Name-->
+
+                                    <div class="form-group text-dark ">
+                                        <label for="txtHName" class="  "><b>Holder Name:
+                                        </b> <span style="color: red;">*</span></label>
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="txtHName"
+                                                   placeholder="Enter Bank Acc Holder Name"
+                                                   onkeyup="textFieldBinder(txtHoName,'^([A-Z][a-z]+)$','spayment','holdername','spayment')">
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-end">
+                        <button type="button" class="btn button" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cheque Modal -->
+        <div class="modal fade position-absolute  " id="ChequeView" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg" style="max-height: 1000px !important;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalLabel">Cheque Information</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <!--Cheque No-->
+                                <div class="form-group text-dark ">
+                                    <label for="txtchequeno" class="  "><b>Cheque No:
+                                    </b> <span style="color: red;">*</span></label>
+                                    <div class="input-group">
+                                        <input type="text"
+                                               class="form-control"
+                                               id="txtchequeno"
+                                               placeholder="Enter Cheque No"
+                                               onkeyup="textFieldBinder(txtCNo,'^.*$','spayment','chequenumber','oldspayment')">
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <!--Cheque Date-->
+
+                                <div class="form-group text-dark ">
+                                    <label for="txtCDate" class="  "><b>Cheque Date:
+                                    </b> <span style="color: red;">*</span></label>
+                                    <div class="input-group">
+                                        <input type="date"
+                                               class="form-control"
+                                               id="txtCDate"
+                                               placeholder="Enter Cheque date"
+                                               data-toggle="tooltip"
+                                               data-placement="bottom"
+                                               title=""
+                                               onchange="datetimeFieldBinder(dteChequeDate,'','customerpayment','chequedate','oldcustomerpayment')">
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-end">
+                        <button type="button" class="btn button" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Money Transfer Modal -->
+        <div class="modal fade position-absolute m-50 " id="MoneyTView" tabindex="-1"
+             aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Transfer Information</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <!--Bank Name-->
+
+                                    <div class="form-group text-dark ">
+                                        <label for="txtBaTname" class="  "><b>Bank Name:
+                                        </b> <span style="color: red;">*</span></label>
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="txtBaTname"
+                                                   placeholder="Enter Bank Name"
+                                                   onkeyup="textFieldBinder(txtBaTname,'^.*$','customerpayment','bankname','oldcustomerpayment')">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <!--Bank Branch Name-->
+
+                                    <div class="form-group text-dark ">
+                                        <label for="txtBBName" class="  "><b>Bank Branch Name:
+                                        </b> <span style="color: red;">*</span></label>
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="txtBBName"
+                                                   placeholder="Enter Bank Branch Name"
+                                                   onkeyup="textFieldBinder(txtTBBName,'^([A-Z][a-z]+)$','spayment','bankbrachname','oldspayment')">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <!--Holder Name-->
+
+                                    <div class="form-group text-dark ">
+                                        <label for="txtTHoName" class="  "><b>Holder Name:
+                                        </b> <span style="color: red;">*</span></label>
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="txtTHoName"
+                                                   placeholder="Enter Bank Acc Holder Name"
+                                                   onkeyup="textFieldBinder(txtTHoName,'^([A-Z][a-z]+)$','spayment','holdername','oldspayment')">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <!--Bank Acc No-->
+
+                                    <div class="form-group text-dark ">
+                                        <label for="txtBACCname" class="  "><b>Bank Acc No:
+                                        </b> <span style="color: red;">*</span></label>
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="txtBACCname"
+                                                   placeholder="Enter Bank Acc No"
+                                                   onkeyup="textFieldBinder(txtBACCname,'^.*$','spayment','bankaccountno','oldspayment')">
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!--Transefered Id-->
+                                <div class="col-md-6">
+                                    <div class="form-group text-dark ">
+                                        <label for="txtTId" class="  "> <b>Transefered Id:
+                                        </b> <span style="color: red;">*</span></label>
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="txtTId"
+                                                   placeholder="Enter Transfered Id"
+                                                   onkeyup="textFieldBinder(txtTId,'^.*$','spayment','transferid','oldspayment')">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <!--Depositted Date/Time-->
+
+                                    <div class="form-group text-dark ">
+                                        <label for="dteTDeposDateTime" class="  "><b>Deposited
+                                            Date/Time:
+                                        </b> <span style="color: red;">*</span></label>
+                                        <div class="input-group">
+                                            <input type="datetime-local"
+                                                   class="form-control"
+                                                   id="dteTDeposDateTime"
+                                                   placeholder="Enter Deposited Date"
+                                                   data-toggle="tooltip"
+                                                   data-placement="bottom"
+                                                   title="Deposited Date"
+                                                   onchange="datetimeFieldBinder(dteTDeposDateTime,'','customerpayment','depositeddatetime','oldcustomerpayment')">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-end">
+                        <button type="button" class="btn button" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Modal-->
+        <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog"
+             aria-labelledby="settingsModal" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content" id="modalContent">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle"><i
+                                class="fas fa-cog"></i> Settings</h5>
+                        <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form id="changePasswordForm" onsubmit="return false">
+                            <div class="form-row">
+                                <!-- Username -->
+                                <div class="form-group text-black col-md-12">
+                                    <label for="txtUsernameView" class="text-blue">
+                                        <b>Username</b>
+                                    </label>
+                                    <div readonly class="form-control-plaintext"
+                                         id="txtUsernameView"></div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <!-- Current Password -->
+                                <div class="form-group text-black col-md-12">
+                                    <label for="txtCurrentPassword"
+                                           class="text-blue"><b>Current Password</b> <i
+                                            class="fas fa-question-circle  question ml-1"
+                                            data-toggle="tooltip" data-placement="right"
+                                            title=""></i></label>
+                                    <input type="password"
+                                           class="form-control form-control-sm changePasswordFields"
+                                           id="txtCurrentPassword"
+                                           onkeyup="textFieldBinder(txtCurrentPassword, '^[0-9]{5,}$', 'changePassword', 'currentPassword', 'oldChangePassword')">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <!-- New Password -->
+                                <div class="form-group text-black col-md-12">
+                                    <label for="txtNewPassword" class="text-blue"><b>New
+                                        Password</b><i
+                                            class="fas fa-question-circle question ml-1"
+                                            data-toggle="tooltip" data-placement="right"
+                                            title=""></i></label>
+                                    <input type="password"
+                                           class="form-control form-control-sm changePasswordFields"
+                                           id="txtNewPassword"
+                                           onkeyup="passwordFieldBinder(txtNewPassword, txtConfirmPassword, '^[0-9]{5,}$', 'changePassword', '', 'oldChangePassword')">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <!-- Confirm Password -->
+                                <div class="form-group text-black col-md-12">
+                                    <label for="txtConfirmPassword"
+                                           class="text-blue"><b>Confirm
+                                        Password</b><i
+                                            class="fas fa-question-circle question ml-1"
+                                            data-toggle="tooltip" data-placement="right"
+                                            title=""></i></label>
+                                    <input type="password"
+                                           class="form-control form-control-sm changePasswordFields"
+                                           id="txtConfirmPassword"
+                                           onkeyup="passwordFieldBinder(txtNewPassword, txtConfirmPassword, '^[0-9]{5,}$', 'changePassword', 'newPassword', 'oldChangePassword')">
+                                </div>
+                            </div>
+                        </form>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="brnClosechnagepasswordmodle" class="btn button" data-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="button" class="btn button"
+                                onclick="btnSaveChangePasswordMC()">Save changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Modal-->
+        <div class="modal fade" id="navModal" tabindex="-1" role="dialog"
+             aria-labelledby="settingsModal" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+                <div class="modal-content" id="">
+
+                    <div class="modal-body ml-5 bg-dark">
+
+                        <div class="row m-2 ml-5 flex justify-content-between dashboard">
+
+
+                            <div class="col-12  ">
+                                <div class="row ">
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/customer')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/customer.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Customer </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center   align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/take_away')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/away%20-%20Copy.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Take away </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/dinein')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/dinein.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Dine in </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/tableallocation1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/table.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Table Allocation</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/delivery')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/deliver.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Delivery </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/customerpayment')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/cpayment.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Customer Payment </h5>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row pl-5  ">
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/menu1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/menu.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Menu </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/submenu1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/submenu.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Sub Menu </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/supplier1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/supplier.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Supplier </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/qrequest')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="resources/image/cart/quotationReq.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Quotation Request </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/quotation1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/quotation.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Quotation </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/purchaseorder')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/porder.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Purchase Order </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12  ">
+                                <div class="row pl-5  ">
+
+
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/grn')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="resources/image/cart/grn.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                GRN </h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/spayment1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/spayment.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Suppier payment </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/material1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/material.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Material </h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2 text-center   align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/dailyremove')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/dailyremove.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Daily Remove </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/inventory')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/inventory.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Inventory </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center   align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/employee1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/employee.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Employee </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12  ">
+                                <div class="row pl-5  ">
+
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/user1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/user.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                User </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/privilage')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/previlage.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Previllage </h5>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

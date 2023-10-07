@@ -335,7 +335,7 @@
                                         <div class="form-group text-dark">
                                             <label for="dteStartdate"><b>Start Date:</b></label>
                                             <div class="input-group">
-                                                <input type="date" class="form-control" id="dteStartdate">
+                                                <input type="date"onchange="chagestart();" class="form-control" id="dteStartdate">
                                             </div>
                                         </div>
                                     </div>
@@ -343,13 +343,13 @@
                                         <div class="form-group text-dark">
                                             <label for="dteEnddate"><b>End Date:</b></label>
                                             <div class="input-group">
-                                                <input type="date" class="form-control" id="dteEnddate">
+                                                <input type="date" onchange="changeend();" class="form-control" id="dteEnddate">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <label for="dteEnddate"><b>Report Type:</b></label>
-                                        <select id="cmbReportType" class="form-control">
+                                        <select id="cmbReportType" onchange="changeType();" class="form-control">
                                             <option selected disabled>Select Type</option>
                                             <option value="Daily">Daily</option>
                                             <option value="Weekly">Weekly</option>
@@ -408,9 +408,22 @@
 
 <script>
 
+    function chagestart(){
+        dteStartdate.style.border = "3px solid #078D27B2";
+
+    }
+
+    function changeend(){
+        dteEnddate.style.border = "3px solid #078D27B2";
+    }
+
+    function changeType(){
+        cmbReportType.style.border = "3px solid #078D27B2";
+    }
     function btnGenerateReport() {
 
-        var expensesrepo = httpRequest("/report/byselecteddateofexpences?sDate=" + dteStartdate.value + "&endDate=" + dteEnddate.value + "&type=" + cmbReportType.value, "GET");
+
+        var expensesrepo = httpRequest("/report/byselecteddateofexpences?statrtdate=" + dteStartdate.value + "&enddate=" + dteEnddate.value + "&type=" + cmbReportType.value, "GET");
 
         var chartLabel = new Array();
         var chartData = new Array();
@@ -419,13 +432,15 @@
 
         for (var index in expensesrepo) {
 
+            console.log("ASD ",expensesdata)
+
             var dps = new Object()
-            dps.yearmonth = expensesrepo[index][0] + " - " + expensesrepo[index][1];
-            dps.amount = expensesrepo[index][2];
+            dps.yearmonth = expensesrepo[index][0] ;
+            dps.amount = expensesrepo[index][1];
             expensesdata.push(dps);
             chartLabel.push(expensesrepo[index][0]);
-            chartData.push(expensesrepo[index][2]);
-            totalamount = parseFloat(totalamount) + parseFloat(expensesrepo[index][2]);
+            chartData.push(expensesrepo[index][1]);
+            totalamount = parseFloat(totalamount) + parseFloat(expensesrepo[index][1]);
         }
 
         var tfooter = document.createElement("tfoot");
@@ -434,7 +449,7 @@
         var tfooterrowtdtamount = document.createElement("td");
         tfooterrowtdtext.colSpan = 2;
         tfooterrowtdtext.innerHTML = "Total Expenses amount :  Rs.";
-        tfooterrowtdtamount.innerHTML = totalamount;
+        tfooterrowtdtamount.innerHTML = parseFloat(totalamount).toFixed(2);
         tfooterrow.appendChild(tfooterrowtdtext);
         tfooterrow.appendChild(tfooterrowtdtamount);
         tfooter.appendChild(tfooterrow);

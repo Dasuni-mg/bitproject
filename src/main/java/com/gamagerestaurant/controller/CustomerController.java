@@ -2,9 +2,11 @@ package com.gamagerestaurant.controller;
 
 
 import com.gamagerestaurant.model.Customer;
+import com.gamagerestaurant.model.Deletedcustomer;
 import com.gamagerestaurant.model.User;
 import com.gamagerestaurant.repository.CustomerRepository;
 import com.gamagerestaurant.repository.CustomerstatusRepository;
+import com.gamagerestaurant.repository.DeletedcustomerRepository;
 import com.gamagerestaurant.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,21 +38,30 @@ public class CustomerController {
     @Autowired
     private CustomerstatusRepository daostatus;
 
+    @Autowired
+    private DeletedcustomerRepository daodeletedcustomer;
 
-    @GetMapping(value = "/list",produces = "application/json")
-    public List<Customer> customerList(){
+    //get customer list not object
+    @GetMapping(value = "/list", produces = "application/json")
+    public List<Customer> customerList() {
         return dao.list();
     }
 
 
     //get next customer reg no [/customer/nextcu]
-    @GetMapping(value = "/nextcu",produces = "application/json")
-    public Customer nextRegNo(){
+    @GetMapping(value = "/nextcu", produces = "application/json")
+    public Customer nextRegNo() {
         String nextregno = dao.nextRegNo();
 
         Customer nextcu = new Customer(nextregno);
         return nextcu;
     }
+
+    @GetMapping(value = "/activelist", produces = "application/json")
+    public List<Customer>customerListactive(){
+        return dao.activecustomers();
+    }
+
 
     //data access object
     //get request mapping for Get customer page request given params
@@ -81,9 +92,23 @@ public class CustomerController {
         HashMap<String, Boolean> priv = previlageController.getPrivilages(user, "CUSTOMER");
         //check user null
         if (user != null & priv != null & priv.get("select")) {
-            return dao.findAll(searchtext,PageRequest.of(page, size, Sort.Direction.DESC, "id"));
+            return dao.findAll(searchtext, PageRequest.of(page, size, Sort.Direction.DESC, "id"));
         } else
             return null;
+    }
+
+    // find by customer nic -already exist
+    //customer/byNIC?nic="952852302V"
+    @GetMapping(value = "/byNIC", params = "nic", produces = "application/json")
+    public Customer customerBynic(@RequestParam("nic") String nic) {
+        return dao.findByNic(nic);
+    }
+
+
+    //find by customer obile-already exist
+    @GetMapping(value = "/byMobile",params = "mobileno",produces = "application/json")
+    public Customer customerByMobile(@RequestParam("mobileno")String mobileno){
+        return dao.findByMobileNo(mobileno);
     }
 
     //post mapping for insert item object
@@ -101,6 +126,7 @@ public class CustomerController {
                 customer.setAddeddate(LocalDate.now());
                 customer.setCustomerstatus_id(daostatus.getById(1));
                 customer.setEmployee_id(user.getEmployeeId());
+                customer.setRegno(dao.nextRegNo());
                 dao.save(customer);
                 return "0";
             } catch (Exception ex) {
@@ -147,8 +173,14 @@ public class CustomerController {
         //check user null
         if (user != null & priv != null & priv.get("delete")) {
             try {
-                customer.setCustomerstatus_id(daostatus.getById(2));
+                customer.setCustomerstatus_id(daostatus.getById(4));
                 dao.save(customer);
+                Deletedcustomer deletedcustomer = new Deletedcustomer();
+                deletedcustomer.setRegno(customer.getRegno());
+                deletedcustomer.setFname(customer.getFname());
+                deletedcustomer.setCustomerstatus_id(customer.getCustomerstatus_id());
+                daodeletedcustomer.save(deletedcustomer);
+
                 return "0";
             } catch (Exception ex) {
                 return "Delete Not Completed.." + ex.getMessage();

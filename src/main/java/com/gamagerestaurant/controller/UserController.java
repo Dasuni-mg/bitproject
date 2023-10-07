@@ -19,41 +19,48 @@ import java.util.*;
 @RestController
 public class UserController {
 
-
     @Autowired
     private UserRepository dao;
 
     @Autowired
     private PrevilageController PrevilageController;
 
-
     @Autowired
     private UserService userService;
 
+    // Endpoint to retrieve the currently logged-in user
     @RequestMapping(value = "/logeduser", method = RequestMethod.GET)
     public User getLogedUser() {
+        // Get the authentication object from the security context
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByUserName(auth.getName());
+        // Get the username of the authenticated user
+        String username = auth.getName();
+        // Call the userService to find the user by their username
+        User user = userService.findUserByUserName(username);
+        // Return the found user
         return user;
     }
 
+
+    // Endpoint to get the user with role "ADMIN"
     @GetMapping(value = "/getAdmin", produces = "application/json")
     public User getAdmin() {
         return dao.getAdmin();
     }
 
+    // Endpoint to get a user by their username
     @GetMapping(path = "/getuser/{userName}", produces = "application/json")
     public User getUserName(@PathVariable("userName")String userName) {
-
         return dao.findByLoggedName(userName);
     }
 
+    // Endpoint to get a list of all users
     @GetMapping(value = "/list", produces = "application/json")
     public List<User> user() {
         return dao.list();
     }
 
-
+    // Endpoint to get all users with pagination and sorting by 'id'
     @GetMapping(value = "/findAll", params = {"page", "size"}, produces = "application/json")
     public Page<User> getAll(@RequestParam("page") int page, @RequestParam("size") int size ) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -63,22 +70,21 @@ public class UserController {
             return dao.findAll(PageRequest.of(page, size, Sort.Direction.DESC,"id"));
         }
         return null;
-
     }
 
-
+    // Endpoint to get all users with pagination, sorting, and search by 'id'
     @GetMapping(value = "/findAll",params = {"page", "size","searchtext"}, produces = "application/json")
     public Page<User> findAll(@RequestParam("page") int page, @RequestParam("size") int size, @RequestParam("searchtext") String searchtext) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByUserName(auth.getName());
         HashMap<String,Boolean> priv = PrevilageController.getPrivilages(user,"USER");
         if(user!= null && priv.get("select")){
-            return dao.findAll(searchtext,PageRequest.of(page, size, Sort.Direction.DESC,"id"));
+            return dao.findAll(searchtext, PageRequest.of(page, size, Sort.Direction.DESC,"id"));
         }
         return null;
     }
 
-
+    // Endpoint to add a new user
     @Transactional
     @PostMapping()
     public String add(@Validated @RequestBody User user) {
@@ -93,15 +99,12 @@ public class UserController {
             } catch (Exception e) {
                 return "Error-Saving : " + e.getMessage();
             }
-
         } else {
             return "Error-Saving : You have no Permission";
         }
-
     }
 
-
-
+    // Endpoint to update an existing user
     @PutMapping
     public String update(@Validated @RequestBody User user) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -109,40 +112,37 @@ public class UserController {
         HashMap<String,Boolean> priv = PrevilageController.getPrivilages(exuser,"USER");
         if(exuser!= null && priv.get("update")){
             try {
-            dao.save(user);
-                return "0";
-            }
-            catch(Exception e) {
+                User logeduser = dao.getlogeduser(user.getId());
+                if(logeduser !=null){
+                    return "User Can't change Status";
+                } else {
+                    dao.save(user);
+                    return "0";
+                }
+            } catch(Exception e) {
                 return "Error-Saving : " + e.getMessage();
             }
+        } else {
+            return "Error-Updating : You have no Permission";
         }
-        else
-                    return "Error-Updating : You have no Permission";
     }
 
-
+    // Endpoint to delete a user
     @DeleteMapping
     public String delete(@RequestBody User user ) {
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User exuser = userService.findUserByUserName(auth.getName());
         HashMap<String,Boolean> priv = PrevilageController.getPrivilages(exuser,"USER");
         if(exuser!= null && priv.get("delete")){
             try {
                 user.setActive(false);
-                 dao.save(user);
-                    return "0";
-
+                dao.save(user);
+                return "0";
             } catch (Exception e) {
                 return "Error-Deleting : " + e.getMessage();
             }
+        } else {
+            return "Error-Deleting : You have no Permission";
         }
-
-        else
-             return "Error-Deleting : You have no Permission";
-
     }
-
-
-
 }

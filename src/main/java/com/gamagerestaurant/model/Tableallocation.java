@@ -35,9 +35,13 @@ public class Tableallocation {
     @Basic(optional = false)
     private LocalDate reserveddate;
 
-    @Column(name="reservetime")
+    @Column(name="reserveouttime")
     @Basic(optional = false)
-    private LocalTime reservetime;
+    private LocalTime reserveouttime;
+
+    @Column(name="reserveintime")
+    @Basic(optional = false)
+    private LocalTime reserveintime;
 
     @Column(name="addeddate")
     @Basic(optional = false)

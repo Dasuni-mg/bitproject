@@ -41,4 +41,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query(value="SELECT u FROM User u where u.employeeId.id=:empid")
     User getByEmploye(@Param("empid") Integer empid);
+    @Query(value="select u from User u where u.id=:id ")
+    User getlogeduser(int id);
 }

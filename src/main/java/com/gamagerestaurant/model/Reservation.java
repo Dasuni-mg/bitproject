@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -74,6 +75,16 @@ public class Reservation {
     @Column(name = "servicecharge")
     @Basic(optional = false)
     private BigDecimal servicecharge;
+
+    @Column(name = "receiveddate")
+    @Basic(optional = false)
+    private LocalDateTime receiveddate;
+
+    @Column(name = "isadvance")
+    @Basic(optional = true)
+    private Boolean isadvance;
+
+
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "reservationstatus_id", referencedColumnName = "id")

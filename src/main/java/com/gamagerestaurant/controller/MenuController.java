@@ -45,6 +45,15 @@ public class MenuController {
         return nextmc;
     }
 
+    //get next menuname
+    @GetMapping(value="/nextmenuname",produces = "application/json")
+    public Menu nextmenuname(){
+        String nextmenuname = dao.getnextmenuname();
+        Menu nxtmenuname = new Menu(nextmenuname);
+        return nxtmenuname;
+
+    }
+
     // menu list by selecting a particular menu category
     @GetMapping(value = "/listbymenucategory",params = "menucategoryid",produces = "application/json")
     public List<Menu> menuBycategory(@RequestParam("menucategoryid") Integer menucategoryid){
@@ -104,6 +113,7 @@ public class MenuController {
         //check user null
         if (priv != null & priv.get("add")) {
             try {
+                menu.setMenucode(dao.nextMenuCode());
                 menu.setAddeddate(LocalDate.now());
                 menu.setMenustatus_id(daostatus.getById(1));
                 menu.setEmployee_id(user.getEmployeeId());

@@ -71,13 +71,10 @@ public class Supplier {
     @Basic(optional = true)
     private String bankholdername;
 
-    @Column(name="bankname")
-    @Basic(optional = true)
-    private String  bankname;
+    @ManyToOne(optional = false,fetch = FetchType.EAGER)
+    @JoinColumn(name="bankname_id",referencedColumnName ="id")
+    private BankName bankname_id;
 
-    @Column(name="bankbranchname")
-    @Basic(optional =true)
-    private String bankbranchname;
 
     @Column(name="bankaccountno")
     @Basic(optional = true)
@@ -86,6 +83,10 @@ public class Supplier {
     @Column(name="arreasamount")
     @Basic(optional = true)
     private BigDecimal arreasamount;
+
+    @ManyToOne(optional = false,fetch = FetchType.EAGER)
+    @JoinColumn(name="bankbranch_id",referencedColumnName ="id")
+    private BankBranch bankbranch_id;
 
     @ManyToOne(optional = false,fetch = FetchType.EAGER)
     @JoinColumn(name="supplierstatus_id",referencedColumnName ="id")

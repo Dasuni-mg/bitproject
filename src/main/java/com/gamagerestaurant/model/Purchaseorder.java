@@ -68,12 +68,17 @@ public class Purchaseorder {
     private List<PurchaseorderHasMaterial> purchaseorderHasMaterialList;
 
 
-    public  Purchaseorder(Integer id,String pordercode){
+    public  Purchaseorder(Integer id,String pordercode,Supplier supplier_id){
         this.id=id;
         this.pordercode=pordercode;
+        this.supplier_id=supplier_id;
     }
 
     public Purchaseorder(String pordercode){
+        this.pordercode = pordercode;
+    }
+    public Purchaseorder(Integer id,String pordercode){
+        this.id = id;
         this.pordercode = pordercode;
     }
 }

@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface CustomerpaymentRepository extends JpaRepository<Customerpayment, Integer> {
 
     @Query("select c from Customerpayment c where (c.billno like concat('%',:searchtext,'%') or "+
@@ -23,5 +25,9 @@ public interface CustomerpaymentRepository extends JpaRepository<Customerpayment
     String nextBillNo();
 
 
+    @Query(value = "select cp from Customerpayment cp where cp.reservation_id.id=:reservationid")
+    Customerpayment getbyReservationid(int reservationid);
 
+    @Query( value = "select new Customerpayment (cp.currentamount) from Customerpayment cp where cp.reservation_id.id=:reservationid")
+    Customerpayment getcurrentAmount(int reservationid);
 }

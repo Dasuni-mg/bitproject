@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name= "materialinventory")
@@ -36,6 +38,11 @@ public class Materialinventory {
     @Basic(optional = false)
     @Column(name = "removeqty")
     private BigDecimal removeqty;
+//
+//
+//    @Basic(optional = false)
+//    @Column(name = "updateddate")
+//    private LocalDate updateddate;
 
     @JoinColumn(name = "material_id", referencedColumnName = "id")
     @OneToOne(optional = false,fetch = FetchType.EAGER )

@@ -9,6 +9,10 @@ import java.util.List;
 public interface CustomerPaymentmethodRepository extends JpaRepository<Cpmethod, Integer> {
 
 
-    @Query(value = "SELECT * FROM gamage_restaurant.cpmethod as cp where cp.id = 2 or cp.id= 4",nativeQuery = true)
+    @Query(value = "SELECT * FROM gamage_restaurant.cpmethod as cp where cp.id = 2",nativeQuery = true)
     List<Cpmethod> getBymethod();
+
+
+    @Query(value = "select cp from Cpmethod cp where cp.id=2")
+    Cpmethod getCash();
 }

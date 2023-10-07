@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
@@ -95,7 +96,10 @@ public class TableallocationController {
         //check user null
         if (priv != null & priv.get("add")) {
             try {
+                tableallocation.setTablestatus_id(daostatus.getById(1));
                 System.out.println(tableallocation);
+                tableallocation.setAddeddate(LocalDate.now());
+                tableallocation.setTableallocationcode(dao.nextTblAllocationCode());
                 for (TableallocationHasTableddetail thd : tableallocation.getTableallocationHasTableddetailList()) {
                     thd.setTableallocation_id(tableallocation);
                 }

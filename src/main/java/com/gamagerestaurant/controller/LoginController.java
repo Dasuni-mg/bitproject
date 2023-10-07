@@ -43,13 +43,34 @@ public class LoginController {
     @Autowired
     private UserRepository dao;
 
+
+    // Endpoint to show the login page
     @RequestMapping(value ={"/login","/"}, method = RequestMethod.GET)
     public ModelAndView login() {
+
+        // Create a new ModelAndView instance
         ModelAndView modelAndView = new ModelAndView();
+
+        // Set the view name (the logical name of the view)
         modelAndView.setViewName("login.html");
+
+        // Return the ModelAndView object
         return modelAndView;
     }
 
+
+    @RequestMapping(value = "/mainwindow", method = RequestMethod.GET)
+    public ModelAndView mainwindow() {
+        ModelAndView modelAndView = new ModelAndView();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByUserName(auth.getName());
+
+        System.out.println(user.getUserName());
+        modelAndView.addObject("user", user);
+        modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
+        modelAndView.setViewName("mainvindow.html");
+        return modelAndView;
+    }
 
 
 
@@ -61,8 +82,6 @@ public class LoginController {
             return "Already Registered";
         }else{
            try{
-
-
             Employee employee = new Employee();
             employee.setGenderId(genderdao.getById(1));
             employee.setCivilstatusId(civilstatusdao.getById(1));
@@ -97,29 +116,24 @@ public class LoginController {
            }catch (Exception e) {
                return "Error-Saving : " + e.getMessage();
            }
-
         }
-
-
     }
 
-    @RequestMapping(value = "/mainwindow", method = RequestMethod.GET)
-    public ModelAndView mainwindow() {
-        ModelAndView modelAndView = new ModelAndView();
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByUserName(auth.getName());
-
-        System.out.println(user.getUserName());
-       modelAndView.addObject("user", user);
-        modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
-        modelAndView.setViewName("mainvindow.html");
-        return modelAndView;
-    }
 
     @PostMapping(value="/changepassword")
     public String changePasswordadd(@RequestBody ChangePassword changePassword) {
+
+        // Get the current authentication object from the SecurityContextHolder
+        // This contains details about the currently authenticated user
+        // (e.g., username, roles, and other authentication-related information)
+        // Note: This requires that the user is already authenticated; otherwise, it may return an anonymous or null authentication object.
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        //make User object as exuser and assing it to userService eke authenticated userslawa
         User exuser = userService.findUserByUserName(auth.getName());
+
+        //authentication user knk nathnm
         if (exuser == null) {
             return "Error-Saving : You have no Permission";
         } else {
@@ -128,7 +142,11 @@ public class LoginController {
                 if (currentuser == null) {
                     return "Username is incorrect";
                 } else {
+
+                    //front-end eken set krnna ewana password ekai db eke thiyena password ekai ee adaala userta,check krnwa
                     if (bCryptPasswordEncoder.matches(changePassword.getCurrentPassword(), currentuser.getPassword())) {
+
+                        //set the new password for exsisting user
                         currentuser.setPassword(bCryptPasswordEncoder.encode(changePassword.getNewPassword()));
 
                         dao.save(currentuser);
@@ -151,12 +169,10 @@ public class LoginController {
                 if (currentuser == null) {
                     return "User is incorrect";
                 } else {
-
                         currentuser.setPassword(bCryptPasswordEncoder.encode(changePassword.getNewPassword()));
                         currentuser.setHint(null);
                         dao.save(currentuser);
                         return "0";
-
                 }
             } catch (Exception e) {
                 return "Error-Saving : " + e.getMessage();

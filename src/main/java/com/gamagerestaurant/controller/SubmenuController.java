@@ -111,6 +111,7 @@ public class SubmenuController {
                 submenu.setAddeddate(LocalDate.now());
                 submenu.setSubmenustatus_id(daostatus.getById(1));
                 submenu.setEmployee_id(user.getEmployeeId());
+                submenu.setSubmenucode(dao.nextSubmenuCode());
              // submenu.setEmployee_id();
                 for(SubmenuHasMaterial shi : submenu.getSubmenuHasMaterialList()){
                     shi.setSubmenu_id(submenu);

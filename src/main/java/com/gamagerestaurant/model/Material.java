@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -40,6 +41,10 @@ public class Material {
     @Basic(optional = false)
     @Column(name = "description")
     private String description;
+
+    @Basic(optional = false)
+    @Column(name = "rop")
+    private BigDecimal rop;
 
     @Basic(optional = false)
     @Column(name = "unitsize")

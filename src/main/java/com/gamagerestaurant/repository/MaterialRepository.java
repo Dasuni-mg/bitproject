@@ -43,5 +43,8 @@ public interface MaterialRepository extends JpaRepository<Material,Integer> {
             "m.materialstatus_id.id=1")
     List<Material> materiallistbyporder(@Param("porderid") Integer porderid);
 
+    @Query(value = "SELECT * FROM gamage_restaurant.material as m where m.materialcategory_id=:materialcategoryid",nativeQuery = true)
+    List<Material> materiallistbymatCategory(@Param("materialcategoryid")int materialcategoryid);
+
 
 }

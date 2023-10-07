@@ -4,15 +4,12 @@
     <!-- Required meta tags -->
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="icon" type="image/x-icon" href="./resources/image/cart/chef.png">
 
-    <!-- Bootstrap CSS -->
-    <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-            crossorigin="anonymous"
-    />
-
+    <!--bootstrap 5-->
+    <link rel="stylesheet" type="text/css" href="resources/b5/bootstrap-5.1.3-dist/css/bootstrap.min.css"/>
+    <script src="/resources/b5/bootstrap-5.1.3-dist/js/bootstrap.bundle.js"></script>
+    <script src="/resources/b5/bootstrap-5.1.3-dist/js/bootstrap.min.js"></script>
     <!--Fontawesome-most popular icon set and toolkit-->
     <script defer src="resources/fontawesome/js/solid.js"></script>
     <script defer src="resources/fontawesome/js/fontawesome.js"></script>
@@ -28,7 +25,7 @@
     <link rel="stylesheet" href="resources/select2/css/select2.min.css">
     <script src="resources/select2/js/select2.min.js"></script>
     <script src="resources/script/sweetalert.min.js"></script>
-    <link rel="stylesheet" href="resources/style/common.css">
+
 
     <script src="resources/datatable/js/datatables.min.js"></script>
     <script src="resources/script/innertablefunctions.js"></script>
@@ -57,7 +54,7 @@
 
             <ul>
                 <li class="list">
-                    <a href="#">
+                    <a href="./dashboard.html">
                 <span class="icon"
                 ><ion-icon name="home-outline"></ion-icon
                 ></span>
@@ -73,7 +70,8 @@
                     </a>
                 </li>
                 <li class="list">
-                    <a href="#">
+                    <a data-toggle="modal"
+                       data-target="#settingsModal">
                 <span class="icon"
                 ><ion-icon name="settings-outline"></ion-icon
                 ></span>
@@ -81,7 +79,8 @@
                     </a>
                 </li>
                 <li class="list">
-                    <a href="#">
+                    <a onclick="btnSignoutMC()">
+
                 <span class="icon"
                 ><ion-icon name="log-out-outline"></ion-icon
                 ></span>
@@ -89,14 +88,14 @@
                     </a>
                 </li>
                 <li class="list">
-                    <a href="#" onclick="handalNavigationModel()">
+                    <a data-toggle="modal"
+                       data-target="#navModal">
                 <span class="icon"
                 ><ion-icon name="menu-outline"></ion-icon
                 ></span>
                         <span class="text"> Menu</span>
                     </a>
                 </li>
-
                 <div class="indicator"></div>
             </ul>
         </div>
@@ -116,11 +115,11 @@
     <!--Form-->
     <div class="bgForm">
         <div class="row  text-black ">
-            <h3 class="p-3">
+            <h3 class="px-3">
                 Take Away Management
             </h3>
         </div>
-        <div class="row m-8 ">
+        <div class="row mx-8 ">
             <div class="col-md-9">
                 <div class=" col-md-12">
                     <div class="card" style="background-color: transparent;">
@@ -135,34 +134,34 @@
                                         <div class="col-md-12 pb-3">
 
                                             <!--Inner form-->
-                                            <div class="card m-4" style="background-color:  transparent;">
+                                            <div class="card mx-4" style="background-color:  transparent;">
                                                 <div class="card-body">
                                                     <div style=" margin:5px;">
-                                                        <div class="row p-4">
+                                                        <div class="row px-4">
                                                             <ul class="nav nav-pills align-items-center">
-                                                                <li class="nav-item m-2" onclick="changeTab2('menu')">
+                                                                <li class="nav-item mx-2" onclick="changeTab2('menu')">
                                                                     <a class="nav-link active bg-dark text-white"
                                                                        id="tbMenu"
                                                                        href="#tbMenu">Menu</a>
                                                                 </li>
-                                                                <li class="nav-item m-2"
+                                                                <li class="nav-item mx-2"
                                                                     onclick="changeTab2('submenu')">
                                                                     <a class="nav-link  bg-dark  text-white"
                                                                        id="tbSubMenu"
                                                                        href="#tbSubMenu">Sub
                                                                         Menu</a>
                                                                 </li>
-                                                                <li class="nav-item m-2"  data-toggle="modal"
-                                                                    data-target="#MenuModal">
-                                                                    <a class="nav-link  bg-dark  text-white">
+                                                                <li class="nav-item mx-2" >
+                                                                    <a class="nav-link  bg-dark   text-white" href="index.html">
                                                                         View
                                                                         Menu</a>
 
                                                                 </li>
-                                                              
+
+
                                                             </ul>
                                                         </div>
-                                                        <div id="divmenu" class="p-5 m-3"
+                                                        <div id="divmenu" class="p-4 m-3"
                                                              style="background-color:  rgba(155,66,214,0.4);border-radius: 10px;">
                                                             <!--menu-->
                                                             <div class="col-md-4">
@@ -283,7 +282,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div id="divsubmenu" class="p-5 m-3"
+                                                        <div id="divsubmenu" class="p-4 m-3"
                                                              style="background-color:  rgba(155,66,214,0.4);border-radius: 10px;">
                                                             <!--sub menu-->
                                                             <div class="col-md-4">
@@ -329,7 +328,6 @@
                                                                             Price</b></label>
 
                                                                         <div class="input-group">
-
                                                                             <input type="text"
                                                                                    class="form-control  "
                                                                                    id="txtSMPrice"
@@ -388,6 +386,7 @@
                                                                         <button class="btn button btnClear "
                                                                                 type="button"
                                                                                 id="btnInnerClear2"
+                                                                                onclick="btninnerClearMC2()"
                                                                                 style="width: 25%">
                                                                             <i class="fas fa-recycle mr-2"></i>
                                                                             Clear
@@ -395,7 +394,7 @@
                                                                         <button class="btn button btnAdd"
                                                                                 style="width: 25%" type="button"
                                                                                 id="btnInnerAdd2"
-                                                                                onclick="btnInnerAddMC()">
+                                                                                onclick="btnInnerAddMC2()">
                                                                             <i class='fas fa-plus-circle mr-2'></i>Add
                                                                         </button>
                                                                         <button class="btn button btnAdd"
@@ -408,78 +407,77 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <!--Inner table-->
+                                                        <div class="row m-3 "  style="background-color:  rgba(155,66,214,0.4);"
+                                                             id="innertable">
+
+                                                            <script>
+                                                                function getMenuSubmenuname(ob) {
+                                                                    var msname = "";
+                                                                    if (ob.menu_id != null) {
+                                                                        msname = ob.menu_id.menuname;
+                                                                    } else {
+                                                                        msname = ob.submenu_id.submenuname;
+                                                                    }
+
+                                                                    return msname;
+                                                                }
+
+                                                                function getMenuSubmenuPrice(ob) {
+                                                                    var msprice = 0.00;
+                                                                    if (ob.menu_id != null) {
+                                                                        msprice = toDecimal(ob.menuprice);
+                                                                    } else {
+                                                                        msprice = toDecimal(ob.submenuprice);
+                                                                    }
+                                                                    return msprice;
+                                                                }
+
+                                                                var metadatainner = [
+
+
+                                                                    {
+                                                                        name: 'Menu / Sub menu Name',
+                                                                        search: true,
+                                                                        datatype: 'text',
+                                                                        property: getMenuSubmenuname
+                                                                    },
+                                                                    {
+                                                                        name: 'Menu /Sub menu Price',
+                                                                        search: true,
+                                                                        datatype: 'text',
+                                                                        property: getMenuSubmenuPrice
+                                                                    },
+
+                                                                    {
+                                                                        name: 'Order quantity',
+                                                                        search: true,
+                                                                        datatype: 'text',
+                                                                        property: 'ordercount'
+                                                                    },
+                                                                    {
+                                                                        name: 'Line Total',
+                                                                        search: true,
+                                                                        datatype: 'amount',
+                                                                        property: 'linetotal'
+                                                                    },
+
+                                                                ];
+                                                                tableForInnerForm("innertable", "tblInnerReservation", metadatainner, true);
+                                                            </script>
+                                                        </div>
                                                     </div>
                                                 </div>
 
-                                                <!--Inner table-->
-                                                <div class="row m-3 " style="background-color: #ffffff"
-                                                     id="innertable">
 
-                                                    <script>
-                                                        function getMenuSubmenuname(ob) {
-                                                            var msname = "";
-                                                            if (ob.menu_id != null) {
-                                                                msname = ob.menu_id.menuname;
-                                                            } else {
-                                                                msname = ob.submenu_id.submenuname;
-                                                            }
-
-                                                            return msname;
-                                                        }
-
-                                                        function getMenuSubmenuPrice(ob) {
-                                                            var msprice = 0.00;
-                                                            if (ob.menu_id != null) {
-                                                                msprice = toDecimal(ob.menuprice);
-                                                            } else {
-                                                                msprice = toDecimal(ob.submenuprice);
-                                                            }
-                                                            return msprice;
-                                                        }
-
-                                                        var metadatainner = [
-
-
-                                                            {
-                                                                name: 'Menu / Sub menu Name',
-                                                                search: true,
-                                                                datatype: 'text',
-                                                                property: getMenuSubmenuname
-                                                            },
-                                                            {
-                                                                name: 'Menu /Sub menu Price',
-                                                                search: true,
-                                                                datatype: 'text',
-                                                                property: getMenuSubmenuPrice
-                                                            },
-
-                                                            {
-                                                                name: 'Order quantity',
-                                                                search: true,
-                                                                datatype: 'text',
-                                                                property: 'ordercount'
-                                                            },
-                                                            {
-                                                                name: 'Line Total',
-                                                                search: true,
-                                                                datatype: 'amount',
-                                                                property: 'linetotal'
-                                                            },
-
-                                                        ];
-                                                        tableForInnerForm("innertable", "tblInnerReservation", metadatainner, true);
-                                                    </script>
-                                                </div>
                                             </div>
 
-                                            <div class="row m-2 p-3"   >
-                                                <div class="col-md-4">
+                                            <div class="row mx-2 px-3">
+                                                <div class="col-md-6">
                                                     <div class="form-group text-dark ">
                                                         <label for="txtTAmount"><b>Total Amount:</b>
                                                             <span style="color: red;">*</span> </label>
                                                         <div class="input-group">
-
-
                                                             <input type="text"
                                                                    class="form-control"
                                                                    id="txtTAmount"
@@ -492,17 +490,15 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <!--Discount Ratio-->
                                                     <div class="form-group  text-dark">
                                                         <label for="txtDiscountRatio"> <b>Discount Ratio:</b>
 
                                                         </label>
                                                         <div class="input-group">
-
-                                                                    
-
                                                             <input type="text"
+                                                                   readonly
                                                                    class="form-control"
                                                                    id="txtDiscountRatio"
                                                                    placeholder="Enter the Discount Ratio"
@@ -514,7 +510,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                            </div>
+                                            <div class="row mx-2 px-3">
+                                                <div class="col-md-6">
 
                                                     <!--Last Price-->
                                                     <div class="form-group   text-dark">
@@ -524,6 +522,7 @@
 
 
                                                             <input type="text"
+                                                                   readonly
                                                                    class="form-control"
                                                                    id="txtLastPrice"
                                                                    placeholder="Enter the Last Price"
@@ -536,12 +535,11 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row m-2 p-3"   >
                                                 <!--payment method-->
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group text-black ">
-                                                        <label for="cmbPMethod" class="font-weight-bold"><b>Payment method :
+                                                        <label for="cmbPMethod" class="font-weight-bold"><b>Payment
+                                                            method :
                                                             <span style="color: red;">*</span></b> </label>
                                                         <select id="cmbPMethod"
                                                                 class="form-control"
@@ -549,7 +547,10 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                            </div>
+                                            <div class="row m-2 p-3">
+
+                                                <div class="col-md-6">
 
                                                     <!--Paid amount-->
                                                     <div class="form-group   text-dark">
@@ -564,19 +565,21 @@
                                                                    data-toggle="tooltip"
                                                                    data-placement="bottom"
                                                                    title=""
-                                                                   onkeyup="textFieldBinder(txtPAmount,'^[0-9]{2,5}[.][0-9]{2}$','customerpayment','paidamount','oldcustomerpayment')"/>
+                                                                   onkeyup="textFieldBinder(txtPAmount,'^[0-9]{2,5}$','reservation','paidamount','oldreservation')"/>
 
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
 
                                                     <!--Balance amount-->
                                                     <div class="form-group   text-dark">
-                                                        <label class="" for="txtBAmount"><b>Balance amount :</b> </label>
+                                                        <label class="" for="txtBAmount"><b>Balance amount :</b>
+                                                        </label>
                                                         <span style="color: red;">*</span> </label>
                                                         <div class="input-group">
                                                             <input type="text"
+                                                                   readonly
                                                                    class="form-control"
                                                                    id="txtBAmount"
                                                                    placeholder="Enter the Balance amount"
@@ -729,7 +732,7 @@
                             <div class="container-fluid">
                                 <div class="row d-flex align-items-center">
                                     <div class="col-md-3">
-                                        <a class="btn button  font-weight-bold" href="http://localhost:8080/customer">Customer</a>
+                                        <a class="btn button  font-weight-bold" href="http://localhost:8080/take_away">Take Away</a>
 
                                     </div>
                                     <div class="col-md-3">
@@ -770,6 +773,9 @@
                                                                style="background-color:rgba(153,18,161,0.08) ">
                                                             <tbody>
                                                             <tr>
+                                                                <th>Reservation No :</th>
+                                                                <td id="tdResNO"></td>
+                                                            </tr> <tr>
                                                                 <th>Discount Ratio :</th>
                                                                 <td id="tddiscount"></td>
                                                             </tr>
@@ -780,12 +786,12 @@
 
                                                             <tr>
                                                                 <th>Paid Amount</th>
-                                                                <td id="tdpmount"></td>
+                                                                <td id="tdtPmount"></td>
                                                             </tr>
 
                                                             <tr>
                                                                 <th>Balance Amount :</th>
-                                                                <td id="tdbmount"></td>
+                                                                <td id="tdtBmount"></td>
                                                             </tr>
 
                                                             <!--                                                    <tr>-->
@@ -798,9 +804,7 @@
                                                         </table>
                                                     </div>
                                                     <div class="modal-footer bg-black">
-                                                        <button type="button" class="btn btn-secondary"
-                                                                data-dismiss="modal">Close
-                                                        </button>
+
                                                         <button type="button" class="btn btn-light"
                                                                 onclick="btnPrintRowMC()">Print
                                                         </button>
@@ -809,9 +813,6 @@
                                                 </table>
                                             </div>
                                         </div>
-
-
-
 
 
                                         <!--                                <div class="justify-content-between">-->
@@ -834,30 +835,32 @@
                                                 return ob.fname + " " + ob.lname;
                                             }
 
-                                            var metadata = [{
-                                                name: 'Discount ratio',
-                                                search: true,
-                                                datatype: 'text',
-                                                property: 'discountratio'
-                                            }, {
-                                                name: 'Total Amount',
-                                                search: true,
-                                                datatype: 'text',
-                                                property: 'lastprice'
-                                            },
+                                            var metadata = [
+                                                {
+                                                    name: 'Reservation No',
+                                                    search: true,
+                                                    datatype: 'text',
+                                                    property: 'reservationno'
+                                                },
+                                                {
+                                                    name: 'Total Amount',
+                                                    search: true,
+                                                    datatype: 'amount',
+                                                    property: 'lastprice'
+                                                },
                                                 {
                                                     name: 'Paid Amount',
                                                     search: true,
-                                                    datatype: 'text',
+                                                    datatype: 'amount',
                                                     property: 'paidamount'
                                                 },
                                                 {
-                                                    name: 'Balanced Amount',
+                                                    name: 'Take away status',
                                                     search: true,
                                                     datatype: 'text',
-                                                    property: 'balanceamount'
+                                                    property: 'reservationstatus_id.name'
                                                 }
-                                                ];
+                                            ];
                                             //table function
                                             table("tableParent", "tblTakeAway", metadata, true);
                                         </script>
@@ -868,9 +871,9 @@
                                     <div>
                                         <div style="display: inline-block ; float: left">
                                             <select class="form-control input" id="cmbPageSize" style="width: 80px;">
-                                                <option selected value="10">10</option>
-                                                <option value="15">15</option>
-                                                <option value="30">30</option>
+                                                <option selected value="5">5</option>
+                                                <option value="10">10</option>
+                                                <option value="100">100</option>
                                                 <option value="500">500</option>
                                                 <option value="1000">1000</option>
                                             </select>
@@ -888,7 +891,10 @@
                                 </div>
 
                             </div>
-                            <div class="modal-footer">
+                            <div class="modal-footer bg-black">
+                                <button type="button-86" class="btn btn-secondary"
+                                        data-dismiss="modal" onclick="window.location.href ='dashboard.html'">Close
+                                </button>
 
                             </div>
                         </div>
@@ -902,6 +908,392 @@
 
         </div>
 
+        <!-- Settings Modal-->
+        <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog"
+             aria-labelledby="settingsModal" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content" id="modalContent">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle"><i
+                                class="fas fa-cog"></i> Settings</h5>
+                        <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form id="changePasswordForm" onsubmit="return false">
+                            <div class="form-row">
+                                <!-- Username -->
+                                <div class="form-group text-black col-md-12">
+                                    <label for="txtUsernameView" class="text-blue">
+                                        <b>Username</b>
+                                    </label>
+                                    <div readonly class="form-control-plaintext"
+                                         id="txtUsernameView"></div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <!-- Current Password -->
+                                <div class="form-group text-black col-md-12">
+                                    <label for="txtCurrentPassword"
+                                           class="text-blue"><b>Current Password</b> <i
+                                            class="fas fa-question-circle  question ml-1"
+                                            data-toggle="tooltip" data-placement="right"
+                                            title=""></i></label>
+                                    <input type="password"
+                                           class="form-control form-control-sm changePasswordFields"
+                                           id="txtCurrentPassword"
+                                           onkeyup="textFieldBinder(txtCurrentPassword, '^[0-9]{5,}$', 'changePassword', 'currentPassword', 'oldChangePassword')">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <!-- New Password -->
+                                <div class="form-group text-black col-md-12">
+                                    <label for="txtNewPassword" class="text-blue"><b>New
+                                        Password</b><i
+                                            class="fas fa-question-circle question ml-1"
+                                            data-toggle="tooltip" data-placement="right"
+                                            title=""></i></label>
+                                    <input type="password"
+                                           class="form-control form-control-sm changePasswordFields"
+                                           id="txtNewPassword"
+                                           onkeyup="passwordFieldBinder(txtNewPassword, txtConfirmPassword, '^[0-9]{5,}$', 'changePassword', '', 'oldChangePassword')">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <!-- Confirm Password -->
+                                <div class="form-group text-black col-md-12">
+                                    <label for="txtConfirmPassword"
+                                           class="text-blue"><b>Confirm
+                                        Password</b><i
+                                            class="fas fa-question-circle question ml-1"
+                                            data-toggle="tooltip" data-placement="right"
+                                            title=""></i></label>
+                                    <input type="password"
+                                           class="form-control form-control-sm changePasswordFields"
+                                           id="txtConfirmPassword"
+                                           onkeyup="passwordFieldBinder(txtNewPassword, txtConfirmPassword, '^[0-9]{5,}$', 'changePassword', 'newPassword', 'oldChangePassword')">
+                                </div>
+                            </div>
+                        </form>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="brnClosechnagepasswordmodle" class="btn button" data-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="button" class="btn button"
+                                onclick="btnSaveChangePasswordMC()">Save changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Modal-->
+        <div class="modal fade" id="navModal" tabindex="-1" role="dialog"
+             aria-labelledby="settingsModal" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+                <div class="modal-content" id="">
+
+                    <div class="modal-body ml-5 bg-dark">
+
+                        <div class="row m-2 ml-5 flex justify-content-between dashboard">
+
+
+                            <div class="col-12  ">
+                                <div class="row ">
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/customer')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/customer.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Customer </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center   align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/take_away')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/away%20-%20Copy.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Take away </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/dinein')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/dinein.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Dine in </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/tableallocation1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/table.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Table Allocation</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/delivery')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/deliver.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Delivery </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/customerpayment')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/cpayment.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Customer Payment </h5>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row pl-5  ">
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/menu1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/menu.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Menu </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/submenu1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/submenu.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Sub Menu </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/supplier1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/supplier.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Supplier </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/qrequest')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="resources/image/cart/quotationReq.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Quotation Request </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/quotation1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/quotation.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Quotation </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/purchaseorder')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/porder.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Purchase Order </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12  ">
+                                <div class="row pl-5  ">
+
+
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/grn')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="resources/image/cart/grn.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                GRN </h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/spayment1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/spayment.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Suppier payment </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/material1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/material.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Material </h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2 text-center   align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/dailyremove')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/dailyremove.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Daily Remove </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/inventory')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/inventory.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Inventory </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center   align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/employee1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/employee.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Employee </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12  ">
+                                <div class="row pl-5  ">
+
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/user1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/user.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                User </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/privilage')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/previlage.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Previllage </h5>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>

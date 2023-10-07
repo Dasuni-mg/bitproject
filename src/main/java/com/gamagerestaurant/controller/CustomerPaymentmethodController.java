@@ -31,6 +31,12 @@ public class CustomerPaymentmethodController {
         return dao.getBymethod();
     }
 
+    //cpmethod/listcash
+    @GetMapping(value = "/listcash",produces = "application/json")
+    public Cpmethod cpmethodcash(){
+       return dao.getCash();
+    }
+
 
 
 }

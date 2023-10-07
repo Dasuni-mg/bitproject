@@ -18,65 +18,125 @@ public class UIController {
     private UserService userService;
 
     @RequestMapping(value = "/access-denied", method = RequestMethod.GET)
-    public ModelAndView error(){
+    public ModelAndView error() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("error.html");
         return modelAndView;
     }
 
-
     @RequestMapping(value = "/config", method = RequestMethod.GET)
-    public ModelAndView config(){
+    public ModelAndView config() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("config.html");
         return modelAndView;
     }
 
-    @GetMapping(value = {"/employee" })
-    public ModelAndView employeeui() {
-        ModelAndView modelAndView = new ModelAndView();
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByUserName(auth.getName());
-        if(user!= null){
-            modelAndView.setViewName("employee.html");
-        }
-        else
-            modelAndView.setViewName("error.html");
-
-        return modelAndView;
-    }
-
-
+//    ModelAndView
+//    -- allows you to pass data and control the rendering of the view in your Spring Boot application
 
     @GetMapping(path = "/employee/{id}")
     public ModelAndView employeessui() {
+
+        // Create a new ModelAndView instance
         ModelAndView modelAndView = new ModelAndView();
+
+        // Get the current authentication object from the SecurityContextHolder
+        // This contains details about the currently authenticated user
+        // (e.g., username, roles, and other authentication-related information)
+        // Note: This requires that the user is already authenticated; otherwise, it may return an anonymous or null authentication object.
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByUserName(auth.getName());
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("employee.html");
-        }
-        else
+        } else
             modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
 
-    @GetMapping(value = "/privilage")
+    @GetMapping(path = "/menulist")
+    public ModelAndView menulist() {
+        ModelAndView modelAndView = new ModelAndView();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByUserName(auth.getName());
+        if (user != null) {
+            modelAndView.setViewName("index.html");
+        } else
+            modelAndView.setViewName("error.html");
 
+        return modelAndView;
+    }
+
+    @GetMapping(path = "/changepassword")
+    public ModelAndView Changepasswordlist() {
+        ModelAndView modelAndView = new ModelAndView();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByUserName(auth.getName());
+        if (user != null) {
+            modelAndView.setViewName("changepassword.html");
+        } else
+            modelAndView.setViewName("error.html");
+
+        return modelAndView;
+    }
+
+    @GetMapping(value = {"/usagereport"})
+    public ModelAndView usagereport() {
+
+        //create model view object
+        ModelAndView modelAndView = new ModelAndView();
+
+        //get security context authentication object
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //get user from DB
+        User user = userService.findUserByUserName(auth.getName());
+        //Check user null
+        if (user != null) {
+            modelAndView.setViewName("Usagereport1.html");
+        } else
+            modelAndView.setViewName("error.html");
+
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/previlege")
     //function that execute the service
     public ModelAndView privilageui() {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByUserName(auth.getName());
-        if(user!= null){
-            modelAndView.setViewName("privilage.html");
-        }
-        else
+        if (user != null) {
+            modelAndView.setViewName("previlege1.html");
+        } else
             modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
+
+
+//    @GetMapping(value = {"/user" })
+//
+//    //function that execute the service
+//    public ModelAndView userui() {
+//
+//        //create model view object
+//        ModelAndView modelAndView = new ModelAndView();
+//
+//        //get security context authentication object
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        //get user from DB
+//        User user = userService.findUserByUserName(auth.getName());
+//        //Check user null
+//        if(user!= null){
+//            modelAndView.setViewName("user.html");
+//        }
+//        else
+//            modelAndView.setViewName("error.html");
+//
+//        return modelAndView;
+//    }
+
 
     @GetMapping(value = "/customer")
 
@@ -88,18 +148,17 @@ public class UIController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
-        if(user!= null){
+        if (user != null) {
             //check user null
             modelAndView.setViewName("customer.html");
-        }
-        else
+        } else
             modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
 
 
-    @GetMapping(value = {"/material" })
+    @GetMapping(value = {"/material"})
 
     //function that execute the service
     public ModelAndView materialui() {
@@ -112,17 +171,16 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("material.html");
-        }
-        else
+        } else
             modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
 
 
-    @GetMapping(value = {"/material1" })
+    @GetMapping(value = {"/material1"})
 
     //function that execute the service
     public ModelAndView material1ui() {
@@ -135,18 +193,16 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("material1.html");
-        }
-        else
+        } else
             modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
 
 
-
-    @GetMapping(value = {"/supplier" })
+    @GetMapping(value = {"/supplier"})
 
     //function that execute the service
     public ModelAndView supplierui() {
@@ -159,17 +215,36 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("supplier.html");
-        }
-        else
+        } else
             modelAndView.setViewName("supplier.html");
 
         return modelAndView;
     }
 
+    @GetMapping(value = {"/supplier1"})
 
-    @GetMapping(value = {"/quotationrequest" })
+    //function that execute the service
+    public ModelAndView supplier1ui() {
+
+        //create model view object
+        ModelAndView modelAndView = new ModelAndView();
+
+        //get security context authentication object
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //get user from DB
+        User user = userService.findUserByUserName(auth.getName());
+        //Check user null
+        if (user != null) {
+            modelAndView.setViewName("supplier1.html");
+        } else
+            modelAndView.setViewName("error.html");
+
+        return modelAndView;
+    }
+
+    @GetMapping(value = {"/quotationrequest"})
 
     //function that execute the service
     public ModelAndView quotationrequestui() {
@@ -182,16 +257,15 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("quotationrequest.html");
-        }
-        else
+        } else
             modelAndView.setViewName("quotationrequest.html");
 
         return modelAndView;
     }
 
-    @GetMapping(value = {"/qrequest" })
+    @GetMapping(value = {"/qrequest"})
 
     //function that execute the service
     public ModelAndView qrequestui() {
@@ -204,16 +278,15 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("qrequest.html");
-        }
-        else
+        } else
             modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
 
-    @GetMapping(value = {"/quotation" })
+    @GetMapping(value = {"/quotation"})
 
     //function that execute the service
     public ModelAndView quotationui() {
@@ -226,16 +299,36 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("quotation.html");
-        }
-        else
+        } else
             modelAndView.setViewName("quotation.html");
 
         return modelAndView;
     }
 
-    @GetMapping(value = {"/quotation1" })
+    @GetMapping(value = {"/tableallocation1"})
+    //function that execute the service
+    public ModelAndView TableAllocation1ui() {
+
+        //create model view object
+        ModelAndView modelAndView = new ModelAndView();
+
+        //get security context authentication object
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //get user from DB
+        User user = userService.findUserByUserName(auth.getName());
+        //Check user null
+        if (user != null) {
+            modelAndView.setViewName("tableallocation1.html");
+        } else
+            modelAndView.setViewName("tableallocation.js");
+
+        return modelAndView;
+    }
+
+
+    @GetMapping(value = {"/quotation1"})
 
     //function that execute the service
     public ModelAndView quotation1ui() {
@@ -248,17 +341,16 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
-            modelAndView.setViewName("quotation1.html");
-        }
-        else
+        if (user != null) {
+            modelAndView.setViewName("quotation.html");
+        } else
             modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
 
 
-    @GetMapping(value = {"/dailyremove" })
+    @GetMapping(value = {"/dailyremove"})
 
     //function that execute the service
     public ModelAndView dailyremoveui() {
@@ -271,16 +363,37 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("dailyremove.html");
-        }
-        else
+        } else
             modelAndView.setViewName("dailyremove.html");
 
         return modelAndView;
     }
 
-    @GetMapping(value = {"/purchaseorder" })
+    @GetMapping(value = {"/dailyremove1"})
+
+    //function that execute the service
+    public ModelAndView dailyremove1ui() {
+
+        //create model view object
+        ModelAndView modelAndView = new ModelAndView();
+
+        //get security context authentication object
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //get user from DB
+        User user = userService.findUserByUserName(auth.getName());
+        //Check user null
+        if (user != null) {
+            modelAndView.setViewName("dailyremove1.html");
+        } else
+            modelAndView.setViewName("error.html");
+
+        return modelAndView;
+    }
+
+    @GetMapping(value = {"/purchaseorder"})
+
 
     //function that execute the service
     public ModelAndView purchaseorderui() {
@@ -293,17 +406,37 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("purchaseorder.html");
-        }
-        else
-            modelAndView.setViewName("purchaseorder.html");
+        } else
+            modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
 
 
-    @GetMapping(value = {"/spayment" })
+    @GetMapping(value = {"/porder"})
+
+    //function that execute the service
+    public ModelAndView porderui() {
+
+        //create model view object
+        ModelAndView modelAndView = new ModelAndView();
+
+        //get security context authentication object
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //get user from DB
+        User user = userService.findUserByUserName(auth.getName());
+        //Check user null
+        if (user != null) {
+            modelAndView.setViewName("porder.html");
+        } else
+            modelAndView.setViewName("error.html");
+
+        return modelAndView;
+    }
+
+    @GetMapping(value = {"/spayment"})
 
     //function that execute the service
     public ModelAndView spaymentui() {
@@ -316,18 +449,38 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("spayment.html");
-        }
-        else
+        } else
             modelAndView.setViewName("spayment.html");
 
         return modelAndView;
     }
 
 
+    @GetMapping(value = {"/spayment1"})
 
-    @GetMapping(value = {"/submenu" })
+    //function that execute the service
+    public ModelAndView spayment1ui() {
+
+        //create model view object
+        ModelAndView modelAndView = new ModelAndView();
+
+        //get security context authentication object
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //get user from DB
+        User user = userService.findUserByUserName(auth.getName());
+        //Check user null
+        if (user != null) {
+            modelAndView.setViewName("spayment1.html");
+        } else
+            modelAndView.setViewName("error.html");
+
+        return modelAndView;
+    }
+
+
+    @GetMapping(value = {"/submenu"})
 
     //function that execute the service
     public ModelAndView submenuui() {
@@ -340,17 +493,16 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("submenu.html");
-        }
-        else
+        } else
             modelAndView.setViewName("submenu.html");
 
         return modelAndView;
     }
 
 
-    @GetMapping(value = {"/submenu1" })
+    @GetMapping(value = {"/submenu1"})
 
     //function that execute the service
     public ModelAndView submenu1ui() {
@@ -363,16 +515,15 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("submenu1.html");
-        }
-        else
+        } else
             modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
 
-    @GetMapping(value = {"/menu" })
+    @GetMapping(value = {"/menu"})
 
     //function that execute the service
     public ModelAndView menuui() {
@@ -385,17 +536,16 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("menu.html");
-        }
-        else
-            modelAndView.setViewName("menu.html");
+        } else
+            modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
 
 
-    @GetMapping(value = {"/menu1" })
+    @GetMapping(value = {"/menu1"})
 
     //function that execute the service
     public ModelAndView menu1ui() {
@@ -408,16 +558,15 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("menu1.html");
-        }
-        else
-            modelAndView.setViewName("menu1.html");
+        } else
+            modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
 
-    @GetMapping(value = {"/service" })
+    @GetMapping(value = {"/service"})
 
     //function that execute the service
     public ModelAndView serviceui() {
@@ -430,16 +579,15 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("service.html");
-        }
-        else
+        } else
             modelAndView.setViewName("service.html");
 
         return modelAndView;
     }
 
-    @GetMapping(value = {"/grn" })
+    @GetMapping(value = {"/grn"})
 
     //function that execute the service
     public ModelAndView grnui() {
@@ -452,16 +600,15 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("grn.html");
-        }
-        else
+        } else
             modelAndView.setViewName("grn.html");
 
         return modelAndView;
     }
 
-    @GetMapping(value = {"/grn1" })
+    @GetMapping(value = {"/grn1"})
 
     //function that execute the service
     public ModelAndView grn1ui() {
@@ -474,16 +621,15 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("grn1.html");
-        }
-        else
+        } else
             modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
 
-    @GetMapping(value = {"/materialinventory" })
+    @GetMapping(value = {"/materialinventory"})
 
     //function that execute the service
     public ModelAndView materialinventoryui() {
@@ -496,16 +642,15 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("materialinventory.html");
-        }
-        else
+        } else
             modelAndView.setViewName("materialinventory.html");
 
         return modelAndView;
     }
 
-    @GetMapping(value = {"/inventory" })
+    @GetMapping(value = {"/inventory"})
 
     //function that execute the service
     public ModelAndView inventoryui() {
@@ -518,17 +663,16 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("inventory.html");
-        }
-        else
+        } else
             modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
 
 
-    @GetMapping(value = {"/reservation" })
+    @GetMapping(value = {"/reservation"})
 
     //function that execute the service
     public ModelAndView reservationui() {
@@ -541,17 +685,16 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("reservation.html");
-        }
-        else
+        } else
             modelAndView.setViewName("reservation.js");
 
         return modelAndView;
     }
 
 
-    @GetMapping(value = {"/customerpayment" })
+    @GetMapping(value = {"/customerpayment"})
 
     //function that execute the service
     public ModelAndView Customerpaymentui() {
@@ -564,39 +707,16 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
-            modelAndView.setViewName("customerpayment.html");
-        }
-        else
+        if (user != null) {
+            modelAndView.setViewName("cpayment.html");
+        } else
             modelAndView.setViewName("customerpayment.js");
 
         return modelAndView;
     }
 
 
-    @GetMapping(value = {"/cpayment" })
-
-    //function that execute the service
-    public ModelAndView Cpaymentui() {
-
-        //create model view object
-        ModelAndView modelAndView = new ModelAndView();
-
-        //get security context authentication object
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        //get user from DB
-        User user = userService.findUserByUserName(auth.getName());
-        //Check user null
-        if(user!= null){
-            modelAndView.setViewName("cpayment.html");
-        }
-        else
-            modelAndView.setViewName("error.js");
-
-        return modelAndView;
-    }
-
-    @GetMapping(value = {"/tableallocation" })
+    @GetMapping(value = {"/tableallocation"})
     //function that execute the service
     public ModelAndView TableAllocationui() {
 
@@ -608,10 +728,9 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("tableallocation.html");
-        }
-        else
+        } else
             modelAndView.setViewName("tableallocation.js");
 
         return modelAndView;
@@ -626,7 +745,7 @@ public class UIController {
   REPORT
 ----------------------------------------------------- */
 
-    @GetMapping(value = {"/report/samplereport" })
+    @GetMapping(value = {"/report/samplereport"})
 
     //function that execute the service
     public ModelAndView Samplereportui() {
@@ -639,16 +758,15 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("samplereport.html");
-        }
-        else
+        } else
             modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
 
-    @GetMapping(value = {"/reportsupplierarreasui" })
+    @GetMapping(value = {"/reportsupplierarreasui"})
 
     //function that execute the service
     public ModelAndView Supplierarreasreportui() {
@@ -661,16 +779,16 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
-            modelAndView.setViewName("supplierarreas.html");
-        }
-        else
+        if (user != null) {
+            modelAndView.setViewName("supplierarreas1.html");
+        } else
             modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
 
-    @GetMapping(value = {"/reportmonthlyExpencesui" })
+
+    @GetMapping(value = {"/reportmonthlyExpencesui"})
 
     //function that execute the service
     public ModelAndView MonthlyExpencesui() {
@@ -683,17 +801,77 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
-            modelAndView.setViewName("Monthlyex.html");
-        }
-        else
+        if (user != null) {
+            modelAndView.setViewName("expenses1.html");
+        } else
+            modelAndView.setViewName("error.html");
+
+        return modelAndView;
+    }
+
+    //rop report
+    @GetMapping(value = {"/ropreport"})
+
+    //function that execute the service
+    public ModelAndView RopUI() {
+
+        //create model view object
+        ModelAndView modelAndView = new ModelAndView();
+
+        //get security context authentication object
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //get user from DB
+        User user = userService.findUserByUserName(auth.getName());
+        //Check user null
+        if (user != null) {
+            modelAndView.setViewName("rop1.html");
+        } else
             modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
 
 
-    @GetMapping(value = {"/menuanalysisui" })
+    @GetMapping(value = {"/reportmonthlysalessui"})
+    public ModelAndView MonthlySales() {
+
+        //create model view object
+        ModelAndView modelAndView = new ModelAndView();
+
+        //get security context authentication object
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //get user from DB
+        User user = userService.findUserByUserName(auth.getName());
+        //Check user null
+        if (user != null) {
+            modelAndView.setViewName("Monthlysalesreport1.html");
+        } else
+            modelAndView.setViewName("error.html");
+
+        return modelAndView;
+    }
+
+    @GetMapping(value = {"/table"})
+    public ModelAndView Table() {
+
+        //create model view object
+        ModelAndView modelAndView = new ModelAndView();
+
+        //get security context authentication object
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //get user from DB
+        User user = userService.findUserByUserName(auth.getName());
+        //Check user null
+        if (user != null) {
+            modelAndView.setViewName("ctable.html");
+        } else
+            modelAndView.setViewName("error.html");
+
+        return modelAndView;
+    }
+
+
+    @GetMapping(value = {"/menuanalysisui"})
 
     //function that execute the service
     public ModelAndView MenuAnalysisui() {
@@ -706,20 +884,17 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("menuanalysis.html");
-        }
-        else
+        } else
             modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
 
-    @GetMapping(value = {"/sampleui" })
+    @GetMapping(value = {"/sampleui"})
 
     //function that execute the service
-
-
 
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
@@ -727,10 +902,9 @@ public class UIController {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByUserName(auth.getName());
-        if(user!= null){
-            modelAndView.setViewName("user.html");
-        }
-        else
+        if (user != null) {
+            modelAndView.setViewName("user1.html");
+        } else
             modelAndView.setViewName("error.html");
 
         return modelAndView;
@@ -740,8 +914,7 @@ public class UIController {
     //New modules
 
 
-
-  @GetMapping(value = {"/dashboard" })
+    @GetMapping(value = {"/dashboard"})
 
     //function that execute the service
     public ModelAndView Dashboardui() {
@@ -754,16 +927,15 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("dashboard.html");
-        }
-        else
+        } else
             modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
 
-    @GetMapping(value = {"/delivery" })
+    @GetMapping(value = {"/delivery"})
 
     //function that execute the service
     public ModelAndView Deliveryui() {
@@ -776,17 +948,16 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("delivery.html");
-        }
-        else
+        } else
             modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
 
 
-    @GetMapping(value = {"/deliverytable" })
+    @GetMapping(value = {"/deliverytable"})
 
     //function that execute the service
     public ModelAndView Deliverytableui() {
@@ -799,40 +970,16 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("deliverytable.html");
-        }
-        else
+        } else
             modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
 
 
-
-    @GetMapping(value = {"/customertable" })
-
-    //function that execute the service
-    public ModelAndView Customertableui() {
-
-        //create model view object
-        ModelAndView modelAndView = new ModelAndView();
-
-        //get security context authentication object
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        //get user from DB
-        User user = userService.findUserByUserName(auth.getName());
-        //Check user null
-        if(user!= null){
-            modelAndView.setViewName("customertable.html");
-        }
-        else
-            modelAndView.setViewName("error.html");
-
-        return modelAndView;
-    }
-
-    @GetMapping(value = {"/take_away" })
+    @GetMapping(value = {"/take_away"})
 
     //function that execute the service
     public ModelAndView Take_awayui() {
@@ -845,17 +992,16 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("take_away.html");
-        }
-        else
+        } else
             modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
 
 
-     @GetMapping(value = {"/takeaway" })
+    @GetMapping(value = {"/takeaway"})
 
     //function that execute the service
     public ModelAndView Takeawayui() {
@@ -868,16 +1014,38 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("takeaway.html");
-        }
-        else
+        } else
             modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
 
-     @GetMapping(value = {"/dinein" })
+
+    @GetMapping(value = {"/employee1"})
+
+    //function that execute the service
+    public ModelAndView empnui() {
+
+        //create model view object
+        ModelAndView modelAndView = new ModelAndView();
+
+        //get security context authentication object
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //get user from DB
+        User user = userService.findUserByUserName(auth.getName());
+        //Check user null
+        if (user != null) {
+            modelAndView.setViewName("employee.html");
+        } else
+            modelAndView.setViewName("error.html");
+
+        return modelAndView;
+    }
+
+
+    @GetMapping(value = {"/dinein"})
 
     //function that execute the service
     public ModelAndView Dineinui() {
@@ -890,16 +1058,13 @@ public class UIController {
         //get user from DB
         User user = userService.findUserByUserName(auth.getName());
         //Check user null
-        if(user!= null){
+        if (user != null) {
             modelAndView.setViewName("dine_in.html");
-        }
-        else
+        } else
             modelAndView.setViewName("error.html");
 
         return modelAndView;
     }
-
-
 
 
 }

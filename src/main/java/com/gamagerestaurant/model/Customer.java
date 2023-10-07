@@ -79,11 +79,12 @@ public class Customer {
         this.regno=regno;
     }
 
-    public Customer(Integer id,String fname,String lname,String mobileno){
+    public Customer(Integer id,String fname,String lname,String mobileno,String address){
         this.id=id;
         this.fname=fname;
         this.lname=lname;
         this.mobileno=mobileno;
+        this.address=address;
 
 
     }

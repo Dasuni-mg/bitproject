@@ -1,10 +1,7 @@
 package com.gamagerestaurant.controller;
 
 import com.gamagerestaurant.model.*;
-import com.gamagerestaurant.repository.GrnRepository;
-import com.gamagerestaurant.repository.GrnstatusRepository;
-import com.gamagerestaurant.repository.PaymentstatusRepository;
-import com.gamagerestaurant.repository.SpaymentRepository;
+import com.gamagerestaurant.repository.*;
 import com.gamagerestaurant.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 
 @RestController
@@ -40,6 +38,9 @@ public class SpaymentController {
 
     @Autowired
     private GrnstatusRepository daogrnstatus;
+
+    @Autowired
+    private SupplierRepository daosupplier;
 
     //get next supplier bill [/spayment/nextsp]
     @GetMapping(value = "/nextsp", produces = "application/json")
@@ -97,8 +98,10 @@ public class SpaymentController {
         //check user null
         if (user != null & priv != null & priv.get("delete")) {
             try {
-
+                spayment.setPaymentstatus_id(daostatus.getById(1));
+                spayment.setBillno(dao.nextBillNo());
                 dao.save(spayment);
+
                 return "0";
             } catch (Exception ex) {
                 return "Delete Not Completed.." + ex.getMessage();

@@ -75,6 +75,10 @@ public class Customerpayment {
     @Basic(optional = false)
     private String transferaccname;
 
+    @Column(name = "remainningamount")
+    @Basic(optional = true)
+    private BigDecimal remainningamount;
+
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "cpstatus_id", referencedColumnName = "id")
     private CPstatus cpstatus_id;
@@ -93,6 +97,9 @@ public class Customerpayment {
 
     public Customerpayment(String billno) {
         this.billno = billno;
+    }
+    public Customerpayment(BigDecimal currentamount) {
+        this.currentamount =  currentamount;
     }
 
 

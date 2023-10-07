@@ -37,5 +37,5 @@ public class MenuHasSubmenu {
 
     @ManyToOne(optional = false,fetch = FetchType.EAGER)
     @JoinColumn(name="submenucategory_id",referencedColumnName ="id")
-    private Material submenucategory_id ;
+    private Submenucategory submenucategory_id ;
 }

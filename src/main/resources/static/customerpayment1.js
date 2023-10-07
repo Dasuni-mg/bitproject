@@ -10,11 +10,14 @@ function initialize() {
     btnClear.addEventListener("click", btnClearMC);
     btnUpdate.addEventListener("click", btnUpdateMC);
     txtSearchName.addEventListener("keyup", btnSearchMC);
-
+    cmbReservation.addEventListener("change",getReservationAmount);
+    cmbPMethod.addEventListener("change",getcmbPMethod);
+    txtPAmount.addEventListener("keyup",getBalanceAmount);
     privilages = httpRequest("../privilage?module=CUSTOMERPAYMENTS", "GET");
 
     //1.Make arrays as reservations,paymentcategories,paymentstatuses,paymentmethods and employees to get list for combop box
-    reservations = httpRequest("../reservation/list", "GET");
+    //reservations = httpRequest("../reservation/deliverylist", "GET");
+    reservations = httpRequest("../reservation/byisadvance", "GET");
     cpstatuses = httpRequest("../cpstatus/list", "GET");
     cpmethods = httpRequest("../cpmethod/list", "GET");
     employees = httpRequest("../employee/list", "GET");
@@ -24,18 +27,19 @@ function initialize() {
 
 
     //colours
-    valid = "3px solid #078D27B2";
-    invalid = "3px solid red";
-    initial = "3px solid #d6d6c2";
+    valid = "2px solid #078D27B2";
+    invalid = "2px solid red";
+    initial = " 1px solid #d6d6c2";
     updated = "3px solid #ff9900";
-    active = "rgba(250,210,11,0.7)";
+    active = "rgba(7,141,39,0.6)";
+
 
     loadView();
     //calling load view function for load view side
     loadForm();
     //calling load view function for load view side
-    changeTab('form');
-    //calling form tab
+    // changeTab('form');
+    // //calling form tab
 }
 
 function loadView() {
@@ -97,13 +101,13 @@ function viewspay(cpay, rowno) {
 
     customerpayment = JSON.parse(JSON.stringify(cpay));
 
-    tdBillNo.innerHTML = customerpayment.billno;
+    // tdBillNo.innerHTML = customerpayment.billno;
     tdReservation.innerHTML = customerpayment.reservation_id.reservationno;
     tdramount.innerHTML = customerpayment.reservationamount;
     tdcurrentamount.innerHTML = customerpayment.currentamount;
     tdPaidamount.innerHTML = customerpayment.paidamount;
     tdBAmount.innerHTML = customerpayment.balanceamount;
-    tdPaiddatetime.innerHTML = customerpayment.paiddatetime;
+    // tdPaiddatetime.innerHTML = customerpayment.paiddatetime;
 
 
     tdPaymentMethod.innerHTML = customerpayment.cpmethod_id.name;
@@ -131,6 +135,55 @@ function btnPrintRowMC() {
     }, 1500);
 }
 
+function getReservationAmount(){
+    console.log("RESRVATIOID ",JSON.parse(cmbReservation.value).id);
+    let reservationAmount = JSON.parse(cmbReservation.value).lastprice;
+    txtReservationAmount.value = parseFloat(reservationAmount).toFixed(2);
+    customerpayment.reservationamount = reservationAmount;
+    txtReservationAmount.style.border = valid;
+
+
+    console.log("RSSSS ",JSON.parse(cmbReservation.value))
+
+    current_amount = httpRequest("../customerpayment/getbycurrentamount?reservationid="+JSON.parse(cmbReservation.value).id,"GET");
+
+    console.log("Current Amount ",current_amount)
+    let currentAmount = current_amount.currentamount;
+    txtCurrentAmount.value=parseFloat(currentAmount).toFixed(2);
+    customerpayment.currentamount = currentAmount;
+    txtCurrentAmount.style.border = valid;
+
+
+    txtRAmount.value = (parseFloat(txtReservationAmount.value).toFixed(2)-parseFloat(txtCurrentAmount.value).toFixed(2)).toFixed(2);
+    customerpayment.remainningamount= parseFloat(0).toFixed(2);
+    console.log("YYGY ", customerpayment.remainningamount)
+    txtRAmount.style.border = valid;
+}
+
+
+function getBalanceAmount(){
+
+    txtBalanceAmount.value = (parseFloat(txtPAmount.value).toFixed(2)-parseFloat(txtRAmount.value).toFixed(2)).toFixed(2)
+    customerpayment.balanceamount= txtBalanceAmount.value;
+    txtBalanceAmount.style.border = valid;
+}
+
+function getcmbPMethod() {
+    if (JSON.parse(cmbPMethod.value).name == "Cheque") {
+        $('#ChequeView').modal('show');
+
+    }
+    if (JSON.parse(cmbPMethod.value).name == "Bank Deposit") {
+        $('#DepositeView').modal('show');
+
+    }
+    if (JSON.parse(cmbPMethod.value).name == "Money Transfer") {
+        $('#MoneyTView').modal('show');
+
+    }
+
+}
+
 function loadForm() {
     //customerpayment front end object
     customerpayment = new Object();
@@ -145,15 +198,16 @@ function loadForm() {
 
 
 
-    dtePDateTime.value = nowDate("datetime");
-    customerpayment.paiddatetime = dtePDateTime.value;
-    dtePDateTime.disabled = true;
+    // dtePDateTime.value = nowDate("datetime");
+    // customerpayment.paiddatetime = dtePDateTime.value;
+    // dtePDateTime.disabled = true;
 
 
     nextcp = httpRequest("../customerpayment/nextcp", "GET");
-    txtBillNo.value = nextcp.billno;
-    customerpayment.billno = txtBillNo.value;
-    txtBillNo.disabled = true;
+    // txtBillNo.value = nextcp.billno;
+    // customerpayment.billno = txtBillNo.value;
+    customerpayment.billno = nextcp.billno;
+    // txtBillNo.disabled = true;
 
 
     //text field empty
@@ -162,19 +216,53 @@ function loadForm() {
     txtCurrentAmount.value = "";
     txtPAmount.value = "";
     txtBalanceAmount.value = "";
-    dteDepoDateTime.value = "";
 
-    txtRemark.value = "";
+    txtRAmount.value = "";
+
+    // txtRemark.value = "";
     txtTId.value = "";
+
+    //deposite
     txtBname.value = "";
-    txtTACCname.value = "";
+    txtBAccNo.value = "";
+    dteDepoDateTime.value = "";
+    txtHoName  = "";
+
+
+    txtHName.value = "";
+
+    //cheque
+    txtCNo.value = "";
+    dteChequeDate.value = "";
+
+    // txtBBName = "";
+    // txtHoName = "";
+    // txtBaname = "";
+    // txtBaAccNo = "";
+    // txtTId = "";
+    // dteDeposDateTime = "";
+
+    //transfer
+    txtTBBName.value = "";
+    txtBaTname.value  = "";
+    txtTHoName.value = "";
+    txtTBaAccNo.value = "";
+    txtTId.value = "";
+    dteTDeposDateTime.value = "";
+
+
+
+
+
+
+    // txtTACCname.value = "";
 
     // set field to initial color
     setStyle(initial);
 
-    dtePDateTime.style.border = valid;
+    // dtePDateTime.style.border = valid;
 
-    txtBillNo.style.border = valid;
+    // txtBillNo.style.border = valid;
 
     disableButtons(false, true, true);
 
@@ -182,20 +270,43 @@ function loadForm() {
 
 function setStyle(style) {
 
-    txtBillNo.style.border = style;
+    // txtBillNo.style.border = style;
     txtReservationAmount.style.border = style;
     txtCurrentAmount.style.border = style;
     txtPAmount.style.border = style;
+    txtRAmount.style.border = style;
     txtBalanceAmount.style.border = style;
-    dtePDateTime.style.border = style;
+    // dtePDateTime.style.border = style;
     dteDepoDateTime.style.border = style;
 
-    txtRemark.style.border = style;
-    txtTId.style.border = style;
-    txtBname.style.border = style;
-    txtTACCname.style.border = style;
+    //txtRemark.style.border = style;
+    // txtTId.style.border = style;
+    // txtBname.style.border = style;
+    // txtTACCname.style.border = style;
     cmbReservation.style.border = style;
     cmbPMethod.style.border = style;
+
+
+    //deposite
+    txtBname.style.border = style;
+    txtBAccNo.style.border = style;
+    dteDepoDateTime.style.border = style;
+
+
+    txtHName.style.border = style;
+
+    //cheque
+    txtCNo.style.border = style;
+    dteChequeDate.style.border = style;
+
+
+    //transfer
+    txtTBBName.style.border = style;
+    txtBaTname.style.border = style;
+    txtTHoName.style.border = style;
+    txtTBaAccNo.style.border = style;
+    txtTId.style.border = style;
+    dteTDeposDateTime.style.border = style;
 
 
 }
@@ -236,13 +347,17 @@ function disableButtons(add, upd, del) {
 
     for (index in customerpayments) {
         if (customerpayments[index].cpstatus_id.name == "Deleted") {
-            tblCustomerPayments.children[1].children[index].style.color = "#f00";
-            tblCustomerPayments.children[1].children[index].style.border = "2px solid red";
+            tblCustomerPayments.children[1].children[index].style.color = "rgb(9,9,9)";
+            tblCustomerPayments.children[1].children[index].style.backgroundColor = "rgba(238,114,114,0.66)";
+
+            tblCustomerPayments.children[1].children[index].lastChild.children[0].disabled = true;
+            tblCustomerPayments.children[1].children[index].lastChild.children[0].style.cursor = "not-allowed";
+
             tblCustomerPayments.children[1].children[index].lastChild.children[1].disabled = true;
             tblCustomerPayments.children[1].children[index].lastChild.children[1].style.cursor = "not-allowed";
 
         }
-    }
+           }
 
 }
 
@@ -252,10 +367,10 @@ function getErrors() {
     var errors = "";
     addvalue = "";
 
-    if (customerpayment.billno == null) {
-        errors = errors + "\n" + "Bill No Not Entered";
-        txtBillNo.style.border = invalid;
-    } else addvalue = 1;
+    // if (customerpayment.billno == null) {
+    //     errors = errors + "\n" + "Bill No Not Entered";
+    //     txtBillNo.style.border = invalid;
+    // } else addvalue = 1;
 
 
     if (customerpayment.reservation_id == null) {
@@ -284,20 +399,25 @@ function getErrors() {
         txtBalanceAmount.style.border = invalid;
     } else addvalue = 1;
 
-    if (customerpayment.paiddatetime == null) {
-        errors = errors + "\n" + "Paiddate not selected";
-        dtePDateTime.style.border = invalid;
+    if (customerpayment.remainningamount == null) {
+        errors = errors + "\n" + "Remainning amount Not Entered";
+        txtRAmount.style.border = invalid;
     } else addvalue = 1;
+
+    // if (customerpayment.paiddatetime == null) {
+    //     errors = errors + "\n" + "Paiddate not selected";
+    //     dtePDateTime.style.border = invalid;
+    // } else addvalue = 1;
 
     if (customerpayment.cpmethod_id == null) {
         errors = errors + "\n" + "Cp method not selected";
         cmbPMethod.style.border = invalid;
     } else addvalue = 1;
 
-    if (customerpayment.cpstatus_id == null) {
-        errors = errors + "\n" + "cp status not selected";
-        cmbPStatus.style.border = invalid;
-    } else addvalue = 1;
+    // if (customerpayment.cpstatus_id == null) {
+    //     errors = errors + "\n" + "cp status not selected";
+    //     cmbPStatus.style.border = invalid;
+    // } else addvalue = 1;
 
 
     return errors;
@@ -306,7 +426,7 @@ function getErrors() {
 
 function btnAddMC() {
     if (getErrors() == "") {
-        if ( dteDepoDateTime.value == "" || dteDepoDateTime.value == "" || txtTId.value == "" || txtBname.value == "" || txtTACCname.value == "") {
+        if (  txtBname.value == "" ||  txtBAccNo.value == "" ||  dteDepoDateTime.value == "" ||  txtHoName .value == "" || txtCNo.value == "" || dteChequeDate.value == "" || txtTBBName.value == "" || txtBaTname.value == "" || txtTHoName.value =="" || txtTBaAccNo.value || txtTId.value == "" || dteTDeposDateTime .value == "" ) {
             swal({
                 title: "Are you sure to continue...?",
                 text: "Form has some empty fields.....",
@@ -343,11 +463,11 @@ function savedata() {
             "\nCurrentAmount : " + customerpayment.currentamount +
             "\nPaid Amount : " + customerpayment.paidamount +
             "\nBalance Amount : " + customerpayment.balanceamount +
-            "\nPaid Date Time : " + customerpayment.paiddatetime +
+            "\nRemain Balance : " + customerpayment.remainningamount +
 
             "\nCP Method : " + customerpayment.cpmethod_id.name +
-            "\nCP Status : " + customerpayment.cpstatus_id.name +
-            "\nEmployee : " + customerpayment.employee_id.callingname +
+            // "\nCP Status : " + customerpayment.cpstatus_id.name +
+            // "\nEmployee : " + customerpayment.employee_id.callingname +
             "\nReservation : " + customerpayment.reservation_id.reservationno,
 
 
@@ -433,21 +553,23 @@ function filldata(cpay) {
     oldcustomerpayment = JSON.parse(JSON.stringify(cpay));
 
 
-    txtBillNo.value = customerpayment.billno;
+    // txtBillNo.value = customerpayment.billno;
     txtReservationAmount.value = customerpayment.reservationamount;
     txtCurrentAmount.value = customerpayment.currentamount;
     txtPAmount.value = customerpayment.paidamount;
     txtBalanceAmount.value = customerpayment.balanceamount;
-    dtePDateTime.value = customerpayment.paiddatetime;
+    txtRAmount.value = customerpayment.balanceamount;
+
+    // dtePDateTime.value = customerpayment.paiddatetime;
     cmbReservation.value = customerpayment.reservation_id;
     cmbPMethod.value = customerpayment.cpmethod_id.name;
-    cmbPStatus.value = customerpayment.cpstatus_id.name;
+    // cmbPStatus.value = customerpayment.cpstatus_id.name;
 
 
     fillCombo(cmbReservation, "Select reservation", reservations, "cmobile", customerpayment.reservation_id);
     fillCombo(cmbPMethod, "Select Payment method", cpmethods, "name", customerpayment.cpmethod_id.name);
-    fillCombo(cmbPStatus, "Select Payment status", cpstatuses, "name", "Available");
-    cmbPStatus.disabled = false;
+    // fillCombo(cmbPStatus, "Select Payment status", cpstatuses, "name", "Available");
+    // cmbPStatus.disabled = false;
 
     disableButtons(true, false, false);
     setStyle(valid);
@@ -461,14 +583,17 @@ function filldata(cpay) {
     if (customerpayment.bankname == null)
         txtBname.style.border = initial;
 
-    if (customerpayment.remark == null)
-        txtRemark.style.border = initial;
+    // if (customerpayment.remark == null)
+    //     txtRemark.style.border = initial;
 
     if (customerpayment.transferid == null)
         txtTId.style.border = initial;
 
-    if (customerpayment.transferaccname == null)
-        txtTACCname.style.border = initial;
+    if (customerpayment.remainningamount == null)
+        txtRAmount.style.border = initial;
+
+    // if (customerpayment.transferaccname == null)
+    //     txtTACCname.style.border = initial;
 }
 
 //Update-Display updated values msg
@@ -478,8 +603,8 @@ function getUpdates() {
 
     if (customerpayment != null && oldcustomerpayment != null) {
 
-        if (customerpayment.billno != oldcustomerpayment.billno)
-            updates = updates + "\nBill NO is Changed.." + oldcustomerpayment.billno + " into " + customerpayment.billno;
+        // if (customerpayment.billno != oldcustomerpayment.billno)
+        //     updates = updates + "\nBill NO is Changed.." + oldcustomerpayment.billno + " into " + customerpayment.billno;
 
         if (customerpayment.reservation_id.reservationno != oldcustomerpayment.reservation_id.reservationno)
             updates = updates + "\nReservation is Changed.." + oldcustomerpayment.reservation_id.cmobile + " into " + customerpayment.reservation_id.cmobile;
@@ -495,6 +620,9 @@ function getUpdates() {
 
         if (customerpayment.balanceamount != oldcustomerpayment.balanceamount)
             updates = updates + "\n Balance amount is Changed.." + oldcustomerpayment.balanceamount + " into " + customerpayment.balanceamount;
+
+        if (customerpayment.remainningamount != oldcustomerpayment.remainningamount)
+            updates = updates + "\n Remain amount is Changed.." + oldcustomerpayment.remainningamount + " into " + customerpayment.remainningamount;
 
         if (customerpayment.paiddatetime != oldcustomerpayment.paiddatetime)
             updates = updates + "\nPaid date is Changed.." + oldcustomerpayment.paiddatetime + " into " + customerpayment.paiddatetime;
@@ -658,6 +786,18 @@ function btnPrintTableMC(spay) {
         newwindow.close();
     }, 1500);
 }
+
+function btnSignoutMC() {
+    var willDelete = confirm("Do you want to sign out?");
+    if (willDelete) {
+        alert("Sign Out Successful");
+        setTimeout(function() {
+            window.location.assign('/logout');
+        }, 1500);
+    }
+}
+
+
 
 function sortTable(cind) {
     cindex = cind;

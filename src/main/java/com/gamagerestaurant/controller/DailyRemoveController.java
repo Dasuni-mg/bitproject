@@ -2,9 +2,11 @@ package com.gamagerestaurant.controller;
 
 
 import com.gamagerestaurant.model.Dailyremove;
+import com.gamagerestaurant.model.Materialinventory;
 import com.gamagerestaurant.model.User;
 import com.gamagerestaurant.repository.DailyRemoveRepository;
 import com.gamagerestaurant.repository.DailyRemovestatusRepository;
+import com.gamagerestaurant.repository.MaterialInventoryRepository;
 import com.gamagerestaurant.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 @RestController
@@ -34,6 +38,10 @@ public class DailyRemoveController {
     @Autowired
     private DailyRemovestatusRepository daostatus;
 
+
+    @Autowired
+    private MaterialInventoryRepository daomaterialinventroy;
+
    /* @GetMapping(value = "/list",produces = "application/json")
     public List<Dailyremove> dailyremoveList(){
 
@@ -41,8 +49,8 @@ public class DailyRemoveController {
     }*/
 
     //get next supplier bill [/dailyremove/nextdr]
-    @GetMapping(value = "/nextdr",produces = "application/json")
-    public Dailyremove nextDRCode(){
+    @GetMapping(value = "/nextdr", produces = "application/json")
+    public Dailyremove nextDRCode() {
         String nextdailyremove = dao.nextDRCode();
 
         Dailyremove nextdr = new Dailyremove(nextdailyremove);
@@ -78,7 +86,7 @@ public class DailyRemoveController {
         HashMap<String, Boolean> priv = previlageController.getPrivilages(user, "DAILYREMOVE");
         //check user null
         if (user != null & priv != null & priv.get("select")) {
-            return dao.findAll(searchtext,PageRequest.of(page, size, Sort.Direction.DESC, "id"));
+            return dao.findAll(searchtext, PageRequest.of(page, size, Sort.Direction.DESC, "id"));
         } else
             return null;
     }
@@ -95,8 +103,22 @@ public class DailyRemoveController {
         //check user null
         if (user != null & priv != null & priv.get("add")) {
             try {
+                dailyremove.setDailyremovecode(dao.nextDRCode());
+                dailyremove.setDailyremovestatus_id(daostatus.getById(1));
+                dailyremove.setEmployee_id(user.getEmployeeId());
+                dailyremove.setDailyremovedate(LocalDate.now());
+
 
                 dao.save(dailyremove);
+
+//cross function for remove quantity in inventry(daily remove)
+// material class eken variable ekak hadagannawa
+                //materieal inventry reposiroty eken material object ekak gannawa inventry ekata  daily remove ekata adalawa
+                //e ganna material object ekata set karanawa  daily remove eke remove quantity eka
+                Materialinventory materialinventory = daomaterialinventroy.getByMaterial(dailyremove.getMaterial_id().getId());
+                materialinventory.setRemoveqty(dailyremove.getRemoveqty());
+                materialinventory.setAvaqty(materialinventory.getAvaqty().subtract(dailyremove.getRemoveqty()));
+                daomaterialinventroy.save(materialinventory);
                 return "0";
             } catch (Exception ex) {
                 return "Save Not Completed.." + ex.getMessage();

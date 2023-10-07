@@ -16,6 +16,8 @@ function initialize() {
     txtPAmount.addEventListener("keyup", txtPAmountCH);
 
 
+
+
     cmbSMenuCategory.addEventListener("change", cmbSMenuCategoryCH);
     cmbMenuCategory.addEventListener("change", cmbMenuCategoryCH);
     cmbMenu.addEventListener("change", cmbMenuCH);
@@ -45,11 +47,11 @@ function initialize() {
     cpmethods = httpRequest("../cpmethod/listbymethod", "GET");
 
     //colours
-    valid = "3px solid #078D27B2";
-    invalid = "3px solid red";
-    initial = "3px solid #d6d6c2";
+    valid = "2px solid #078D27B2";
+    invalid = "2px solid red";
+    initial = "1px solid #d6d6c2";
     updated = "3px solid #ff9900";
-    active = "rgba(250,210,11,0.7)";
+    active = "rgba(7,141,39,0.6)";
 
 
     loadView();
@@ -59,6 +61,10 @@ function initialize() {
     changeTab2('menu');
 
 }
+
+// function txtDatechange(){
+//     console.log("RESSSS ",reservation.reserveddate);
+// }
 
 function loadView() {
 
@@ -100,17 +106,18 @@ function loadTable(page, size, query) {
     reservations = new Array();          //reservation list
 
     //Request to get reservation  list from URL
-    var data = httpRequest("/reservation/findAll?page=" + page + "&size=" + size + query, "GET");
+    ///reservation/findAll?page=0&size=1
+    var data = httpRequest("/reservation/finddinein?page=" + page + "&size=" + size + query, "GET");
 
     if (data.content != undefined) reservations = data.content;
     createPagination('pagination', data.totalPages, data.number + 1, paginate);
 
     //fill data into table using reservations array
     //fill form-update, btnDeleteMc-Clear , Viewqreq-print
-    fillTable('tblDelivery', reservations, fillForm, btnDeleteMC, viewres);
-    clearSelection(tblDelivery);
+    fillTable('tblDinein', reservations, fillForm, btnDeleteMC, viewres);
+    clearSelection(tblDinein);
 
-    if (activerowno != "") selectRow(tblDelivery, activerowno, active);
+    if (activerowno != "") selectRow(tblDinein, activerowno, active);
 
 }
 
@@ -118,15 +125,17 @@ function loadTable(page, size, query) {
 function viewres(res, rowno) {
 
     reservation = JSON.parse(JSON.stringify(res));
+    customerpayment = httpRequest("/customerpayment/getbyreservation?reservationid="+reservation.id,"GET");
 
 
     tdResNo.innerHTML = reservation.reservationno;
     tdcname.innerHTML = reservation.cname;
     tdcmobile.innerHTML = reservation.cmobile;
-    tdaddress.innerHTML = reservation.deliveryaddress;
-    tdtamount.innerHTML = reservation.totalamount;
     tddiscountratio.innerHTML = reservation.discountratio;
-    tdlastprice.innerHTML = reservation.lastprice;
+    tdlastprice.innerHTML =parseFloat(reservation.lastprice).toFixed(2) ;
+    tdtamount.innerHTML =parseFloat(reservation.totalamount).toFixed(2) ;
+    tdpamount.innerHTML =parseFloat(customerpayment.paidamount).toFixed(2) ;
+    tdbamount.innerHTML = parseFloat(customerpayment.balanceamount).toFixed(2);
 
 
     $('#ReservationViewModal').modal('show')
@@ -142,7 +151,7 @@ function btnPrintRowMC() {
     newwindow.document.write("<html>" +
         "<head><style type='text/css'>.google-visualization-table-th {text-align: left;}</style></head>" +
         "<link rel='stylesheet' href='resources/bootstrap/css/bootstrap.min.css'/>" +
-        "<body><div style='margin-top: 150px'><h1>reservation Details :</h1></div>" +
+        "<body><div style='margin-top: 150px'><h1>Dine -In reservation Details :</h1></div>" +
         "<div>" + format + "</div>" +
         "<script>printformtable.removeAttribute('style')</script>" +
         "</body></html>");
@@ -154,14 +163,26 @@ function btnPrintRowMC() {
 
 function txtPAmountCH(){
 
-    customerpayment.paidamount = parseFloat(txtPAmount.value).toFixed(2);
-    console.log("CUS PAY ",customerpayment.paidamount)
 
-    txtBAmount.value= parseFloat(parseFloat(txtPAmount.value).toFixed(2) - parseFloat(txtLastPrice.value).toFixed(2)).toFixed(2);
-    // txtBAmount.value=toDecimal(txtPAmount.value - txtLastPrice.value);
+        if(parseFloat(txtLastPrice.value)<=parseFloat(txtPAmount.value)){
 
-    customerpayment.balanceamount = parseFloat(txtBAmount.value).toFixed(2);
-    txtBAmount.style.border=valid;
+            txtBAmount.value =((parseFloat(txtPAmount.value).toFixed(2)) -   (parseFloat(txtLastPrice.value).toFixed(2)));
+            console.log("BALA ",txtBAmount.value)
+
+            customerpayment.balanceamount = txtBAmount.value;
+            // customerpayment.balanceamount = parseFloat(customerpayment.balanceamount).toFixed(2);
+            console.log("ZE",customerpayment.balanceamount )
+            txtBAmount.style.border = valid;
+            btnAdd.disabled=false;
+        }else{
+
+            txtPAmount.style.border = invalid;
+            txtBAmount.style.border = invalid;
+            btnAdd.disabled=true;
+            txtBAmount.value=""
+        }
+
+
 }
 
 //Menu-Filterings---------------------------------------------------------------------------------------------
@@ -206,12 +227,25 @@ function cmbMenuCH() {
 
 //Menu Line Total
 function txtMenuOrderCountCH() {
-    txtMLineTotal.value = toDecimal(txtMenuOrderCount.value * txtMenuprice.value);
-    txtMLineTotal.style.border = valid;
-    reservationHasService.linetotal = txtMLineTotal.value;
 
-    if (txtMenuOrderCount.value > 0) {
+
+    if ((txtMenuOrderCount.value > 0) ) {
+        txtMenuOrderCount.style.border=valid;
+        txtMLineTotal.style.border = valid;
         btnInnerAdd.disabled = false;
+        txtMLineTotal.value = toDecimal(txtMenuOrderCount.value * txtMenuprice.value);
+        txtMLineTotal.style.border = valid;
+        reservationHasService.linetotal = txtMLineTotal.value;
+    }else {
+        txtMenuOrderCount.style.border=invalid;
+        txtMLineTotal.style.border = invalid;
+        btnInnerAdd.disabled = true;
+        txtMLineTotal.value = parseFloat(0).toFixed(2);
+
+    }
+
+    if(innermodifyupdate && (txtMenuOrderCount.value > 0)){
+        btnInnerAdd.disabled = true;
     }
 
     if(oldreservationHasService !=null && reservationHasService.ordercount != oldreservationHasService.ordercount){
@@ -222,6 +256,28 @@ function txtMenuOrderCountCH() {
         txtMLineTotal.style.border = updated;
     }
 
+
+}
+
+
+function btninnerClearMC2() {
+    //Get Cofirmation from the User window.confirm();
+    checkerr = getErrors();
+
+    if (oldreservationHasService == null && addvalue == "") {
+        loadForm();
+    } else {
+        swal({
+            title: "Form has some values, updates values... Are you sure to discard the form ?",
+            text: "\n",
+            icon: "warning", buttons: true, dangerMode: true, className: "purple-swal"
+        }).then((willDelete) => {
+            if (willDelete) {
+                loadForm();
+            }
+
+        });
+    }
 
 }
 
@@ -271,19 +327,35 @@ function cmbSMenuCH() {
 
 //Sub Menu Line Total
 function txtSMOrderCountCH() {
-    txtSMLineTotal.value = toDecimal(txtSMOrderCount.value * txtSMPrice.value);
-    txtSMLineTotal.style.border = valid;
-    reservationHasService.linetotal = txtSMLineTotal.value;
 
 
-    if (txtSMOrderCount.value > 0) {
+    if ((txtSMOrderCount.value > 0) ) {
+        txtSMOrderCount.style.border=valid;
+        txtSMLineTotal.style.border = valid;
         btnInnerAdd2.disabled = false;
+        txtSMLineTotal.value = toDecimal(txtSMOrderCount.value * txtSMPrice.value);
+        txtSMLineTotal.style.border = valid;
+        reservationHasService.linetotal = txtSMLineTotal.value;
+    }else {
+        txtSMOrderCount.style.border=invalid;
+        txtSMLineTotal.style.border = invalid;
+        btnInnerAdd2.disabled = true;
+        txtSMLineTotal.value = parseFloat(0).toFixed(2);
+
+    }
+
+    if(innermodifyupdate && (txtSMOrderCount.value > 0)){
+        btnInnerAdd2.disabled = true;
     }
 
     if(oldreservationHasService !=null && reservationHasService.linetotal != oldreservationHasService.linetotal){
         txtSMLineTotal.style.border = updated;
-
     }
+
+    if(oldreservationHasService !=null && reservationHasService.ordercount != oldreservationHasService.ordercount){
+        txtSMOrderCount.style.border = updated;
+    }
+
 }
 
 //Auto filtering Last price when enter the dis(%) ratio
@@ -356,13 +428,56 @@ function loadForm() {
     //Auto fill combo box
     fillCombo(cmbRegCustomer, "Select Customer", customers, "mobileno");
     fillCombo(cmbPMethod, "Select Payment method", cpmethods, "name", "");
+    fillCombo(cmbPMethod, "", cpmethods, "name", "Cash");
+    customerpayment.cpmethod_id = JSON.parse(cmbPMethod.value);
+    cmbPMethod.disabled = true;
+
 
 
     // Get Next Number Form Data Base
     var nextNumber = httpRequest("/reservation/nextrn", "GET");
-    txtReservationNo.value = nextNumber.reservationno;
-    reservation.reservationno = txtReservationNo.value;
-    txtReservationNo.disabled = "disabled";
+    // txtReservationNo.value = nextNumber.reservationno;
+    reservation.reservationno = nextNumber.reservationno;
+
+    //
+    //
+    // //set recived date time
+    // txtRDate.min = getCurrentDateTime('datetime');
+    // var endtoday = new Date();
+    // var nextweek = new Date();
+    //
+    // nextweek.setDate(endtoday.getDate()+365);
+    //
+    // let getEndMonth = nextweek.getMonth()+1;
+    // if(getEndMonth<10){
+    //     getEndMonth = "0"+getEndMonth;
+    // }
+    //
+    // let getEnddate = nextweek.getDate();
+    // if(getEnddate<10){
+    //     getEnddate = "0"+getEnddate;
+    // }
+    // let hours = nextweek.getHours();
+    // if(hours<10){
+    //     hours = "0"+hours;
+    // }
+    //
+    // let minutes = nextweek.getMinutes();
+    // if(minutes<10){
+    //     minutes = "0"+minutes;
+    // }
+    //
+    // let seconds = nextweek.getSeconds();
+    // if(seconds<10){
+    //     seconds = "0"+seconds;
+    // }
+    //
+    // txtRDate.max = nextweek.getFullYear()+"-"+getEndMonth+"-"+getEnddate+"T"+hours+":"+minutes+":"+seconds;
+
+
+
+    // reservation.reservationno = txtReservationNo.value;
+    // txtReservationNo.disabled = "disabled";
 
     //text field empty
     txtCName.value = "";
@@ -372,6 +487,7 @@ function loadForm() {
     txtLastPrice.value = "";
 
 
+
     //Initially the value of discountration=0
     txtDiscountRatio.value = "0";
     reservation.discountratio = txtDiscountRatio.value;
@@ -379,9 +495,9 @@ function loadForm() {
 
     // set field to initial color
     setStyle(initial);
-    txtReservationNo.style.border = valid;
+    // txtReservationNo.style.border = valid;
     txtDiscountRatio.style.border = valid;
-
+    cmbPMethod.style.border=valid;
 
     disableButtons(false, true, true);
 
@@ -396,6 +512,8 @@ function refreshInnerForm() {
     reservationHasService = new Object();
     oldreservationHasService = null;
 
+    innermodifyupdate = false;
+
     var totalamount = 0.00;
     //inner form
 
@@ -409,6 +527,30 @@ function refreshInnerForm() {
     txtSMPrice.value = "";
     txtSMOrderCount.value = "";
     txtSMLineTotal.value = "";
+
+
+    // txtRDate.max = getCurrentDateTime('date');
+
+    // var today = new Date();
+    // var previousweek = new Date();
+    //
+    // previousweek.setDate(today.getDate()-3);
+    //
+    // let month = previousweek.getMonth()+1;
+    // if(month<10){
+    //     month ="0"+ month;
+    // }
+    //
+    //
+    // let day = previousweek.getDate();
+    // if(day<10){
+    //     day ="0"+ day;
+    // }
+    //
+    //
+    // txtRDate.min = previousweek.getFullYear()+"-"+month+"-"+day;
+
+
 
     //fillCombo(cmbService, "Select Service", services, "servicename", "");
     fillCombo(cmbMenu, "Select Menu", menus, "menuname", "");
@@ -540,61 +682,65 @@ function refreshInnerForm() {
 function btnInnerAddMC() {
 
 
-    var resv = false;
-    for (var index in reservation.reservationHasServiceList) {
-        if (reservation.reservationHasServiceList[index].menu_id != null) {
 
-            if (reservation.reservationHasServiceList[index].menu_id.menuname == reservationHasService.menu_id.menuname) {
-                resv = true;
-                break;
-            }
+    swal({
+        title: "Are you sure...?",
+        text: "Add Following Details ... \n" +
+
+            "\n Menu Category: " + reservationHasService.menucategory_id.name+
+
+            "\n Menu Price : " + reservationHasService.menuprice,
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+        className: "purple-swal"
+    }).then((willDelete) => {
+        if (willDelete) {
+            swal({
+                title: "Save Successfully...!",
+                text: "\n",
+                icon: "success",
+                buttons: false,
+                timer: 1500,
+            });
+
+
+            reservation.reservationHasServiceList.push(reservationHasService);
+            refreshInnerForm();
         }
-    }
-
-
-    if (resv) {
-        swal({
-            title: "Already exist!",
-            icon: "warning",
-            text: '\n',
-            button: false,
-            timer: 1200,
-        });
-    } else {
-
-        reservation.reservationHasServiceList.push(reservationHasService);
-        refreshInnerForm();
-    }
+    });
 
 }
 
 
 //Add Menu Inner table
 function btnInnerAddMC2() {
-    var resv = false;
+
+    swal({
+        title: "Are you sure...?",
+        text: "Add Following Details ... \n" +
+
+            "\n Sub Menu Name: " + reservationHasService.submenu_id.submenuname+
+            "\n Sub Menu Price : " + reservationHasService.submenuprice,
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+        className: "purple-swal"
+    }).then((willDelete) => {
+        if (willDelete) {
+            swal({
+                title: "Save Successfully...!",
+                text: "\n",
+                icon: "success",
+                buttons: false,
+                timer: 1500,
+            });
 
 
-    for (var index in reservation.reservationHasServiceList) {
-        if (reservation.reservationHasServiceList[index].submenu_id != null) {
-
-            if (reservation.reservationHasServiceList[index].submenu_id.submenuname == reservationHasService.submenu_id.submenuname) {
-                resv = true;
-                break;
-            }
+            reservation.reservationHasServiceList.push(reservationHasService);
+            refreshInnerForm();
         }
-    }
-    if (resv) {
-        swal({
-            title: "Already exist!",
-            icon: "warning",
-            text: '\n',
-            button: false,
-            timer: 1200,
-        });
-    } else {
-        reservation.reservationHasServiceList.push(reservationHasService);
-        refreshInnerForm();
-    }
+    });
 
 }
 
@@ -605,12 +751,14 @@ function getMenuInnerErrors(){
     var innerErrors = "";
     var inneraddvalue = "";
 
+
     if(reservationHasService.menu_id== null){
         innerErrors = innerErrors +"\n"+ "Select the Menu";
         cmbMenu.style.border = invalid;
     }else{
         inneraddvalue = 1;
     }
+
 
     if(reservationHasService.menucategory_id== null){
         innerErrors = innerErrors +"\n"+ "Select the Menu Category";
@@ -641,9 +789,6 @@ function getMenuInnerErrors(){
     }else{
         inneraddvalue = 1;
     }
-
-
-
     return innerErrors;
 }
 
@@ -651,6 +796,13 @@ function getMenuInnerErrors(){
 
 
 function getSubMenuInnerErrors(){
+
+    if(reservationHasService.reserveddate== null){
+        innerErrors = innerErrors +"\n"+ "Select the Reserved Date";
+        txtRDate.style.border = invalid;
+    }else{
+        inneraddvalue = 1;
+    }
 
 
     var innerErrors = "";
@@ -689,10 +841,6 @@ function getSubMenuInnerErrors(){
     }else{
         inneraddvalue = 1;
     }
-
-
-
-
 
     return innerErrors;
 }
@@ -761,13 +909,14 @@ function btnInnerUpdateSubMenuMC(){
                 title: 'Nothing Updated..!', icon: "warning",
                 text: '\n',
                 button: false,
-                timer: 1200
+                timer: 1200,
+                className: "purple-swal",
             });
         }else{
             swal({
                 title: "Are you sure to inner form update following details...?",
                 text: "\n" + innerUpdate,
-                icon: "warning", buttons: true, dangerMode: true,
+                icon: "warning", buttons: true, dangerMode: true,className: "purple-swal",
             })
 
 
@@ -793,7 +942,8 @@ function btnInnerUpdateSubMenuMC(){
         swal({
             title: 'You have following errors in your form', icon: "error",
             text: '\n ' + getSubMenuInnerErrors(),
-            button: true
+            button: true,
+            className: "purple-swal",
         });
     }
 }
@@ -808,13 +958,14 @@ function btnInnerUpdateMenuMC(){
                 title: 'Nothing Updated..!', icon: "warning",
                 text: '\n',
                 button: false,
-                timer: 1200
+                timer: 1200,
+                className: "purple-swal",
             });
         }else{
             swal({
                 title: "Are you sure to inner form update following details...?",
                 text: "\n" + innerUpdate,
-                icon: "warning", buttons: true, dangerMode: true,
+                icon: "warning", buttons: true, dangerMode: true,className: "purple-swal",
             })
 
 
@@ -827,7 +978,8 @@ function btnInnerUpdateMenuMC(){
                             title: 'Your work has been Done \n Update SuccessFully..!',
                             text: '\n',
                             button: false,
-                            timer: 1200
+                            timer: 1200,
+
                         });
                         reservation.reservationHasServiceList[innerrow] = reservationHasService;
 
@@ -840,7 +992,8 @@ function btnInnerUpdateMenuMC(){
         swal({
             title: 'You have following errors in your form', icon: "error",
             text: '\n ' + getMenuInnerErrors(),
-            button: true
+            button: true,
+            className: "purple-swal",
         });
     }
 }
@@ -848,11 +1001,14 @@ function btnInnerUpdateMenuMC(){
 
 function innerModify(ob, innerrowno) {
 
+    innermodifyupdate = true;
+
     btnInnerUpdate.disabled = false;
     btnInnerUpdate.style.cursor = "pointer";
 
     btnInnerUpdate.disabled = false;
     btnInnerUpdateSM.disabled = false;
+
 
     innerrow = innerrowno
 
@@ -944,45 +1100,65 @@ function innerModify(ob, innerrowno) {
 
 function btninnerClearMC() {
     //Get Cofirmation from the User window.confirm();
-    checkerr = getErrors();
+    swal({
+        title: "Are you sure To Clear the Sub Area Details Form...?",
+        text: " \n",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+        className: "purple-swal",
+    }).then((willDelete) => {
+        if (willDelete) {
+            refreshInnerForm();
 
-    if (oldreservationHasService == null && addvalue == "") {
-        loadForm();
-    } else {
-        swal({
-            title: "Form has some values, updates values... Are you sure to discard the form ?",
-            text: "\n",
-            icon: "warning", buttons: true, dangerMode: true,
-        }).then((willDelete) => {
-            if (willDelete) {
-                loadForm();
-            }
-
-        });
-    }
+        }
+    });
 
 }
 
 function innerDelete(innerob, innerrow) {
-    swal({
-        title: "Are you sure to remove Item?",
-        text: "\nItem Name : " + innerob.reservation_id.name,
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-    }).then((willDelete) => {
-        if (willDelete) {
-            reservation.reservationHasServiceList.splice(innerrow, 1);
-            refreshInnerForm();
-        }
-    });
+
+    console.log("SEEE ",innerob)
+
+    if(innerob.menu_id !=null){
+        swal({
+            title: "Are you sure to remove Item?",
+            text: "\nItem Name : " + innerob.menu_id.menuname,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            className: "purple-swal",
+        }).then((willDelete) => {
+            if (willDelete) {
+                reservation.reservationHasServiceList.splice(innerrow, 1);
+                refreshInnerForm();
+            }
+        });
+    }else if(innerob.submenu_id !=null){
+
+        swal({
+            title: "Are you sure to remove Item?",
+            text: "\nItem Name : " + innerob.submenu_id.submenuname,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            className: "purple-swal",
+        }).then((willDelete) => {
+            if (willDelete) {
+                reservation.reservationHasServiceList.splice(innerrow, 1);
+                refreshInnerForm();
+            }
+        });
+
+    }
+
 }
 
 function setStyle(style) {
 
 
-
-    txtReservationNo.style.border = style;
+    //
+    // txtReservationNo.style.border = style;
     cmbRegCustomer.style.border = style;
     txtCName.style.border = style;
 
@@ -996,9 +1172,11 @@ function setStyle(style) {
     txtDiscountRatio.style.border = style;
     txtLastPrice.style.border = style;
     txtSCharge.style.border = style;
+
+    cmbPMethod.style.border = style;
+    txtPAmount.style.border = style;
+    txtBAmount.style.border = style;
     txtRDate.style.border = style;
-
-
 }
 
 function disableButtons(add, upd, del) {
@@ -1038,12 +1216,14 @@ function disableButtons(add, upd, del) {
     // select deleted data row
     for (index in reservations) {
         if (reservations[index].reservationstatus_id.name == "Deleted") {
-            tblDelivery.children[1].children[index].style.color = "#f00";
-            tblDelivery.children[1].children[index].style.border = "2px solid red";
-            tblDelivery.children[1].children[index].lastChild.children[1].disabled = true;
-            tblDelivery.children[1].children[index].lastChild.children[1].style.cursor = "not-allowed";
+            tblDinein.children[1].children[index].style.color = "rgb(9,9,9)";
+            tblDinein.children[1].children[index].style.backgroundColor = "rgba(238,114,114,0.66)";
+            tblDinein.children[1].children[index].lastChild.children[1].disabled = true;
+            tblDinein.children[1].children[index].lastChild.children[1].style.cursor = "not-allowed";
 
         }
+        //disabled updated
+        tblDinein.children[1].children[index].lastChild.children[0].style.display="none"
     }
 
 }
@@ -1061,7 +1241,7 @@ function getErrors() {
     } else addvalue = 1;
 
 
-    if (reservation.reserveddate == null) {
+    if (reservation.receiveddate == null) {
         errors = errors + "\n" + "Reserved Date Not Entered";
         txtRDate.style.border = invalid;
     } else addvalue = 1;
@@ -1114,6 +1294,7 @@ function btnAddMC() {
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
+                className: "purple-swal",
             }).then((willDelete) => {
                 if (willDelete) {
                     savedata();
@@ -1129,6 +1310,7 @@ function btnAddMC() {
             text: "\n" + getErrors(),
             icon: "error",
             button: true,
+            className: "purple-swal",
         });
 
     }
@@ -1140,7 +1322,8 @@ function savedata() {
         title: "Are you sure to add following reservation...?",
         text: "\n Reservation No: " + reservation.reservationno +
             "\n customer Name : " + reservation.cname +
-            "\n Customer mobile No : " + reservation.cmobile +
+            "\n Reserved Date : " + reservation.receiveddate +
+            "\n Customer mobile No : " + reservation.customer_id.mobileno +
             "\n Total Amount  : " + reservation.totalamount +
             "\n Discount ratio : " + reservation.discountratio +
             "\n Last price : " + reservation.lastprice +
@@ -1149,16 +1332,17 @@ function savedata() {
         icon: "warning",
         buttons: true,
         dangerMode: true,
+        className: "purple-swal",
     }).then((willDelete) => {
         if (willDelete) {
             var responseReservation = httpRequest("/reservation", "POST", reservation);
             customerpayment.reservation_id = httpRequest("/reservation/byreservationcode/"+reservation.reservationno,"GET");
             customerpayment.reservationamount = reservation.lastprice;
-            customerpayment.currentamount =reservation.lastprice;
+            customerpayment.currentamount =parseFloat(0).toFixed(2);
 
-
-           let nextcp = httpRequest("../customerpayment/nextcp", "GET");
+          let nextcp = httpRequest("../customerpayment/nextcp", "GET");
             customerpayment.billno =nextcp.billno;
+
             var responseCPayment = httpRequest("/customerpayment", "POST", customerpayment);
 
             if (responseReservation == "0" && responseCPayment =="0" ) {
@@ -1178,7 +1362,8 @@ function savedata() {
             } else swal({
                 title: 'Save not Success... , You have following errors', icon: "error",
                 text: '\n ' + response,
-                button: true
+                button: true,
+                className: "purple-swal",
             });
         }
     });
@@ -1195,12 +1380,11 @@ function btnClearMC() {
         swal({
             title: "Form has some values, updates values... Are you sure to discard the form ?",
             text: "\n",
-            icon: "warning", buttons: true, dangerMode: true,
+            icon: "warning", buttons: true, dangerMode: true,className: "purple-swal",
         }).then((willDelete) => {
             if (willDelete) {
                 loadForm();
             }
-
         });
     }
 
@@ -1215,12 +1399,11 @@ function fillForm(res, rowno) {
         swal({
             title: "Form has some values, updates values... Are you sure to discard the form ?",
             text: "\n",
-            icon: "warning", buttons: true, dangerMode: true,
+            icon: "warning", buttons: true, dangerMode: true,className: "purple-swal",
         }).then((willDelete) => {
             if (willDelete) {
                 filldata(res);
             }
-
         });
     }
 
@@ -1228,8 +1411,8 @@ function fillForm(res, rowno) {
 
 function filldata(res) {
 
-    clearSelection(tblDelivery);
-    selectRow(tblDelivery, activepage, active);
+    clearSelection(tblDinein);
+    selectRow(tblDinein, activepage, active);
 
     reservation = JSON.parse(JSON.stringify(res));
     console.log("RES ", reservation);
@@ -1237,7 +1420,9 @@ function filldata(res) {
 
 
     txtCName.value = reservation.cname;
-    txtRDate.value = reservation.deliveryaddress;
+    txtRDate.value = reservation.receiveddate;
+    // console.log("LIST ",reservation.reservationHasServiceList)
+    // txtRDate.value = reservation.reservationHasServiceList[5].reserveddate;
     txtDiscountRatio.value = reservation.discountratio;
     txtLastPrice.value = reservation.lastprice;
 
@@ -1246,6 +1431,18 @@ function filldata(res) {
     if (reservation.customer_id != null) {
         fillCombo(cmbRegCustomer, "Select Customer", customers, "mobileno", reservation.customer_id.mobileno);
     }
+
+    customerpayment = httpRequest("/customerpayment/getbyreservation?reservationid="+reservation.id,"GET");
+
+    customerpayment = JSON.parse(JSON.stringify(customerpayment));
+    oldcustomerpayment = JSON.parse(JSON.stringify(customerpayment));
+
+    console.log("CTUC ",customerpayment)
+    fillCombo(cmbPMethod, "Select Payment method", cpmethods, "name", customerpayment.cpmethod_id.name);
+
+
+    txtPAmount.value = parseFloat(customerpayment.paidamount).toFixed(2);
+    txtBAmount.value = parseFloat(customerpayment.balanceamount).toFixed(2);
 
 
 //Optional fields initial colour
@@ -1278,6 +1475,9 @@ function getUpdates() {
         if (reservation.cmobile != oldreservation.cmobile)
             updates = updates + "\nCustomer Mobile No is Changed";
 
+        if (reservation.receiveddate != oldreservation.receiveddate)
+            updates = updates + "\nReceived Date is changed";
+
         if (reservation.totalamount != oldreservation.totalamount)
             updates = updates + "\n total amount is Changed";
 
@@ -1301,13 +1501,14 @@ function btnUpdateMC() {
                 title: 'Nothing Updated..!', icon: "warning",
                 text: '\n',
                 button: false,
-                timer: 1200
+                timer: 1200,
+                className: "purple-swal",
             });
         else {
             swal({
                 title: "Are you sure to update following reservation details...?",
                 text: "\n" + getUpdates(),
-                icon: "warning", buttons: true, dangerMode: true,
+                icon: "warning", buttons: true, dangerMode: true,className: "purple-swal",
             })
                 .then((willDelete) => {
                     if (willDelete) {
@@ -1323,7 +1524,7 @@ function btnUpdateMC() {
                             });
                             loadSearchedTable();
                             loadForm();
-                            changeTab('table');
+                            // changeTab('table');
 
                         } else window.alert("Failed to Update as \n\n" + response);
                     }
@@ -1333,7 +1534,8 @@ function btnUpdateMC() {
         swal({
             title: 'You have following errors in your form', icon: "error",
             text: '\n ' + getErrors(),
-            button: true
+            button: true,
+            className: "purple-swal",
         });
 
 }
@@ -1346,7 +1548,7 @@ function btnDeleteMC(res) {
         title: "Are you sure to delete following reservation...?",
         text: "\n Reservation No : " + reservation.reservationno +
             "\n Customer Name : " + reservation.cname,
-        icon: "warning", buttons: true, dangerMode: true,
+        icon: "warning", buttons: true, dangerMode: true,className: "purple-swal",
     }).then((willDelete) => {
         if (willDelete) {
             var responce = httpRequest("/reservation", "DELETE", reservation);
@@ -1362,7 +1564,7 @@ function btnDeleteMC(res) {
                 swal({
                     title: "You have following erros....!",
                     text: "\n\n" + responce,
-                    icon: "error", button: true,
+                    icon: "error", button: true,className: "purple-swal",
                 });
             }
         }
@@ -1394,7 +1596,7 @@ function btnPrintTableMC(reservation) {
 
     //open new tab in the browser
     var newwindow = window.open();
-    formattab = tblDelivery.outerHTML;
+    formattab = tblDinein.outerHTML;
 
 
     //write print table in the new tab
@@ -1402,7 +1604,7 @@ function btnPrintTableMC(reservation) {
         "<html>" +
         "<head><style type='text/css'>.google-visualization-table-th {text-align: left;} .modifybutton{display: none} .isort{display: none}</style>" +
         "<link rel='stylesheet' href='resources/bootstrap/css/bootstrap.min.css'/></head>" +
-        "<body><div style='margin-top: 150px; '> <h1>reservation Details : </h1></div>" +
+        "<body><div style='margin-top: 150px; '> <h1>Dine-in  - Reservation Details : </h1></div>" +
         "<div>" + formattab + "</div>" +
         "</body>" +
         "</html>");
@@ -1442,11 +1644,11 @@ function sortTable(cind) {
             }
         );
     }
-    fillTable('tblDelivery', employees, fillForm, btnDeleteMC, viewitem);
-    clearSelection(tblDelivery);
+    fillTable('tblDinein', employees, fillForm, btnDeleteMC, viewitem);
+    clearSelection(tblDinein);
     loadForm();
 
-    if (activerowno != "") selectRow(tblDelivery, activerowno, active);
+    if (activerowno != "") selectRow(tblDinein, activerowno, active);
 
 
 }

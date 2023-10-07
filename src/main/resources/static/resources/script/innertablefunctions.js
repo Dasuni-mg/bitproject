@@ -10,15 +10,15 @@ function tableForInnerForm(parentId, id, metadata, hasBtn = true) {
     table.classList.add('table-striped');
     table.classList.add('table-sm');
     table.classList.add('text-center');
-    table.classList.add('mb-3');
+    table.classList.add('mb-0');
     var thead = createElement('thead');
-    thead.classList.add('bg-secondary');
-    thead.classList.add('text-white');
+    thead.classList.add('bg-link');
+    thead.classList.add('text-dark');
     var tbody = createElement('tbody');
     var row1 = createElement('tr');
 
     var th = createElement('th');
-    th.innerHTML = "Index";
+    th.innerHTML = "Number";
     row1.appendChild(th);
 
     for (var i = 1; i <= metadata.length; i++) {
@@ -122,8 +122,7 @@ function fillInnerTable(tableId, obs, modifyFunction = null, deleteFunction = nu
             buttonInnerUpdate.setAttribute('type', 'button');
             buttonInnerUpdate.classList.add('btn');
             buttonInnerUpdate.classList.add('btn-sm');
-            buttonInnerUpdate.classList.add('btn-outline-warning');
-            buttonInnerUpdate.innerHTML = '<i class="fa fa-edit"></i> ';
+            buttonInnerUpdate.innerHTML = '<i class="fas fa-file-alt"> </i> ';
             buttonInnerUpdate.onclick = function () {
                 idx = window.parseInt(this.parentNode.parentNode.firstChild.innerHTML);
                 modifyFunction(obs[idx - 1], idx-1);
@@ -133,10 +132,9 @@ function fillInnerTable(tableId, obs, modifyFunction = null, deleteFunction = nu
             var buttonInnerDelete = createElement('button');
             buttonInnerDelete.setAttribute('type', 'button');
             buttonInnerDelete.classList.add('btn');
-            buttonInnerDelete.classList.add('ml-1');
+            buttonInnerDelete.classList.add('ml-2');
             buttonInnerDelete.classList.add('btn-sm');
-            buttonInnerDelete.classList.add('btn-outline-danger');
-            buttonInnerDelete.innerHTML = '<i class="fa fa-trash-alt"></i> ';
+            buttonInnerDelete.innerHTML = '<i class="fa fa-trash"></i> ';
             buttonInnerDelete.onclick = function () {
                 idx = window.parseInt(this.parentNode.parentNode.firstChild.innerHTML);
                 deleteFunction(obs[idx - 1], idx-1);
