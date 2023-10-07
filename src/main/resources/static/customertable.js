@@ -21,13 +21,12 @@ function initialize() {
     //2.make controller and repository
 
 
-
     //colours
     valid = "3px solid #078D27B2";
     invalid = "3px solid red";
-    initial = "3px solid #d6d6c2";
+    initial = "1px solid #d6d6c2";
     updated = "3px solid #ff9900";
-    active = "rgba(250,210,11,0.7)";
+    active = "rgba(7,141,39,0.6)";
 
 
     loadView();
@@ -71,6 +70,105 @@ function loadTable(page, size, query) {
     if (activerowno != "") selectRow(tblCustomer, activerowno, active);
 
 }
+
+//check nic already exist or not
+function customerNICBinder(){
+
+    var val = txtNic.value.trim();
+
+
+    if(val !=""){
+
+        var regpattern = new RegExp('^(([0-9]{9}[vVxX])|([0-2]{12}))$');
+        //test eken krnne api input krna nic ekai set krla thiyena regex pattern ekai equal da kiyla
+        if(regpattern.test(val)){
+
+            var response = httpRequest("customer/byNIC?nic="+val,"GET")
+            console.log(response);
+            if(response == ""){
+                customer.nic = val;
+                if(oldcustomer !=null && customer.nic != oldcustomer.nic){
+                    txtNic.style.border = updated;
+                }else{
+                    txtNic.style.border = valid;
+                }
+
+
+            }else{
+                swal({
+                    title: "NIC Already Exist....!",
+                    text: "\n\n",
+                    icon: "warning",
+                    button: false,timer:1500,
+                    className: "purple-swal"
+                });
+            }
+
+        }else{
+            txtNic.style.border = invalid;
+            customer.nic = null;
+        }
+    }else{
+        if(txtNic.required){
+            txtNic.style.border = invalid;
+        }else{
+            txtNic.style.border = initial;
+        }
+        customer.nic = null;
+    }
+
+}
+
+
+//check mobile already exist or not
+function customerMobileBinder(){
+
+    var val = txtmno1.value.trim();
+
+
+    if(val !=""){
+
+        var regpattern = new RegExp('^0\\d{9}$');
+        //test eken krnne api input krna mobileno ekai set krla thiyena regex pattern ekai equal da kiyla
+        if(regpattern.test(val)){
+
+            var response = httpRequest("customer/byMobile?mobileno="+val,"GET")
+            console.log(response);
+            if(response == ""){
+                customer.mobileno = val;
+                if(oldcustomer !=null && customer.mobileno != oldcustomer.mobileno){
+                    txtmno1.style.border = updated;
+                }else{
+                    txtmno1.style.border = valid;
+                }
+
+
+            }else{
+                swal({
+                    title: "This Mobile No is  Already Exist....!",
+                    text: "\n\n",
+                    icon: "warning",
+                    button: false,
+                    timer:1500,
+                    className: "purple-swal"
+                });
+            }
+
+        }else{
+            txtmno1.style.border = invalid;
+            customer.mobileno = null;
+        }
+    }else{
+        if(txtmno1.required){
+            txtmno1.style.border = invalid;
+        }else{
+            txtmno1.style.border = initial;
+        }
+        customer.mobileno = null;
+    }
+
+}
+
 
 function paginate(page) {
     var paginate;
@@ -135,11 +233,6 @@ function loadForm() {
 
 
 
-//Auto selected Registered No
-    nextcu = httpRequest("../customer/nextcu", "GET");
-    txtRegNo.value = nextcu.regno;
-    customer.regno = txtRegNo.value;
-    txtRegNo.disabled = true;
 
 
     //text field empty when form load(without auto bind fields)
@@ -148,19 +241,16 @@ function loadForm() {
     txtmno1.value = "";
     txtmno2.value = "";
     txtNic.value = "";
-
+    txtAddress.value = "";
 
     setStyle(initial);
 
-    //for auto bind fields(border colour valid= green)
-    txtRegNo.style.border = valid;
 
     disableButtons(false, true);
 }
 
 function setStyle(style) {
 
-    txtRegNo.style.border = style;
     txtFname.style.border = style;
     txtLname.style.border = style;
     txtmno1.style.border = style;
@@ -207,14 +297,16 @@ function disableButtons(add, upd) {
 
     for (index in customers) {
         if (customers[index].customerstatus_id.name == "Deleted") {
-            tblCustomer.children[1].children[index].style.color = "#f00";
-            tblCustomer.children[1].children[index].style.border = "2px solid red";
+            tblCustomer.children[1].children[index].style.color = "rgb(9,9,9)";
+            tblCustomer.children[1].children[index].style.backgroundColor = "rgba(238,114,114,0.66)";
+
+            tblCustomer.children[1].children[index].lastChild.children[0].disabled = true;
+            tblCustomer.children[1].children[index].lastChild.children[0].style.cursor = "not-allowed";
+
             tblCustomer.children[1].children[index].lastChild.children[1].disabled = true;
             tblCustomer.children[1].children[index].lastChild.children[1].style.cursor = "not-allowed";
-
         }
     }
-
 }
 
 function getErrors() {
@@ -258,6 +350,8 @@ function btnAddMC() {
             text: "\n" + getErrors(),
             icon: "error",
             button: true,
+            // Add custom style here
+            className: "purple-swal",
         });
 
     }
@@ -271,11 +365,12 @@ function savedata() {
             "\nFirst Name : " + customer.fname +
             "\nLast Name : " + customer.lname +
             "\nMobile no1 : " + customer.mobileno +
-                       "\nBirthday : " + customer.birthday +
             "\nNIC : " + customer.nic ,
         icon: "warning",
         buttons: true,
         dangerMode: true,
+        // Add custom style here
+        className: "purple-swal",
     }).then((willDelete) => {
         if (willDelete) {
             var response = httpRequest("/customer", "POST", customer);
@@ -286,7 +381,8 @@ function savedata() {
                     title: 'Customer has been  \n Added SuccessFully..!',
                     text: '\n',
                     button: false,
-                    timer: 1200
+                    timer: 1200,
+
                 });
                 activepage = 1;
                 activerowno = 1;
@@ -296,7 +392,8 @@ function savedata() {
             } else swal({
                 title: 'Save not Success... , You have following errors', icon: "error",
                 text: '\n ' + response,
-                button: true
+                button: true,
+                className: "purple-swal"
             });
         }
     });
@@ -313,7 +410,10 @@ function btnClearMC() {
         swal({
             title: "Form has some values, updates values... Are you sure to discard the form ?",
             text: "\n",
-            icon: "warning", buttons: true, dangerMode: true,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            className: "purple-swal"
         }).then((willDelete) => {
             if (willDelete) {
                 loadForm();
@@ -334,7 +434,7 @@ function fillForm(cus, rowno) {
         swal({
             title: "Form has some values, updates values... Are you sure to discard the form ?",
             text: "\n",
-            icon: "warning", buttons: true, dangerMode: true,
+            icon: "warning", buttons: true, dangerMode: true,className: "purple-swal"
         }).then((willDelete) => {
             if (willDelete) {
                 filldata(cus);
@@ -354,7 +454,7 @@ function filldata(cus) {
     customer = JSON.parse(JSON.stringify(cus));
     oldcustomer = JSON.parse(JSON.stringify(cus));
 
-    txtRegNo.value = customer.regno;
+
     txtFname.value = customer.fname;
     txtLname.value = customer.lname;
     txtmno1.value = customer.mobileno;
@@ -429,13 +529,14 @@ function btnUpdateMC() {
                 title: 'Nothing Updated..!', icon: "warning",
                 text: '\n',
                 button: false,
-                timer: 1200
+                timer: 1200,
+                className: "purple-swal"
             });
         else {                                                                                      //if there are updates then
             swal({
                 title: "Are you sure to update following customer details...?",
                 text: "\n" + getUpdates(),
-                icon: "warning", buttons: true, dangerMode: true,
+                icon: "warning", buttons: true, dangerMode: true,className: "purple-swal"
             })
                 .then((willDelete) => {
                     if (willDelete) {
@@ -447,7 +548,9 @@ function btnUpdateMC() {
                                 title: 'Your work has been Done \n Update SuccessFully..!',
                                 text: '\n',
                                 button: false,
-                                timer: 1200
+                                timer: 1200,
+
+
                             });
                             loadSearchedTable();
                             loadForm();
@@ -456,7 +559,8 @@ function btnUpdateMC() {
                         } else swal({
                             title: 'Failed to add ...', icon: "error",
                             text: 'You have following error \n' + response,
-                            button: true
+                            button: true,
+                            className: "purple-swal"
                         });
                     }
                 });
@@ -465,7 +569,8 @@ function btnUpdateMC() {
         swal({
             title: 'You have following errors in your form', icon: "error",
             text: '\n ' + getErrors(),
-            button: true
+            button: true,
+            className: "purple-swal"
         });
 
 }
@@ -477,7 +582,7 @@ function btnDeleteMC(cus) {
         title: "Are you sure to delete following customer...?",
         text: "\n customer Number : " + customer.regno +
             "\n customer Fullname : " + customer.fname + " " + customer.lname,
-        icon: "warning", buttons: true, dangerMode: true,
+        icon: "warning", buttons: true, dangerMode: true,className: "purple-swal"
     }).then((willDelete) => {
         if (willDelete) {
             var responce = httpRequest("/customer", "DELETE", customer);
@@ -493,7 +598,7 @@ function btnDeleteMC(cus) {
                 swal({
                     title: "You have following erros....!",
                     text: "\n\n" + responce,
-                    icon: "error", button: true,
+                    icon: "error", button: true,className: "purple-swal"
                 });
             }
         }

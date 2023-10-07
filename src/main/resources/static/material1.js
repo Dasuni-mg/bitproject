@@ -29,10 +29,9 @@ function initialize() {
     //colours
     valid = "3px solid #078D27B2";
     invalid = "3px solid red";
-    initial = "3px solid #d6d6c2";
+    initial = " #d6d6c2";
     updated = "3px solid #ff9900";
-    active = "rgba(250,210,11,0.7)";
-
+    active = "rgba(7,141,39,0.6)";
 
 
     //calling load view function for load view side
@@ -78,7 +77,7 @@ function loadTable(page, size, query) {
 
 function paginate(page) {
     var paginate;
-    if (oldemployee == null) {
+    if (oldmaterial == null) {
         paginate = true;
     } else {
         if (getErrors() == '' && getUpdates() == '') {
@@ -150,19 +149,16 @@ function loadForm() {
 
     //text field empty
 
-    nextm = httpRequest("../material/nextm", "GET");
-    txtMaterialCode.value = nextm.materialcode;
-    material.materialcode = txtMaterialCode.value;
-    txtMaterialCode.disabled = true;
 
     txtMaterialName.value = "";
     txtUnitSize.value = "";
+    txtRop.value = "";
 
 
 
     // set field to initial color
     setStyle(initial);
-    txtMaterialCode.style.border = valid;
+
 
     disableButtons(false, true, true);
 }
@@ -170,11 +166,11 @@ function loadForm() {
 function setStyle(style) {
 
 
-    txtMaterialCode.style.border = style;
     txtMaterialName.style.border = style;
     txtUnitSize.style.border = style;
     cmbMaterialCategory.style.border = style;
     cmbUnitType.style.border = style;
+    txtRop.style.border = style;
 
 
 }
@@ -218,9 +214,12 @@ function disableButtons(add, upd, del) {
         if (materials[index].materialstatus_id.name == "Deleted") {
             tblMaterial.children[1].children[index].style.color = "#f00";
             tblMaterial.children[1].children[index].style.border = "2px solid red";
+
+            tblMaterial.children[1].children[index].lastChild.children[0].disabled = true;
+            tblMaterial.children[1].children[index].lastChild.children[0].style.cursor = "not-allowed";
+
             tblMaterial.children[1].children[index].lastChild.children[1].disabled = true;
             tblMaterial.children[1].children[index].lastChild.children[1].style.cursor = "not-allowed";
-
         }
     }
 
@@ -251,6 +250,11 @@ function getErrors() {
     if (material.unittype_id == null) {
         errors = errors + "\n" + "Unit type not selected";
         cmbUnitType.style.border = invalid;
+    } else addvalue = 1;
+
+    if (material.rop == null) {
+        errors = errors + "\n" + "ROP Not Entered";
+        txtRop.style.border = invalid;
     } else addvalue = 1;
 
     return errors;
@@ -284,7 +288,8 @@ function savedata() {
             "\nMaterial Category : " + material.materialcategory_id.name +
             "\nMaterial Name : " + material.materialname +
             "\nUnit size : " + material.unitsize +
-            "\nUnit type : " + material.unittype_id.name,
+            "\nUnit type : " + material.unittype_id.name+
+            "\nROP : " + material.rop,
 
 
         icon: "warning",
@@ -369,7 +374,7 @@ function filldata(mat) {
     oldmaterial = JSON.parse(JSON.stringify(mat));
 
 
-    txtMaterialCode.value = material.materialcode;
+
     txtMaterialName.value = material.materialname;
     txtUnitSize.value = material.unitsize;
 

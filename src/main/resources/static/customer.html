@@ -1,18 +1,21 @@
-<!DOCTYPE html>
+<!DOCTYPE html><!--    <link-->
+<!--            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"-->
+<!--            rel="stylesheet"-->
+<!--            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"-->
+<!--            crossorigin="anonymous"-->
+<!--    />-->
+
 <html lang="en">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="icon" type="image/x-icon" href="./resources/image/cart/chef.png">
 
-    <!-- Bootstrap CSS -->
-    <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-            crossorigin="anonymous"
-    />
-
+    <!--bootstrap 5-->
+    <link rel="stylesheet" type="text/css" href="resources/b5/bootstrap-5.1.3-dist/css/bootstrap.min.css"/>
+    <script src="/resources/b5/bootstrap-5.1.3-dist/js/bootstrap.bundle.js"></script>
+    <script src="/resources/b5/bootstrap-5.1.3-dist/js/bootstrap.min.js"></script>
     <!--Fontawesome-most popular icon set and toolkit-->
     <script defer src="resources/fontawesome/js/solid.js"></script>
     <script defer src="resources/fontawesome/js/fontawesome.js"></script>
@@ -34,13 +37,12 @@
     <script src="resources/script/innertablefunctions.js"></script>
     <script src="resources/script/common.bitproject.js"></script>
     <script src="customertable.js"></script>
-    <link rel="stylesheet" href="resources/style/common.css">
+<!--    <link rel="stylesheet" href="resources/style/common.css">-->
 
 
     <title>Hello,Gamage!</title>
 </head>
 <body>
-<!--script-->
 <script
         type="module"
         src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
@@ -58,7 +60,7 @@
 
             <ul>
                 <li class="list">
-                    <a href="#">
+                    <a href="dashboard.html">
                 <span class="icon"
                 ><ion-icon name="home-outline"></ion-icon
                 ></span>
@@ -74,7 +76,7 @@
                     </a>
                 </li>
                 <li class="list">
-                    <a href="#">
+                    <a  href="http://localhost:8080/changepassword">
                 <span class="icon"
                 ><ion-icon name="settings-outline"></ion-icon
                 ></span>
@@ -82,7 +84,8 @@
                     </a>
                 </li>
                 <li class="list">
-                    <a href="#">
+                    <a  onclick="btnSignoutMC()">
+
                 <span class="icon"
                 ><ion-icon name="log-out-outline"></ion-icon
                 ></span>
@@ -90,7 +93,8 @@
                     </a>
                 </li>
                 <li class="list">
-                    <a href="#" onclick="handalNavigationModel()">
+                    <a data-toggle="modal"
+                       data-target="#navModal">
                 <span class="icon"
                 ><ion-icon name="menu-outline"></ion-icon
                 ></span>
@@ -121,11 +125,11 @@
                 Customer Management
             </h3>
         </div>
-        <div class="row m-8 ">
+        <div class="row m-8  ">
             <div class="col-md-9">
-                <div class="row p-3 formcontent" style="background-color:white" id="divTable">
+                <div class="row p-3 formcontent" style="background-color: rgba(137,104,143,0.53)" id="divTable">
                     <div class="container-fluid ">
-                        <div class="row d-flex align-items-center justify-content-between">
+                        <div class="row d-flex align-items-center justify-content-between " >
 
                             <div class="col-md-3">
                                 <input type="button" class="btn button  font-weight-bold" value="Print Table"
@@ -145,7 +149,7 @@
 
 
                     <div class="table-responsive" id="tableParent"
-                         class="table-container m-5" style="background-color: white">
+                         class="table-container m-5" >
 
                         <script>
                             function getCustomerName(ob) {
@@ -375,9 +379,7 @@
                                     <div class="col-md-9">
                                         <div class=" col-md-12">
                                             <div class="card ">
-
                                                 <div class=" card-body">
-
                                                     <div class="row ">
                                                         <form class="" id="employeeform" onsubmit="return false">
                                                             <div class="row mt-2">
@@ -386,24 +388,7 @@
                                                                 <div class="col-md-12 p-3">
                                                                     <!--Registration NO/first name-->
                                                                     <div class="row mt-2 ">
-                                                                        <div class="col-md-4">
-                                                                            <div class="form-group text-black">
-                                                                                <label for="txtRegNo"><b>Registration
-                                                                                    No:
-                                                                                    <span style="color: red;">*</span></b></label>
-                                                                                <div class="input-group">
-                                                                                    <input type="text" class="form-control"
-                                                                                           id="txtRegNo"
-                                                                                           placeholder="Enter Registration No"
-                                                                                           required
-                                                                                           data-toggle="tooltip"
-                                                                                           data-placement="bottom"
-                                                                                           title="Enter five digits for Registration No-Eg: 12345"
-                                                                                           onkeyup="textFieldBinder(txtRegNo,'^[0-9]{5}$','customer','regno','olditem')">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-4">
+                                                                        <div class="col-md-6">
                                                                             <div class="form-group text-black">
                                                                                 <label for="txtFname"><b>First
                                                                                     Name: <span
@@ -416,11 +401,11 @@
                                                                                            data-toggle="tooltip"
                                                                                            data-placement="bottom"
                                                                                            title="First Letter of the firstname shoud be capital  Eg:Dasuni"
-                                                                                           onkeyup="textFieldBinder(txtFname,'^([A-Z][a-z]+)$','customer','fname','oldcustomer')">
+                                                                                           onkeyup="textFieldBinder(txtFname,'^([A-Z][a-z]{3,10})$','customer','fname','oldcustomer')">
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-md-4">
+                                                                        <div class="col-md-6">
                                                                             <div class="form-group text-black ">
                                                                                 <label for="txtLname"><b>Last
                                                                                     Name: <span
@@ -433,16 +418,14 @@
                                                                                            data-toggle="tooltip"
                                                                                            data-placement="bottom"
                                                                                            title="First Letter of the last name shoud be capital Eg:Gamage"
-                                                                                           onkeyup="textFieldBinder(txtLname,'^([A-Z][a-z]+)$','customer','lname','oldcustomer')">
+                                                                                           onkeyup="textFieldBinder(txtLname,'^([A-Z][a-z]{3,10})$','customer','lname','oldcustomer')">
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
 
-
                                                                     <!--last name/contact No 1-->
                                                                     <div class="row mt-2 ">
-
                                                                         <div class="col-md-6">
                                                                             <div class="form-group text-black ">
                                                                                 <label for="txtmno1"><b>Contact
@@ -457,8 +440,7 @@
                                                                                            data-toggle="tooltip"
                                                                                            data-placement="bottom"
                                                                                            title="Number must have 10 numbers  Eg: 0768354408"
-                                                                                           onkeyup="textFieldBinder(txtmno1,'^0\\d{9}$','customer','mobileno','oldcustomer')">
-                                                                                </div>
+                                                                                           onkeyup="customerMobileBinder();">                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-6">
@@ -482,10 +464,11 @@
                                                                     <!--contact no2/NIC-->
                                                                     <div class="row mt-2 ">
 
-                                                                        <div class="col-md-4">
+                                                                        <div class="col-md-6">
                                                                             <div class="form-group text-black ">
 
-                                                                                <label for="txtNic"><b>NIC:</b>
+                                                                                <label for="txtNic"><b>NIC:<span
+                                                                                        style="color: red;">*</span></b>
                                                                                 </label>
                                                                                 <div class="input-group">
 
@@ -494,12 +477,13 @@
                                                                                            placeholder="Enter NIC"
                                                                                            data-toggle="tooltip"
                                                                                            data-placement="bottom"
+                                                                                           required
                                                                                            title="9 digite plus vVxX or 12 digits  Eg:967751979V"
-                                                                                           onkeyup="textFieldBinder(txtNic,'^(([\\d]{9}[vVxX])|([\\d]{12}))$','customer','nic','oldcustomer')">
+                                                                                           onkeyup="customerNICBinder();">
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-md-4">
+                                                                        <div class="col-md-6">
                                                                             <div class="form-group text-black ">
                                                                                 <label for="txtAddress"><b>Customer
                                                                                     Address:
@@ -521,17 +505,11 @@
 
                                                                     </div>
                                                                 </div>
-
-
                                                             </div>
                                                             <div class="col-md-2"></div>
-
-
                                                         </form>
                                                     </div>
-
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
@@ -598,6 +576,394 @@
                     </div>
                 </div>
 
+
+
+                <!-- Settings Modal-->
+                <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog"
+                     aria-labelledby="settingsModal" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                        <div class="modal-content" id="modalContent">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalTitle"><i
+                                        class="fas fa-cog"></i> Settings</h5>
+                                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                <form id="changePasswordForm" onsubmit="return false">
+                                    <div class="form-row">
+                                        <!-- Username -->
+                                        <div class="form-group text-black col-md-12">
+                                            <label for="txtUsernameView" class="text-blue">
+                                                <b>Username</b>
+                                            </label>
+                                            <div readonly class="form-control-plaintext"
+                                                 id="txtUsernameView"></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <!-- Current Password -->
+                                        <div class="form-group text-black col-md-12">
+                                            <label for="txtCurrentPassword"
+                                                   class="text-blue"><b>Current Password</b> <i
+                                                    class="fas fa-question-circle  question ml-1"
+                                                    data-toggle="tooltip" data-placement="right"
+                                                    title=""></i></label>
+                                            <input type="password"
+                                                   class="form-control form-control-sm changePasswordFields"
+                                                   id="txtCurrentPassword"
+                                                   onkeyup="textFieldBinder(txtCurrentPassword, '^[0-9]{5,}$', 'changePassword', 'currentPassword', 'oldChangePassword')">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <!-- New Password -->
+                                        <div class="form-group text-black col-md-12">
+                                            <label for="txtNewPassword" class="text-blue"><b>New
+                                                Password</b><i
+                                                    class="fas fa-question-circle question ml-1"
+                                                    data-toggle="tooltip" data-placement="right"
+                                                    title=""></i></label>
+                                            <input type="password"
+                                                   class="form-control form-control-sm changePasswordFields"
+                                                   id="txtNewPassword"
+                                                   onkeyup="passwordFieldBinder(txtNewPassword, txtConfirmPassword, '^[0-9]{5,}$', 'changePassword', '', 'oldChangePassword')">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <!-- Confirm Password -->
+                                        <div class="form-group text-black col-md-12">
+                                            <label for="txtConfirmPassword"
+                                                   class="text-blue"><b>Confirm
+                                                Password</b><i
+                                                    class="fas fa-question-circle question ml-1"
+                                                    data-toggle="tooltip" data-placement="right"
+                                                    title=""></i></label>
+                                            <input type="password"
+                                                   class="form-control form-control-sm changePasswordFields"
+                                                   id="txtConfirmPassword"
+                                                   onkeyup="passwordFieldBinder(txtNewPassword, txtConfirmPassword, '^[0-9]{5,}$', 'changePassword', 'newPassword', 'oldChangePassword')">
+                                        </div>
+                                    </div>
+                                </form>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="brnClosechnagepasswordmodle" class="btn button" data-dismiss="modal">
+                                    Close
+                                </button>
+                                <button type="button" class="btn button"
+                                        onclick="btnSaveChangePasswordMC()">Save changes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Modal-->
+                <div class="modal fade" id="navModal" tabindex="-1" role="dialog"
+                     aria-labelledby="settingsModal" aria-hidden="true">
+                    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+                        <div class="modal-content" id="">
+
+                            <div class="modal-body ml-5 bg-dark">
+
+                                <div class="row m-2 ml-5 flex justify-content-between dashboard">
+
+
+                                    <div class="col-12  ">
+                                        <div class="row ">
+                                            <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                                 onclick="window.location.assign('http://localhost:8080/customer')">
+                                                <div style="width:150px; height:130px">
+                                                    <img class="navIcon" src="./resources/image/customer.png"
+                                                         style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                                </div>
+                                                <div class="card cart- footer mainW text-black p-0"
+                                                     style="width:150px">
+                                                    <h5>
+                                                        Customer </h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-center   align-items-center" style="max-width: 18rem;"
+                                                 onclick="window.location.assign('http://localhost:8080/take_away')">
+                                                <div style="width:150px; height:130px">
+                                                    <img class="navIcon" src="./resources/image/away%20-%20Copy.png"
+                                                         style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                                </div>
+                                                <div class="card cart- footer mainW text-black p-0"
+                                                     style="width:150px">
+                                                    <h5>
+                                                        Take away </h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                                 onclick="window.location.assign('http://localhost:8080/dinein')">
+                                                <div style="width:150px; height:130px">
+                                                    <img class="navIcon" src="./resources/image/dinein.png"
+                                                         style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                                </div>
+                                                <div class="card cart- footer mainW text-black p-0"
+                                                     style="width:150px">
+                                                    <h5>
+                                                        Dine in </h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                                 onclick="window.location.assign('http://localhost:8080/tableallocation1')">
+                                                <div style="width:150px; height:130px">
+                                                    <img class="navIcon" src="./resources/image/table.png"
+                                                         style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                                </div>
+                                                <div class="card cart- footer mainW text-black p-0"
+                                                     style="width:150px">
+                                                    <h5>
+                                                        Table Allocation</h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                                 onclick="window.location.assign('http://localhost:8080/delivery')">
+                                                <div style="width:150px; height:130px">
+                                                    <img class="navIcon" src="./resources/image/deliver.png"
+                                                         style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                                </div>
+                                                <div class="card cart- footer mainW text-black p-0"
+                                                     style="width:150px">
+                                                    <h5>
+                                                        Delivery </h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                                 onclick="window.location.assign('http://localhost:8080/customerpayment')">
+                                                <div style="width:150px; height:130px">
+                                                    <img class="navIcon" src="./resources/image/cart/cpayment.png"
+                                                         style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                                </div>
+                                                <div class="card cart- footer mainW text-black p-0"
+                                                     style="width:150px">
+                                                    <h5>
+                                                        Customer Payment </h5>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row pl-5  ">
+                                            <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                                 onclick="window.location.assign('http://localhost:8080/menu1')">
+                                                <div style="width:150px; height:130px">
+                                                    <img class="navIcon" src="./resources/image/cart/menu.png"
+                                                         style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                                </div>
+                                                <div class="card cart- footer mainW text-black p-0"
+                                                     style="width:150px">
+                                                    <h5>
+                                                        Menu </h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                                 onclick="window.location.assign('http://localhost:8080/submenu1')">
+                                                <div style="width:150px; height:130px">
+                                                    <img class="navIcon" src="./resources/image/cart/submenu.png"
+                                                         style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                                </div>
+                                                <div class="card cart- footer mainW text-black p-0"
+                                                     style="width:150px">
+                                                    <h5>
+                                                        Sub Menu </h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                                 onclick="window.location.assign('http://localhost:8080/supplier1')">
+                                                <div style="width:150px; height:130px">
+                                                    <img class="navIcon" src="./resources/image/cart/supplier.png"
+                                                         style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                                </div>
+                                                <div class="card cart- footer mainW text-black p-0"
+                                                     style="width:150px">
+                                                    <h5>
+                                                        Supplier </h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                                 onclick="window.location.assign('http://localhost:8080/qrequest')">
+                                                <div style="width:150px; height:130px">
+                                                    <img class="navIcon" src="resources/image/cart/quotationReq.png"
+                                                         style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                                </div>
+                                                <div class="card cart- footer mainW text-black p-0"
+                                                     style="width:150px">
+                                                    <h5>
+                                                        Quotation Request </h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                                 onclick="window.location.assign('http://localhost:8080/quotation1')">
+                                                <div style="width:150px; height:130px">
+                                                    <img class="navIcon" src="./resources/image/cart/quotation.png"
+                                                         style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                                </div>
+                                                <div class="card cart- footer mainW text-black p-0"
+                                                     style="width:150px">
+                                                    <h5>
+                                                        Quotation </h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                                 onclick="window.location.assign('http://localhost:8080/purchaseorder')">
+                                                <div style="width:150px; height:130px">
+                                                    <img class="navIcon" src="./resources/image/cart/porder.png"
+                                                         style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                                </div>
+                                                <div class="card cart- footer mainW text-black p-0"
+                                                     style="width:150px">
+                                                    <h5>
+                                                        Purchase Order </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12  ">
+                                        <div class="row pl-5  ">
+
+
+                                            <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                                 onclick="window.location.assign('http://localhost:8080/grn')">
+                                                <div style="width:150px; height:130px">
+                                                    <img class="navIcon" src="resources/image/cart/grn.png"
+                                                         style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                                </div>
+                                                <div class="card cart- footer mainW text-black p-0"
+                                                     style="width:150px">
+                                                    <h5>
+                                                        GRN </h5>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                                 onclick="window.location.assign('http://localhost:8080/spayment1')">
+                                                <div style="width:150px; height:130px">
+                                                    <img class="navIcon" src="./resources/image/cart/spayment.png"
+                                                         style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                                </div>
+                                                <div class="card cart- footer mainW text-black p-0"
+                                                     style="width:150px">
+                                                    <h5>
+                                                        Suppier payment </h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                                 onclick="window.location.assign('http://localhost:8080/material1')">
+                                                <div style="width:150px; height:130px">
+                                                    <img class="navIcon" src="./resources/image/cart/material.png"
+                                                         style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                                </div>
+                                                <div class="card cart- footer mainW text-black p-0"
+                                                     style="width:150px">
+                                                    <h5>
+                                                        Material </h5>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2 text-center   align-items-center" style="max-width: 18rem;"
+                                                 onclick="window.location.assign('http://localhost:8080/dailyremove')">
+                                                <div style="width:150px; height:130px">
+                                                    <img class="navIcon" src="./resources/image/cart/dailyremove.png"
+                                                         style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                                </div>
+                                                <div class="card cart- footer mainW text-black p-0"
+                                                     style="width:150px">
+                                                    <h5>
+                                                        Daily Remove </h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                                 onclick="window.location.assign('http://localhost:8080/inventory')">
+                                                <div style="width:150px; height:130px">
+                                                    <img class="navIcon" src="./resources/image/cart/inventory.png"
+                                                         style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                                </div>
+                                                <div class="card cart- footer mainW text-black p-0"
+                                                     style="width:150px">
+                                                    <h5>
+                                                        Inventory </h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-center   align-items-center" style="max-width: 18rem;"
+                                                 onclick="window.location.assign('http://localhost:8080/employee1')">
+                                                <div style="width:150px; height:130px">
+                                                    <img class="navIcon" src="./resources/image/employee.png"
+                                                         style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                                </div>
+                                                <div class="card cart- footer mainW text-black p-0"
+                                                     style="width:150px">
+                                                    <h5>
+                                                        Employee </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12  ">
+                                        <div class="row pl-5  ">
+
+                                            <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                                 onclick="window.location.assign('http://localhost:8080/user1')">
+                                                <div style="width:150px; height:130px">
+                                                    <img class="navIcon" src="./resources/image/user.png"
+                                                         style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                                </div>
+                                                <div class="card cart- footer mainW text-black p-0"
+                                                     style="width:150px">
+                                                    <h5>
+                                                        User </h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                                 onclick="window.location.assign('http://localhost:8080/privilage')">
+                                                <div style="width:150px; height:130px">
+                                                    <img class="navIcon" src="./resources/image/previlage.png"
+                                                         style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                                </div>
+                                                <div class="card cart- footer mainW text-black p-0"
+                                                     style="width:150px">
+                                                    <h5>
+                                                        Previllage </h5>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>

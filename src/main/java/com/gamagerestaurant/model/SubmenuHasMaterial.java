@@ -38,4 +38,8 @@ public class SubmenuHasMaterial {
     @ManyToOne(optional = false,fetch = FetchType.EAGER)
     @JoinColumn(name="material_id",referencedColumnName ="id")
     private Material material_id ;
+
+    public SubmenuHasMaterial(BigDecimal qty){
+        this.qty = qty;
+    }
 }

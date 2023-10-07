@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
@@ -95,6 +96,11 @@ public class SupplierController {
         if (priv != null & priv.get("add")) {
             try {
                 System.out.println(supplier);
+                supplier.setAddeddate(LocalDate.now());
+                supplier.setSupplierstatus_id(daostatus.getById(1));
+                supplier.setEmployee_id(user.getEmployeeId());
+                supplier.setRegno(dao.nextRegNo());
+
                 for(Supplierhasmaterial shi : supplier.getSupplierhasmaterialList()){
                     shi.setSupplier_id(supplier);
                 }
@@ -120,6 +126,10 @@ public class SupplierController {
         //check user null
         if (user != null & priv != null & priv.get("update")) {
             try {
+
+                for(Supplierhasmaterial shi : supplier.getSupplierhasmaterialList()){
+                    shi.setSupplier_id(supplier);
+                }
                 dao.save(supplier);
                 return "0";
             } catch (Exception ex) {

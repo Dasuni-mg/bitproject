@@ -38,9 +38,6 @@ public class ReservationHasService{
     @Basic(optional = true)
     private BigDecimal linetotal;
 
-    @Column(name = "reserveddate")
-    @Basic(optional = false)
-    private LocalDate reserveddate;
 
     @Column(name="submenuprice")
     @Basic(optional = true)

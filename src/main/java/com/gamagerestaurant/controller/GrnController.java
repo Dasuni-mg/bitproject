@@ -54,6 +54,9 @@ public class GrnController {
     private GrnstatusRepository daogstatus;
 
 
+    @Autowired
+    private SupplierRepository daosupplier;
+
     @GetMapping(value = "list",produces = "application/json")
     public List<Grn> grnList(){
         return dao.list();
@@ -67,6 +70,13 @@ public class GrnController {
 
         Grn nextgrn = new Grn(nextgrnCode);
         return nextgrn;
+    }
+
+    //grn categorized by  supplier
+    // grn/grnbysupplier?supplierid=7
+    @GetMapping(value="/grnbysupplier",params = {"supplierid"}, produces = "application/json")
+    public List<Grn> grnListbySupplier(@RequestParam("supplierid") int supplierid){
+        return dao.grnbySupplier(supplierid);
     }
 
     //data access object
@@ -115,14 +125,22 @@ public class GrnController {
         //check user null
         if (priv != null & priv.get("add")) {
             try {
+                grn.setGrncode(dao.nextGRNCode());
                 grn.setAddeddate(LocalDate.now());
                 grn.setGrnstatus_id(daostatus.getById(1));
                 grn.setEmployee_id(user.getEmployeeId());
-                System.out.println(grn);
+
                 for(GrnHasMaterial shi : grn.getGrnHasMaterialList()){
                     shi.setGrn_id(grn);
                 }
+                System.out.println("SUPPLIER ID "+grn.getPorder_id().getSupplier_id().getId());
                 dao.save(grn);
+
+                //get total grn amount as arreas amount in spayment
+                Supplier supplier= daosupplier.getById(grn.getPorder_id().getSupplier_id().getId());
+                supplier.setArreasamount(grn.getTotalamount());
+                daosupplier.save(supplier);
+
 
                 // need to update material inventory when grn receied
                 for(GrnHasMaterial shi : grn.getGrnHasMaterialList()){
@@ -130,7 +148,6 @@ public class GrnController {
                     Materialinventory matinventory = daomaterialinventroy.getByMaterial(material.getId());
 
                     if(matinventory != null){
-
                         matinventory.setAvaqty(matinventory.getAvaqty().add(shi.getQty()));
                         matinventory.setTotalqty(matinventory.getTotalqty().add(shi.getQty()));
 

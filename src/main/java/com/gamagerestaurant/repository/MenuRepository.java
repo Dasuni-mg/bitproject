@@ -26,5 +26,6 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
     @Query(value = "SELECT concat('MC',lpad(substring(max(mc.menucode),3)+1,6,'0')) FROM gamage_restaurant.menu as mc;",nativeQuery = true)
     String nextMenuCode();
 
-
+    @Query(value = "SELECT concat('Menu',substring(max(m.menuname),5)+1) FROM gamage_restaurant.menu as m",nativeQuery = true)
+    String getnextmenuname();
 }

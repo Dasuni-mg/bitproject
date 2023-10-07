@@ -1,7 +1,3 @@
-
-
- 
-
         window.addEventListener("load", initialize);
 
         //Initializing Functions
@@ -21,19 +17,19 @@
             genders = httpRequest("../gender/list","GET");
             designations = httpRequest("../designation/list","GET");
             civilstatuses = httpRequest("../civilstatus/list","GET");
-            employeestatuses = httpRequest("../employeestatus/list","GET");
 
-            valid = "2px solid green";
-            invalid = "2px solid red";
-            initial = "2px solid #d6d6c2";
-            updated = "2px solid #ff9900";
-            active = "#90EE90";
+            //colours
+            valid = "3px solid #078D27B2";
+            invalid = "3px solid red";
+            initial = " #d6d6c2";
+            updated = "3px solid #ff9900";
+            active = "rgba(7,141,39,0.6)";
 
             loadView();
             loadForm();
 
 
-            changeTab('form');
+            // changeTab('form');
         }
 
         function loadView() {
@@ -69,6 +65,8 @@
             employees = new Array();
           var data = httpRequest("/employee/findAll?page="+page+"&size="+size+query,"GET");
             if(data.content!= undefined) employees = data.content;
+
+            console.log("EMP ",employees)
             createPagination('pagination',data.totalPages, data.number+1,paginate);
             fillTable('tblEmployee',employees,fillForm,btnDeleteMC,viewitem);
             clearSelection(tblEmployee);
@@ -93,7 +91,7 @@
                 swal({
                     title: "Form has some values, updates values... Are you sure to discard the form ?",
                     text: "\n" ,
-                    icon: "warning", buttons: true, dangerMode: true,
+                    icon: "warning", buttons: true, dangerMode: true, className: "purple-swal"
                 }).then((willDelete) => {
                     if (willDelete) {
                         activepage=page;
@@ -214,22 +212,8 @@
              fillCombo(cmbGender,"Select Gender",genders,"name","");
              fillCombo(cmbDesignation,"Select Designation",designations,"name","");
              fillCombo(cmbCivilstatus,"Select Civil Status",civilstatuses,"name","");
-             fillCombo(avnvemp,"Select Status",employeestatuses,"name","");
-
-             fillCombo(cmbEmployeestatus,"",employeestatuses,"name","Working");
-            employee.employeestatusId=JSON.parse(cmbEmployeestatus.value);
-            cmbEmployeestatus.disabled = true;
 
 
-             var today = new Date();
-             var month = today.getMonth()+1;
-             if(month<10) month = "0"+month;
-             var date = today.getDate();
-             if(date<10) date = "0"+date;
-
-             dteDOAssignment.value=today.getFullYear()+"-"+month+"-"+date;
-             employee.doassignment=dteDOAssignment.value;
-            dteDOAssignment.disabled = true;
 
             // Get Next Number Form Data Base
             var nextNumber = httpRequest("/employee/nextNumber", "GET");
@@ -245,12 +229,11 @@
              txtMobile.value = "";
              txtLand.value = "";
 
-             txtDescription.value = "";
              removeFile('flePhoto');
 
              setStyle(initial);
-             cmbEmployeestatus.style.border=valid;
-             dteDOAssignment.style.border=valid;
+
+
             txtNumber.style.border=valid;
 
              disableButtons(false, true, true);
@@ -269,9 +252,7 @@
             txtMobile.style.border = style;
             txtLand.style.border = style;
             cmbDesignation.style.border = style;
-            dteDOAssignment.style.border = style;
-            txtDescription.style.border = style;
-            cmbEmployeestatus.style.border = style;
+
 
         }
 
@@ -313,13 +294,20 @@
                 $(".buttondel").css('cursor','pointer');
             }
 
+            console.log("svssvvs ",employees)
+
             // select deleted data row
             for(index in employees){
                 if(employees[index].employeestatusId.name =="Deleted"){
                     tblEmployee.children[1].children[index].style.color = "#f00";
                     tblEmployee.children[1].children[index].style.border = "2px solid red";
+
+                    tblEmployee.children[1].children[index].lastChild.children[0].disabled = true;
+                    tblEmployee.children[1].children[index].lastChild.children[0].style.cursor = "not-allowed";
+
                     tblEmployee.children[1].children[index].lastChild.children[1].disabled = true;
                     tblEmployee.children[1].children[index].lastChild.children[1].style.cursor = "not-allowed";
+
 
                 }else if(employees[index].employeestatusId.name =="Not-Available"){
                     tblEmployee.children[1].children[index].style.color = "#01597c";
@@ -473,13 +461,14 @@
 
         function btnAddMC(){
             if(getErrors()==""){
-                if(txtLand.value=="" || txtDescription.value ==""){
+                if(txtLand.value=="" ){
                     swal({
                         title: "Are you sure to continue...?",
                         text: "Form has some empty fields.....",
                         icon: "warning",
                         buttons: true,
                         dangerMode: true,
+                        className: "purple-swal"
                     }).then((willDelete) => {
                         if (willDelete) {
                             savedata();
@@ -495,6 +484,7 @@
                     text: "\n"+getErrors(),
                     icon: "error",
                     button: true,
+                    className: "purple-swal"
                 });
 
             }
@@ -509,19 +499,17 @@
                     "\nCalling Name : " + employee.callingname +
                    // "\nGender : " + employee.genderId.name +
                   //  "\nCivil Status : " + employee.civilstatusId.name +
+
                     "\nNIC : " + employee.nic +
                     "\nBirth Date : " + employee.dobirth +
-                    "\nPhoto : " + employee.photoname +
+
                     "\nAddress : " + employee.address +
-                    "\nMobile : " + employee.mobile +
-                    //"\nLand : " + employee.land +
-                //    "\nDesignation : " + employee.designationId.name +
-                     "\nAssignment Date : " + employee.doassignment +
-                    "\nDescription : " + employee.description +
-                    "\nEmployee Status : " + employee.employeestatusId.name,
+                    "\nMobile : " + employee.mobile ,
+
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
+                className: "purple-swal"
             }).then((willDelete) => {
                 if (willDelete) {
                     var response = httpRequest("/employee", "POST", employee);
@@ -538,12 +526,13 @@
                         activerowno = 1;
                         loadSearchedTable();
                         loadForm();
-                        changeTab('table');
+                        //changeTab('table');
                     }
                     else swal({
                         title: 'Save not Success... , You have following errors', icon: "error",
                         text: '\n ' + response,
-                        button: true
+                        button: true,
+                        className: "purple-swal"
                     });
                 }
             });
@@ -560,7 +549,7 @@
                 swal({
                     title: "Form has some values, updates values... Are you sure to discard the form ?",
                     text: "\n" ,
-                    icon: "warning", buttons: true, dangerMode: true,
+                    icon: "warning", buttons: true, dangerMode: true, className: "purple-swal"
                 }).then((willDelete) => {
                     if (willDelete) {
                         loadForm();
@@ -580,7 +569,7 @@
                 swal({
                     title: "Form has some values, updates values... Are you sure to discard the form ?",
                     text: "\n" ,
-                    icon: "warning", buttons: true, dangerMode: true,
+                    icon: "warning", buttons: true, dangerMode: true, className: "purple-swal"
                 }).then((willDelete) => {
                     if (willDelete) {
                         filldata(empl);
@@ -609,19 +598,17 @@
             txtAddress.value = employee.address;
             txtMobile.value = employee.mobile;
             txtLand.value = employee.land;
-            dteDOAssignment.value = employee.doassignment;
-            txtDescription.value = employee.description;
+
 
             fillCombo(cmbGender, "Select Gender", genders, "name", employee.genderId.name);
             fillCombo(cmbDesignation, "Select Designation", designations, "name", employee.designationId.name);
             fillCombo(cmbCivilstatus, "Select Civil Status", civilstatuses, "name", employee.civilstatusId.name);
-            fillCombo(cmbEmployeestatus, "", employeestatuses, "name", employee.employeestatusId.name);
             //
             setDefaultFile('flePhoto', employee.photo);
 
             disableButtons(true, false, false);
             setStyle(valid);
-            changeTab('form');
+           // changeTab('form');
         }
 
         function getUpdates() {
@@ -690,12 +677,12 @@
                     title: 'Nothing Updated..!',icon: "warning",
                     text: '\n',
                     button: false,
-                    timer: 1200});
+                    timer: 1200, className: "purple-swal"})
                 else {
                     swal({
                         title: "Are you sure to update following empolyee details...?",
                         text: "\n"+ getUpdates(),
-                        icon: "warning", buttons: true, dangerMode: true,
+                        icon: "warning", buttons: true, dangerMode: true, className: "purple-swal"
                     })
                         .then((willDelete) => {
                         if (willDelete) {
@@ -711,7 +698,7 @@
                                 });
                                 loadSearchedTable();
                                 loadForm();
-                                changeTab('table');
+                               // changeTab('table');
 
                             }
                             else window.alert("Failed to Update as \n\n" + response);
@@ -723,7 +710,7 @@
                 swal({
                     title: 'You have following errors in your form',icon: "error",
                     text: '\n '+getErrors(),
-                    button: true});
+                    button: true, className: "purple-swal"});
 
         }
 
@@ -734,7 +721,7 @@
                 title: "Are you sure to delete following employee...?",
                 text: "\n Employee Number : " + employee.number +
                 "\n Employee Fullname : " + employee.fullname,
-                icon: "warning", buttons: true, dangerMode: true,
+                icon: "warning", buttons: true, dangerMode: true, className: "purple-swal"
             }).then((willDelete)=> {
                 if (willDelete) {
                     var responce = httpRequest("/employee","DELETE",employee);
@@ -750,7 +737,7 @@
                         swal({
                             title: "You have following erros....!",
                             text: "\n\n" + responce,
-                            icon: "error", button: true,
+                            icon: "error", button: true, className: "purple-swal"
                         });
                     }
                 }
@@ -831,7 +818,4 @@
             loadForm();
 
             if(activerowno!="")selectRow(tblEmployee,activerowno,active);
-
-
-
         }

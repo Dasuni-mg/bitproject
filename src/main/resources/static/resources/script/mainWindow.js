@@ -25,29 +25,32 @@ window.onload = function () {
         window.location.href = "http://localhost:8080/login";
 
 
-    /*
+
     // Module desabled
     if(session.getObject("activeuser").employeeId.id !=1) {
         usermodulelist = httpRequest("../module/listbyuser?userid=" + session.getObject("activeuser").id, "GET");
+        console.log(usermodulelist)
 
         allmodule = httpRequest("../module/list", "GET");
 
 
         dislist = listCompera(allmodule,usermodulelist,"id","name");
-        // console.log(dislist);
+        console.log(dislist);
         for (x in dislist) {
             mname = dislist[x].name;
            var lielement =  document.getElementById(mname);
            if(lielement != null)
             document.getElementById(mname).remove();
 
-            var divelement =  document.getElementById(mname);
+            var divelement =  document.getElementsByClassName(mname);
             if(divelement.length != 0)
-                divelement[0].style.display = "none";
+                for(var i=0; i<divelement.length;i++){
+                    divelement[i].style.display = "none";
+                }
 
         }
     }
-*/
+
 
     $('#dismiss, .overlay').on('click', function () {
         $('#sidebar').removeClass('active');
@@ -64,28 +67,15 @@ window.onload = function () {
 }
 
 function btnSignoutMC() {
-    swal({
-        title: "Do you want to sign out?",
-        text: " ",
-        icon: "warning",
-        buttons: true,
-        closeOnClickOutside: false
-    }).then((willDelete) => {
-        if (willDelete) {
-            swal({
-                title: "Sign Out Successful",
-                text: " ",
-                icon: "success",
-                timer: 1500,
-                buttons: false,
-                closeOnClickOutside: false
-            }).then(() => {
-                window.location.assign('/logout');
-            });
-
-        }
-    });
+    var willDelete = confirm("Do you want to sign out?");
+    if (willDelete) {
+        alert("Sign Out Successful");
+        setTimeout(function() {
+            window.location.assign('/logout');
+        }, 1500);
+    }
 }
+
 
 
 function loadchangepassword() {
@@ -132,8 +122,8 @@ function btnSaveChangePasswordMC() {
             closeOnClickOutside: false
         }).then((willDelete) => {
             if (willDelete) {
-                // var response = httpRequest("/changepassword", "POST", changePassword);
-                var response = "0";
+                var response = httpRequest("/changepassword", "POST", changePassword);
+                // var response = "0";
                 if (response == "0") {
                     swal({
                         title: "Saved Successfully",

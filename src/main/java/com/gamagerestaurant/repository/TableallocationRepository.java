@@ -13,14 +13,14 @@ public interface TableallocationRepository extends JpaRepository<Tableallocation
 
     @Query("select t from Tableallocation t where (t.tableallocationcode like concat('%',:searchtext,'%') or "+
             "trim( t.reserveddate) like concat('%',:searchtext,'%') or " +
-            "trim(t.reservetime)  like concat('%',:searchtext,'%') or " +
+            "trim(t.reserveouttime)  like concat('%',:searchtext,'%') or " +
             "trim(t.addeddate) like concat('%',:searchtext,'%') or" +
             " t.tablestatus_id.name like concat('%',:searchtext,'%') or " +
             " t.reservation_id.cname like concat('%',:searchtext,'%'))")
     Page<Tableallocation> findAll(String searchtext, Pageable of);
 
     //get bill no
-    @Query(value = "SELECT concat('TA',lpad(substring(max(ta.tableallocationcode),3)+1,6,'0')) FROM gamage_restaurant.tableallocation as ta;",nativeQuery = true)
+    @Query(value = "SELECT concat('TA',lpad(substring(max(ta.tableallocationcode),3)+1,8,'0')) FROM gamage_restaurant.tableallocation as ta;",nativeQuery = true)
     String nextTblAllocationCode();
 
 

@@ -21,6 +21,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     @Query(value = "SELECT max(e.number) FROM Employee e")
     String getNextNumber();
 
+
+    // emloyee list withourt having user account for user module create user account
     @Query(value="SELECT new Employee(e.id,e.callingname) FROM Employee e WHERE e not in (Select u.employeeId from User u)")
     List<Employee> listWithoutUsers();
 

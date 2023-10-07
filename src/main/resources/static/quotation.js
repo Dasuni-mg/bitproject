@@ -27,19 +27,18 @@ function initialize() {
     //services should be implemented to get services then write services to get list
     //2.make controller and repository
 
+
     //colours
-    valid = "3px solid #00f000";
+    valid = "3px solid #078D27B2";
     invalid = "3px solid red";
-    initial = "3px solid #d6d6c2";
+    initial = "1px solid #d6d6c2";
     updated = "3px solid #ff9900";
-    active = "rgba(246,215,52,0.7)";
+    active = "rgba(7,141,39,0.6)";
 
     loadView();
     //calling load view function for load view side
     loadForm();
     //calling load view function for load view side
-    changeTab('form');
-    //calling form tab
 
 }
 
@@ -163,26 +162,11 @@ function loadForm() {
     fillCombo(cmbQrequest, "Select Quotation Request", quotationrequests, "qrcode", "");
     fillCombo(cmbSupplier, "Select Supplier", suppliers, "fullname", "");
 
-
-    //fill and auto select autobind
-    fillCombo(cmbQStatus, "", quotationstatuses, "name", "Valid");
-    quotation.quotationstatus_id = JSON.parse(cmbQStatus.value);
-    cmbQStatus.disabled = true;
-
-    fillCombo(cmbEmployee, "", employees, "callingname", session.getObject('activeuser').employeeId.callingname);
-    quotation.employee_id = JSON.parse(cmbEmployee.value);
-    cmbEmployee.disabled = true;
-
-
     var today = new Date();
     var month = today.getMonth() + 1;
     if (month < 10) month = "0" + month;
     var date = today.getDate();
     if (date < 10) date = "0" + date;
-
-    dateAddedDate.value = today.getFullYear() + "-" + month + "-" + date;
-    quotation.addeddate = dateAddedDate.value;
-    dateAddedDate.disabled = true;
 
 
 //Date ek assign krnw
@@ -261,25 +245,15 @@ function loadForm() {
     dateVTo.max = afteroneweek.getFullYear() + "-" + vtmnth + "-" + vtday;
 
 
-    //auto select quotationcode
-    nextqt = httpRequest("../quotation/nextqt", "GET");
-    txtQcode.value = nextqt.quotationcode;
-    quotation.quotationcode = txtQcode.value;
-    txtQcode.disabled = true;
-
 
     //text field empty
 
     dateRDate.value = "";
     dateVFrom.value = "";
     dateVTo.value = "";
-    txtDescription.value = "";
 
     setStyle(initial);
-    cmbQStatus.style.border = valid;
-    cmbEmployee.style.border = valid;
-    dateAddedDate.style.border = valid;
-    txtQcode.style.border = valid;
+
 
     disableButtons(false, true, true);
 
@@ -291,7 +265,7 @@ function refreshInnerForm() {
     quotationHasMaterial = new Object();
     oldquotationHasMaterial = null;
 
-
+    btnInnerUpdate.disabled=true
     //inner form
     //autofill combo box
     fillCombo(cmbInnerMaterial, "Select Material", materials, "materialname", "");
@@ -301,7 +275,7 @@ function refreshInnerForm() {
 
 
     //Inner table
-    fillInnerTable('tblInnerMaterial', quotation.quotationHasMaterialList, innerModify, innerDelete, false);
+    fillInnerTable('tblInnerMaterial', quotation.quotationHasMaterialList, innerModify, innerDelete, true);
 
 }
 
@@ -321,6 +295,7 @@ function btnInnerAddMC() {
             text: '\n',
             button: false,
             timer: 1200,
+            className: "purple-swal",
         });
     } else {
         quotation.quotationHasMaterialList.push(quotationHasMaterial);
@@ -330,17 +305,118 @@ function btnInnerAddMC() {
 
 }
 
-function innerModify() {
+function btnInnerUpdateMC() {
 
+    var innerErrors = getInnerErrors();
+    if (innerErrors == "") {
+        var innerUpdate = getinnerupdate();
+        if (innerUpdate == "") {
+            swal({
+                title: 'Nothing Updated..!', icon: "warning",
+                text: '\n',
+                button: false,
+                timer: 1200,
+                className: "purple-swal"
+            });
+        } else {
+            swal({
+                title: "Are you sure to inner form update following details...?",
+                text: "\n" + innerUpdate,
+                icon: "warning", buttons: true, dangerMode: true, className: "purple-swal"
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        swal({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Your work has been Done \n Update SuccessFully..!',
+                            text: '\n',
+                            button: false,
+                            timer: 1200
+                        });
+                        quotation.quotationHasMaterialList[innerrow] = quotationHasMaterial;
+                        // txtPPriceMC()
+                        refreshInnerForm();
+                    }
+                });
+        }
+    } else {
+        swal({
+            title: 'You have following errors in your form', icon: "error",
+            text: '\n ' + getInnerErrors(),
+            button: true, className: "purple-swal"
+        });
+    }
+}
+function getInnerErrors() {
+
+
+    var innerErrors = "";
+    var inneraddvalue = "";
+
+    //
+    if (quotationHasMaterial.material_id == null) {
+        innerErrors = innerErrors + "\n" + "Select the Material";
+        cmbInnerMaterial.style.border = invalid;
+    } else {
+        inneraddvalue = 1;
+    }
+    if (quotationHasMaterial.purchaseprice == null) {
+        innerErrors = innerErrors + "\n" + "Enter Purchase Price";
+        txtPPrice.style.border = invalid;
+    } else {
+        inneraddvalue = 1;
+    }
+
+    return innerErrors;
 }
 
+function getinnerupdate() {
+
+    var innerupdate = "";
+
+    if (quotationHasMaterial != null && oldquotationHasMaterial != null) {
+
+        if (quotationHasMaterial.material_id.materialname != oldquotationHasMaterial.material_id.materialname)
+            innerupdate = innerupdate + "\nMaterial .." + oldquotationHasMaterial.material_id.materialname + " into " + quotationHasMaterial.material_id.materialname;
+
+        if (quotationHasMaterial.purchaseprice != oldquotationHasMaterial.purchaseprice)
+            innerupdate = innerupdate + "\nPurchase price .." + oldquotationHasMaterial.purchaseprice + " into " + quotationHasMaterial.purchaseprice;
+
+
+    }
+    return innerupdate;
+}
+
+function innerModify(ob, innerrowno) {
+    btnInnerUpdate.disabled = false;
+    btnInnerUpdate.style.cursor = "pointer";
+
+
+    innerrow = innerrowno
+
+    quotationHasMaterial = JSON.parse(JSON.stringify(ob));
+    oldquotationHasMaterial = JSON.parse(JSON.stringify(ob));
+
+    // const subMenulist = menuHasSubmenu.submenu_id;
+
+    btnInnerAdd.disabled=true
+
+    fillCombo(cmbInnerMaterial, "Select Material", materials, "materialname", quotationHasMaterial.material_id.materialname);
+    cmbInnerMaterial.style.border = valid;
+
+    txtpprice.value = quotationHasMaterial.purchaseprice;
+    txtpprice.style.border = valid;
+
+}
 function innerDelete(innerob, innerrow) {
     swal({
         title: "Are you sure to remove Item?",
         text: "\nItem Name : " + innerob.item_id.itemname,
         icon: "warning",
         buttons: true,
-        dangerMode: true,
+        dangerMode: true, className: "purple-swal",
     }).then((willDelete) => {
         if (willDelete) {
             supplier.supplierHasItemList.splice(innerrow, 1);
@@ -354,15 +430,11 @@ function innerrview() {
 }
 
 function setStyle(style) {
-    txtQcode.style.border = style;
+
     dateRDate.style.border = style;
     dateVFrom.style.border = style;
     dateVTo.style.border = style;
-    dateAddedDate.style.border = style;
-    txtDescription.style.border = style;
-    cmbQStatus.style.border = style;
     cmbQrequest.style.border = style;
-    cmbEmployee.style.border = style;
 }
 
 function disableButtons(add, upd, del) {
@@ -402,8 +474,12 @@ function disableButtons(add, upd, del) {
     // select deleted data row
     for (index in quotations) {
         if (quotations[index].quotationstatus_id.name == "Deleted") {
-            tblQuotation.children[1].children[index].style.color = "#f00";
-            tblQuotation.children[1].children[index].style.border = "2px solid red";
+            tblQuotation.children[1].children[index].style.color = "rgb(9,9,9)";
+            tblQuotation.children[1].children[index].style.backgroundColor = "rgba(238,114,114,0.66)";
+
+            tblQuotation.children[1].children[index].lastChild.children[0].disabled = true;
+            tblQuotation.children[1].children[index].lastChild.children[0].style.cursor = "not-allowed";
+
             tblQuotation.children[1].children[index].lastChild.children[1].disabled = true;
             tblQuotation.children[1].children[index].lastChild.children[1].style.cursor = "not-allowed";
 
@@ -417,10 +493,7 @@ function getErrors() {
     var errors = "";
     addvalue = "";
 
-    if (quotation.quotationcode == null) {
-        errors = errors + "\n" + "Quotation code Not Entered";
-        txtQcode.style.border = invalid;
-    } else addvalue = 1;
+
 
     if (cmbSupplier.value == "") {
         errors = errors + "\n" + "Supplier Not Selected";
@@ -467,28 +540,15 @@ function getErrors() {
 
 function btnAddMC() {
     if (getErrors() == "") {
-        if (txtDescription.value == "") {
-            swal({
-                title: "Are you sure to continue...?",
-                text: "Form has some empty fields.....",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
-                    savedata();
-                }
-            });
 
-        } else {
             savedata();
-        }
+
     } else {
         swal({
             title: "You have following errors",
             text: "\n" + getErrors(),
             icon: "error",
-            button: true,
+            button: true, className: "purple-swal",
         });
 
     }
@@ -500,16 +560,13 @@ function savedata() {
         title: "Are you sure to add following Quotation...?",
         text:
 
-            "\nSupplier : " + quotation.quotationrequest_id.supplier_id.fullname +
+            "\nSupplier : " + quotation.supplier_id.fullname +
             "\nQuotation Request: " + quotation.quotationrequest_id.qrcode +
             "\n Valid from : " + quotation.validfrom +
-            "\n Valid To : " + quotation.validto +
-            "\n Added Date : " + quotation.addeddate +
-            "\n Quotation Status : " + quotation.quotationstatus_id.name +
-            "\n Employee : " + quotation.employee_id.callingname,
+            "\n Valid To : " + quotation.validto ,
         icon: "warning",
         buttons: true,
-        dangerMode: true,
+        dangerMode: true, className: "purple-swal",
     }).then((willDelete) => {
         if (willDelete) {
             var response = httpRequest("/quotation", "POST", quotation);
@@ -525,11 +582,11 @@ function savedata() {
                 activepage = 1;
                 loadSearchedTable();
                 loadForm();
-                changeTab('table');
+                // changeTab('table');
             } else swal({
                 title: 'Save not Success... , You have following errors', icon: "error",
                 text: '\n ' + response,
-                button: true
+                button: true, className: "purple-swal",
             });
         }
     });
@@ -546,7 +603,7 @@ function btnClearMC() {
         swal({
             title: "Form has some values, updates values... Are you sure to discard the form ?",
             text: "\n",
-            icon: "warning", buttons: true, dangerMode: true,
+            icon: "warning", buttons: true, dangerMode: true, className: "purple-swal",
         }).then((willDelete) => {
             if (willDelete) {
                 loadForm();
@@ -566,7 +623,7 @@ function fillForm(quo, rowno) {
         swal({
             title: "Form has some values, updates values... Are you sure to discard the form ?",
             text: "\n",
-            icon: "warning", buttons: true, dangerMode: true,
+            icon: "warning", buttons: true, dangerMode: true, className: "purple-swal",
         }).then((willDelete) => {
             if (willDelete) {
                 filldata(quo);
@@ -585,28 +642,21 @@ function filldata(quo) {
     oldquotation = JSON.parse(JSON.stringify(quo));
 
 
-    txtQcode.value = quotation.quotationcode;
     dateRDate.value = quotation.receiveddate;
     dateVFrom.value = quotation.validfrom;
     dateVTo.value = quotation.validto;
-    dateAddedDate.value = quotation.addeddate;
-    txtDescription.value = quotation.description;
 
-    fillCombo(cmbQStatus, "Select Quotation Status", quotationstatuses, "name", quotation.quotationstatus_id.name);
-    fillCombo(cmbQrequest, "Select Quotation Request", quotationrequests, "name", quotation.quotationrequest_id.name);
-    fillCombo(cmbEmployee, "Select Employee", employees, "callingname", quotation.employee_id.callingname);
+    fillCombo(cmbQrequest, "Select Quotation Request", quotationrequests, "qrcode", quotation.quotationrequest_id.qrcode);
     fillCombo(cmbSupplier, "Select Suppliers", suppliers, "fullname", quotation.quotationrequest_id.supplier_id.fullname);
 
 
     disableButtons(true, false, false);
     setStyle(valid);
-    changeTab('form');
+    // changeTab('form');
+    $('#tableview').modal('hide')
 
     refreshInnerForm();
 
-    //Optional fields initial colour
-    if (quotation.description == null)
-        txtDescription.style.border = initial;
 }
 
 //Update-Display updated values msg
@@ -628,17 +678,8 @@ function getUpdates() {
         if (quotation.validto != oldquotation.validto)
             updates = updates + "\nValid to is Changed";
 
-        if (quotation.addeddate != oldquotation.addeddate)
-            updates = updates + "\nAdded Date is Changed";
-
         if (quotation.quotationrequest_id.name != oldquotation.quotationrequest_id.name)
             updates = updates + "\nQuotation Request is Changed";
-
-        if (quotation.quotationstatus_id.name != oldquotation.quotationstatus_id.name)
-            updates = updates + "\nQuotation status is Changed";
-
-        if (quotation.description != oldquotation.description)
-            updates = updates + "\nDescription is Changed";
 
     }
 
@@ -655,13 +696,13 @@ function btnUpdateMC() {
                 title: 'Nothing Updated..!', icon: "warning",
                 text: '\n',
                 button: false,
-                timer: 1200
+                timer: 1200, className: "purple-swal",
             });
         else {
             swal({
                 title: "Are you sure to update following Quotation details...?",
                 text: "\n" + getUpdates(),
-                icon: "warning", buttons: true, dangerMode: true,
+                icon: "warning", buttons: true, dangerMode: true, className: "purple-swal",
             })
                 .then((willDelete) => {
                     if (willDelete) {
@@ -673,11 +714,11 @@ function btnUpdateMC() {
                                 title: 'Your work has been Done \n Update SuccessFully..!',
                                 text: '\n',
                                 button: false,
-                                timer: 1200
+                                timer: 1200,
                             });
                             loadSearchedTable();
                             loadForm();
-                            changeTab('table');
+                            // changeTab('table');
 
                         } else window.alert("Failed to Update as \n\n" + response);
                     }
@@ -687,9 +728,8 @@ function btnUpdateMC() {
         swal({
             title: 'You have following errors in your form', icon: "error",
             text: '\n ' + getErrors(),
-            button: true
+            button: true, className: "purple-swal",
         });
-
 }
 
 function btnDeleteMC(quo) {
@@ -705,7 +745,7 @@ function btnDeleteMC(quo) {
             "\n Added Date : " + quotation.addeddate +
             "\n Quotation Status : " + quotation.quotationstatus_id.name +
             "\n Employee : " + quotation.employee_id.callingname,
-        icon: "warning", buttons: true, dangerMode: true,
+        icon: "warning", buttons: true, dangerMode: true, className: "purple-swal",
     }).then((willDelete) => {
         if (willDelete) {
             var responce = httpRequest("/quotation", "DELETE", quotation);
@@ -721,12 +761,11 @@ function btnDeleteMC(quo) {
                 swal({
                     title: "You have following erros....!",
                     text: "\n\n" + responce,
-                    icon: "error", button: true,
+                    icon: "error", button: true, className: "purple-swal",
                 });
             }
         }
     });
-
 }
 
 function loadSearchedTable() {

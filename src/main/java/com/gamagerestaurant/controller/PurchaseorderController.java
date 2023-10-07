@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
@@ -102,6 +103,10 @@ public class PurchaseorderController {
         //check user null
         if (priv != null & priv.get("add")) {
             try {
+                purchaseorder.setAddeddate(LocalDate.now());
+                purchaseorder.setPorderstatus_id(daostatus.getById(1));
+                purchaseorder.setEmployee_id(user.getEmployeeId());
+                purchaseorder.setPordercode(dao.nextPordercode());
                 System.out.println(purchaseorder);
                 for(PurchaseorderHasMaterial shi : purchaseorder.getPurchaseorderHasMaterialList()){
                     shi.setPorder_id(purchaseorder);

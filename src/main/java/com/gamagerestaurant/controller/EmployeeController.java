@@ -32,7 +32,6 @@ import java.util.List;
 @RestController
 public class EmployeeController {
 
-
     @Autowired
     private EmployeeRepository dao;
 
@@ -172,6 +171,7 @@ public class EmployeeController {
                 return "Error-Validation : Number Exists";
             else
                 try {
+                    employee.setEmployeestatusId(daoEmployeestatus.getById(1));
                     dao.save(employee);
                  //  emailService.sendMail("harithapramodha@gmail.com","Registor Employee","Employee Registration Success Fully...!\n\n Thank You to join with us.. \n\n from : Sudu buthaya");
                     return "0";

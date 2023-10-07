@@ -9,26 +9,23 @@ function initialize() {
     btnAdd.addEventListener("click", btnAddMC);
     btnClear.addEventListener("click", btnClearMC);
     btnUpdate.addEventListener("click", btnUpdateMC);
-
     txtSearchName.addEventListener("keyup", btnSearchMC);
 
 
     privilages = httpRequest("../privilage?module=QUOTATIONREQUEST", "GET");
-
     //Make arrays as suppliers,qrstatuses and emplooyes to get list for combop box
     suppliers = httpRequest("../supplier/list", "GET");
 
-    employees = httpRequest("../employee/list", "GET");
+
     //services should be implemented to get services then write services to get list
     //2.make controller and repository
 
     //colours
     valid = "3px solid #078D27B2";
     invalid = "3px solid red";
-    initial = "3px solid #d6d6c2";
+    initial = " #d6d6c2";
     updated = "3px solid #ff9900";
-    active = "rgba(250,210,11,0.7)";
-
+    active = "rgba(7,141,39,0.6)";
 
     loadView();
     //calling load view function for load view side
@@ -104,7 +101,7 @@ function viewqreq(qreq, rowno) {
     tdRdate.innerHTML = quotationrequest.requireddate;
 
 
-    $('#qrViewModal').modal('show')
+    $('#tableview').modal('show')
 }
 
 //Print row (as a table)
@@ -136,40 +133,21 @@ function loadForm() {
     // fieldid,Message,Data list(array name),Display property, selected value
     fillCombo(cmbSupplier, "Select a supplier", suppliers, "fullname", "");
 
-
-    fillCombo(cmbEmployee, "", employees, "callingname", session.getObject('activeuser').employeeId.callingname);
-    quotationrequest.employee_id = JSON.parse(cmbEmployee.value);
-    // |JSON.parse| --> Cmb boxwlt value set wenne JSON Stringwlin hind aye gnnkot gnne JSON Parse krl JavaScript objct ekk wdyt
-    //combo box walata values set wenne json strings walin,ae gannakota ganne json parse karala eka js obj ekak widiyata
-    cmbEmployee.disabled = true;
-
-    //auto select qrcode
-    nextqr = httpRequest("../quotationrequest/nextqr","GET");
-    txtQrCode.value = nextqr.qrcode;
-    quotationrequest.qrcode = txtQrCode.value;
-    txtQrCode.disabled = true;
-
     //text field empty
-
     dateRequiredDate.value = "";
 
 
     //auto bind fields
     setStyle(initial);
-    cmbEmployee.style.border = valid;
-      txtQrCode.style.border = valid;
+
 
     disableButtons(false, true, true);
 }
 
 function setStyle(style) {
 
-
-    txtQrCode.style.border = style;
     dateRequiredDate.style.border = style;
-      cmbSupplier.style.border = style;
-          cmbEmployee.style.border = style;
-
+    cmbSupplier.style.border = style;
 }
 
 function disableButtons(add, upd, del) {
@@ -209,26 +187,23 @@ function disableButtons(add, upd, del) {
     // select deleted data row
     for (index in quotationrequests) {
         if (quotationrequests[index].qrstatus_id.name == "Deleted") {
-            tblQuotationRequest.children[1].children[index].style.color = "#f00";
-            tblQuotationRequest.children[1].children[index].style.border = "2px solid red";
+            tblQuotationRequest.children[1].children[index].style.color = "rgb(9,9,9)";
+            tblQuotationRequest.children[1].children[index].style.backgroundColor = "rgba(238,114,114,0.66)";
+
             tblQuotationRequest.children[1].children[index].lastChild.children[1].disabled = true;
             tblQuotationRequest.children[1].children[index].lastChild.children[1].style.cursor = "not-allowed";
-
         }
+
+        tblQuotationRequest.children[1].children[index].lastChild.children[0].disabled = true;
+        tblQuotationRequest.children[1].children[index].lastChild.children[0].style.cursor = "not-allowed";
+
     }
-
 }
-
 function getErrors() {
 
 
     var errors = "";
     addvalue = "";
-
-    if (quotationrequest.qrcode == null) {
-        errors = errors + "\n" + "QR Code Not Entered";
-        txtQrCode.style.border = invalid;
-    } else addvalue = 1;
 
     if (quotationrequest.requireddate == null) {
         errors = errors + "\n" + "Required Date Not Entered";
@@ -256,6 +231,7 @@ function btnAddMC() {
             text: "\n" + getErrors(),
             icon: "error",
             button: true,
+            className: "purple-swal",
         });
 
     }
@@ -265,13 +241,12 @@ function savedata() {
 
     swal({
         title: "Are you sure to add following quotation request...?",
-        text: "\n QR Code : " + quotationrequest.qrcode +
-            "\n Required Date : " + quotationrequest.requireddate +
-             +   "\n Supplier : " + quotationrequest.supplier_id.fullname,
+        text:    "\n Supplier : " + quotationrequest.supplier_id.fullname +
+           "\n Required Date : " + quotationrequest.requireddate,
 
         icon: "warning",
         buttons: true,
-        dangerMode: true,
+        dangerMode: true,className: "purple-swal",
     }).then((willDelete) => {
         if (willDelete) {
             var response = httpRequest("/quotationrequest", "POST", quotationrequest);
@@ -292,11 +267,11 @@ function savedata() {
             } else swal({
                 title: 'Save not Success... , You have following errors', icon: "error",
                 text: '\n ' + response,
-                button: true
+                button: true,
+                className: "purple-swal",
             });
         }
     });
-
 }
 
 function btnClearMC() {
@@ -309,15 +284,13 @@ function btnClearMC() {
         swal({
             title: "Form has some values, updates values... Are you sure to discard the form ?",
             text: "\n",
-            icon: "warning", buttons: true, dangerMode: true,
+            icon: "warning", buttons: true, dangerMode: true,className: "purple-swal",
         }).then((willDelete) => {
             if (willDelete) {
                 loadForm();
             }
-
         });
     }
-
 }
 
 //Update - Get a user confirmation for refill form
@@ -331,7 +304,7 @@ function fillForm(qreq, rowno) {
         swal({
             title: "Form has some values, updates values...Are you sure to discard the form ?",
             text: "\n",
-            icon: "warning", buttons: true, dangerMode: true,
+            icon: "warning", buttons: true, dangerMode: true,className: "purple-swal",
         }).then((willDelete) => {
             if (willDelete) {
                 filldata(qreq);
@@ -349,18 +322,15 @@ function filldata(qreq) {
     oldquotationrequest = JSON.parse(JSON.stringify(qreq));
 
 
-    txtQrCode.value=quotationrequest.qrcode;
     dateRequiredDate.value=quotationrequest.requireddate;
 
     fillCombo(cmbSupplier, "", suppliers, "fullname", "quotationrequest.supplier_id.fullname");
-    fillCombo(cmbEmployee, "", employees, "callingname", "quotationrequest.employee_id.callingname");
-
 
     disableButtons(true, false, false);
     setStyle(valid);
 
-    //show the modal with fill data after add update button
-    $('#tableview').modal('hide');
+    $('#tableview').modal('hide')
+
 
 
 }
@@ -371,21 +341,15 @@ function getUpdates() {
     var updates = "";
 
     if (quotationrequest != null && oldquotationrequest != null) {
-
-        if (quotationrequest.qrcode != oldquotationrequest.qrcode)
-            updates = updates + "\nQR Code :" + oldquotationrequest.qrcode + " is Changed into " + quotationrequest.qrcode ;
-
         if (quotationrequest.requireddate != oldquotationrequest.requireddate)
             updates = updates + "\nRequired Date :" + oldquotationrequest.requireddate + " is Changed into " + quotationrequest.requireddate ;
 
 
         if (quotationrequest.supplier_id.fullname != oldquotationrequest.supplier_id.fullname)
             updates = updates + "\nSupplier :" + oldquotationrequest.supplier_id.fullname+ " is Changed into " + quotationrequest.supplier_id.fullname ;
-
     }
 
     return updates;
-
 }
 
 //update
@@ -398,12 +362,12 @@ function btnUpdateMC() {
                 title: 'Nothing Updated..!',icon: "warning",
                 text: '\n',
                 button: false,
-                timer: 1200});
+                timer: 1200,className: "purple-swal",});
         else {
             swal({
                 title: "Are you sure to update following Quotation Request details...?",
                 text: "\n"+ getUpdates(),
-                icon: "warning", buttons: true, dangerMode: true,
+                icon: "warning", buttons: true, dangerMode: true,className: "purple-swal",
             })
                 .then((willDelete) => {
                     if (willDelete) {
@@ -415,7 +379,7 @@ function btnUpdateMC() {
                                 title: 'Your work has been Done \n Update SuccessFully..!',
                                 text: '\n',
                                 button: false,
-                                timer: 1200
+                                timer: 1200,
                             });
                             loadSearchedTable();
                             loadForm();
@@ -429,7 +393,7 @@ function btnUpdateMC() {
         swal({
             title: 'You have following errors in your form', icon: "error",
             text: '\n ' + getErrors(),
-            button: true
+            button: true,className: "purple-swal",
         });
 
 }
@@ -440,7 +404,7 @@ function btnDeleteMC(qreq) {
     swal({
         title: "Are you sure to delete following Quotation Request...?",
         text: "\n QR code: " + quotationrequest.qrcode,
-        icon: "warning", buttons: true, dangerMode: true,
+        icon: "warning", buttons: true, dangerMode: true,className: "purple-swal",
     }).then((willDelete) => {
         if (willDelete) {
             var responce = httpRequest("/quotationrequest", "DELETE", quotationrequest);
@@ -456,7 +420,7 @@ function btnDeleteMC(qreq) {
                 swal({
                     title: "You have following erros....!",
                     text: "\n\n" + responce,
-                    icon: "error", button: true,
+                    icon: "error", button: true,className: "purple-swal",
                 });
             }
         }

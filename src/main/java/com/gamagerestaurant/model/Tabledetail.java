@@ -27,13 +27,17 @@ public class Tabledetail {
     @Column(name = "tableallcode")
     private String tableallcode;
 
-    @Basic(optional = false)
-    @Column(name = "tablename")
-    private String tablename;
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "tabledetailstatus_id", referencedColumnName = "id")
+    private TableDetailStatus tabledetailstatus_id;
 
-    @Basic(optional = false)
-    @Column(name = "nofchairs")
-    private Integer nofchairs;
+//    @Basic(optional = false)
+//    @Column(name = "tablename")
+//    private String tablename;
+//
+//    @Basic(optional = false)
+//    @Column(name = "nofchairs")
+//    private Integer nofchairs;
 
 
 }

@@ -10,7 +10,7 @@ function initialize() {
     btnClear.addEventListener("click", btnClearMC);
     btnUpdate.addEventListener("click", btnUpdateMC);
     txtSearchName.addEventListener("keyup", btnSearchMC);
-    txtqty.addEventListener("keyup", txtqtyMC);
+    // txtqty.addEventListener("keyup", txtqtyMC);
 
 
     privilages = httpRequest("../privilage?module=SUBMENU", "GET");
@@ -26,9 +26,9 @@ function initialize() {
     //2.make controller and repository
 
     //colours
-    valid = "3px solid #078D27B2";
-    invalid = "3px solid red";
-    initial = "3px solid #d6d6c2";
+    valid = "2px solid #078D27B2";
+    invalid = "2px solid red";
+    initial = "1px solid #d6d6c2";
     updated = "3px solid #ff9900";
     active = "rgba(250,210,11,0.7)";
 
@@ -128,37 +128,33 @@ function btnPrintRowMC() {
     }, 1000);
 }
 
-function txtqtyMC() {
-
-    if (txtqty.value == "0") {
-        swal({
-            title: "Quantity cannot be 0!",
-            text: "\n",
-            icon: "warning",
-            button: false,
-            timer: 1200
-        });
-
-        txtqty.style.border = invalid;
-        txtqty.value = "";
-        txtqty.style.border = initial;
-    }
-}
+// function txtqtyMC() {
+//
+//     if (txtqty.value == "0") {
+//         swal({
+//             title: "Quantity cannot be 0!",
+//             text: "\n",
+//             icon: "warning",
+//             button: false,
+//             timer: 1200
+//         });
+//
+//         txtqty.style.border = invalid;
+//         txtqty.value = "";
+//         txtqty.style.border = initial;
+//     }
+// }
 
 function loadForm() {
     submenu = new Object();
     oldsubmenu = null;
 
+    isqtyupdate = false;
+
+
     submenu.submenuHasMaterialList = new Array();
 
     fillCombo(cmbSCategory, "Select sub menu category", submenucategories, "name", "");
-
-
-    nextsm = httpRequest("../submenu/nextsm", "GET");
-    txtSMcode.value = nextsm.submenucode;
-    submenu.submenucode = txtSMcode.value;
-    txtSMcode.disabled = true;
-
 
     //text field empty
     txtSMName.value = "";
@@ -166,7 +162,6 @@ function loadForm() {
 
     setStyle(initial);
 
-    txtSMcode.style.border = valid;
 
     disableButtons(false, true, true);
 
@@ -241,7 +236,7 @@ function saveInnerdata() {
             title: "Are you sure..?",
             text: "Add follownig details....\n" +
                 "\n Material :" + submenuHasMaterial.material_id.materialname +
-                "\n Quantity :" + submenuHasMaterial.qty,
+                "\n Quantity :" + parseFloat(submenuHasMaterial.qty).toFixed(3),
             icon: "warning",
             buttons: true,
             dangerMode: true,
@@ -322,23 +317,27 @@ function innerDelete(innerob, innerrow) {
 }
 
 function getinnerupdate() {
-
     var innerupdate = "";
+
 
     if (submenuHasMaterial != null && oldsubmenuHasMaterial != null) {
 
         if (submenuHasMaterial.material_id.materialname != oldsubmenuHasMaterial.material_id.materialname)
             innerupdate = innerupdate + "\nMaterial .." + oldsubmenuHasMaterial.material_id.materialname + " into " + submenuHasMaterial.material_id.materialname;
 
-        if (submenuHasMaterial.qty != oldsubmenuHasMaterial.qty)
-            innerupdate = innerupdate + "\nQuantity is Changed.." + oldsubmenuHasMaterial.qty + " into " + submenuHasMaterial.qty;
+        if (submenuHasMaterial.qty != oldsubmenuHasMaterial.qty){
+            isqtyupdate = true;
+            innerupdate = innerupdate + "\nQuantity.." + oldsubmenuHasMaterial.qty + " into " + submenuHasMaterial.qty;
+        }
+
+
 
     }
     return innerupdate;
+
 }
 
 function btnInnerUpdateMC() {
-
     var innerErrors = getErrorsInner();
     if (innerErrors == "") {
         var innerUpdate = getinnerupdate();
@@ -347,16 +346,15 @@ function btnInnerUpdateMC() {
                 title: 'Nothing Updated..!', icon: "warning",
                 text: '\n',
                 button: false,
-                timer: 1200
+                timer: 1200,
+                className: "purple-swal"
             });
         } else {
             swal({
                 title: "Are you sure to inner form update following details...?",
                 text: "\n" + innerUpdate,
-                icon: "warning", buttons: true, dangerMode: true,
+                icon: "warning", buttons: true, dangerMode: true, className: "purple-swal"
             })
-
-
                 .then((willDelete) => {
                     if (willDelete) {
 
@@ -369,19 +367,20 @@ function btnInnerUpdateMC() {
                             timer: 1200
                         });
                         submenu.submenuHasMaterialList[innerrow] = submenuHasMaterial;
-
+                        // txtPPriceMC()
                         refreshInnerForm();
-
                     }
                 });
         }
     } else {
         swal({
             title: 'You have following errors in your form', icon: "error",
-            text: '\n ' + getErrorsInner(),
-            button: true
+            text: '\n ' + getInnerErrors(),
+            button: true, className: "purple-swal"
         });
     }
+
+
 }
 
 function innerModify(ob, innerrowno) {
@@ -391,25 +390,29 @@ function innerModify(ob, innerrowno) {
 
     innerrow = innerrowno
 
+    btnInnerAddSMC.disabled=true;
+
     submenuHasMaterial = JSON.parse(JSON.stringify(ob));
     oldsubmenuHasMaterial = JSON.parse(JSON.stringify(ob));
-    console.log("SUB MENU EDIT ", submenuHasMaterial.material_id.materialname)
+
+    console.log("UPDATE ",submenuHasMaterial)
 
     // const subMenulist = menuHasSubmenu.submenu_id;
 
-    fillCombo(cmbInnerMaterial, "Select material", materials, "materialname", submenuHasMaterial.material_id.materialname);
 
+    fillCombo(cmbInnerMaterial, "Select Material", materials, "materialname", submenuHasMaterial.material_id.materialname);
+    cmbInnerMaterial.style.border = valid;
+
+    //
     txtqty.value = submenuHasMaterial.qty;
     txtqty.style.border = valid;
-}
 
-function innerrview() {
 
 }
+
 
 function setStyle(style) {
 
-    txtSMcode.style.border = style;
     txtSMName.style.border = style;
     cmbSCategory.style.border = style;
     txtPrice.style.border = style;
@@ -453,10 +456,11 @@ function disableButtons(add, upd, del) {
     // select deleted data row
     for (index in submenus) {
         if (submenus[index].submenustatus_id.name == "Deleted") {
-            tblSubmenu.children[1].children[index].style.color = "#f00";
-            tblSubmenu.children[1].children[index].style.border = "2px solid red";
-            tblSubmenu.children[1].children[index].lastChild.children[1].disabled = true;
-            tblSubmenu.children[1].children[index].lastChild.children[1].style.cursor = "not-allowed";
+            tblSubmenu.children[1].children[index].style.color = "rgb(9,9,9)";
+            tblSubmenu.children[1].children[index].style.backgroundColor = "rgba(238,114,114,0.66)";
+
+            tblSubmenu.children[1].children[index].lastChild.children[0].disabled = true;
+            tblSubmenu.children[1].children[index].lastChild.children[0].style.cursor = "not-allowed";
         }
     }
 }
@@ -466,10 +470,6 @@ function getErrors() {
     var errors = "";
     addvalue = "";
 
-    if (submenu.submenucode == null) {
-        errors = errors + "\n" + "Sub menu code Not Entered";
-        txtSMcode.style.border = invalid;
-    } else addvalue = 1;
 
     if (submenu.submenuname == null) {
         errors = errors + "\n" + "Sub menuname Not Entered";
@@ -624,7 +624,6 @@ function filldata(subm) {
     oldsubmenu = JSON.parse(JSON.stringify(subm));
 
 
-    txtSMcode.value = submenu.submenucode;
     txtSMName.value = submenu.submenuname;
     txtPrice.value = submenu.price;
 
@@ -666,6 +665,10 @@ function getUpdates() {
 
         if (isEqual(submenu.submenuHasMaterialList, oldsubmenu.submenuHasMaterialList, 'material_id')) {
             updates = updates + "\nMaterial is Changed !";
+        }
+
+        if (isqtyupdate){
+            updates = updates + "\nMaterial Quantity is Changed !";
         }
     }
 

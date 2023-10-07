@@ -1,0 +1,65 @@
+<div class="row mt-2">
+    <div class="row" style="background-color: rgba(191,188,188,0.3);margin-left: 0px">
+        <div class="container-fluid">
+            <h3 class="text-center font-weight-bold ceylonLog" style="color: #fffbf2;">In-Progress Reservations</h3>
+        </div>
+    </div>
+
+    <div class="col-md-12" style="background-color: rgba(196,192,192,0.4);">
+
+        <div class="table-responsive tableFonts" id="tableParent" class="table-container ml-2" style="padding-top: 16px;">
+
+            <script>
+
+                function getNameColumn(ob) {
+                    return ob.callingname + "(" + ob.number + ")";
+                }
+
+                var metadata = [
+                    {name: 'Res_Code', search: true, datatype: 'text', property: 'reservationcode'},
+                    {name: 'Customer', search: true, datatype: 'text', property: 'customer_id.callingname'},
+                    {name: 'Location', search: true, datatype: 'text', property: 'projectlocation'},
+                    {
+                        name: 'Province',
+                        search: true,
+                        datatype: 'text',
+                        property: 'province_id.name'
+                    },
+                    {
+                        name: 'Status',
+                        search: true,
+                        datatype: 'text',
+                        property: 'reservationstatus_id.name'
+                    }
+                ];
+                tableManin("tableParent", "tblMainReservation", metadata, false);
+
+            </script>
+
+
+        </div>
+
+        <div>
+            <div style="display: inline-block ; float: left">
+                <select class="form-control input" id="cmbPageSize"
+                        style="width: 80px;">
+                    <option selected value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+
+                </select>
+                <script>
+                    cmbPageSize.onchange = function chnagePageSize() {
+                        activepage = 1;
+                        btnSearchMC();
+                    };
+                </script>
+            </div>
+            <div style="display: inline-block; margin-left: 10px;">
+                <ul id="pagination" class="pagination"></ul>
+            </div>
+        </div>
+
+    </div>
+
+</div>

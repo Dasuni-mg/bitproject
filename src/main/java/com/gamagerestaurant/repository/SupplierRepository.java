@@ -13,7 +13,7 @@ public interface SupplierRepository extends JpaRepository<Supplier, Integer> {
             "s.fullname like concat('%',:searchtext,'%') or "+
             "s.cpname like concat('%',:searchtext,'%') or " +
             "s.email like concat('%',:searchtext,'%') or s.address like concat('%',:searchtext,'%') or " +
-            "s.bankholdername like concat('%',:searchtext,'%') or s.bankname like concat('%',:searchtext,'%') or " +
+            "s.bankholdername like concat('%',:searchtext,'%') or " +
             "s.employee_id.callingname like concat('%',:searchtext,'%') or " +
             "s.supplierstatus_id.name like concat('%',:searchtext,'%'))")
     Page<Supplier> findAll(String searchtext, Pageable of);

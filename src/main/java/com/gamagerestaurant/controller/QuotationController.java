@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
@@ -114,6 +115,11 @@ public class QuotationController {
         //check user null
         if (priv != null & priv.get("add")) {
             try {
+                quotation.setQuotationcode(dao.nextQCode());
+                quotation.setAddeddate(LocalDate.now());
+                quotation.setQuotationstatus_id(daostatus.getById(1));
+                quotation.setEmployee_id(user.getEmployeeId());
+
                 System.out.println(quotation);
                 for(QuotationHasMaterial shi : quotation.getQuotationHasMaterialList()){
                     shi.setQuotation_id(quotation);

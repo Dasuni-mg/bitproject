@@ -73,6 +73,13 @@ public class MaterialController{
     }
 
 
+    // /material/materiallistbymateriallcategory?materialcategoryid=7
+    @GetMapping(value = "/materiallistbymateriallcategory", params = {"materialcategoryid"}, produces = "application/json")
+    public List<Material> materialByMaterialcategory(@RequestParam("materialcategoryid") int materialcategoryid) {
+        return dao.materiallistbymatCategory(materialcategoryid);
+    }
+
+
     //data access object
     //get request mapping for Get material page request given params
     @GetMapping(value = "/findAll", params = {"page", "size"}, produces = "application/json")
@@ -121,7 +128,7 @@ public class MaterialController{
             try {
                 material.setAddeddate(LocalDate.now());
                 material.setMaterialstatus_id(daostatus.getById(1));
-
+material.setMaterialcode(dao.nextMaterialcode());
 
                 dao.save(material);
                 return "0";

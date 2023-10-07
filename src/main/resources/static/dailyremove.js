@@ -23,14 +23,12 @@ function initialize() {
     //services should be implemented to get services then write services to get list
     //2.make controller and repository
 
-
     //colours
-    valid = "3px solid #00f000";
+    valid = "3px solid #078D27B2";
     invalid = "3px solid red";
-    initial = "3px solid #d6d6c2";
+    initial = " #d6d6c2";
     updated = "3px solid #ff9900";
-    active = "rgba(246,215,52,0.7)";
-
+    active = "rgba(7,141,39,0.6)";
 
     loadView();
     //calling load view function for load view side
@@ -133,32 +131,13 @@ function loadForm() {
     fillCombo(cmbMaterial, "Select Material", materials, "materialname", "");
     fillCombo(cmbRReason, "Select Remove Reason", removereasons, "name", "");
 
-    fillCombo(cmbDRStatus, "", dailyremovestatuses, "name", "Available");
-    dailyremove.dailyremovestatus_id = JSON.parse(cmbDRStatus.value);
-    cmbDRStatus.disabled = true;
-
-
-    fillCombo(cmbEmployee, "", employees, "callingname", session.getObject('activeuser').employeeId.callingname);
-    dailyremove.employee_id = JSON.parse(cmbEmployee.value);
-    // |JSON.parse| --> Cmb boxwlt value set wenne JSON Stringwlin hind aye gnnkot gnne JSON Parse krl JavaScript objct ekk wdyt
-    //combo box walata values set wenne json strings walin,ae gannakota ganne json parse karala eka js obj ekak widiyata
-    cmbEmployee.disabled = true;
-
-    nextdr = httpRequest("../dailyremove/nextdr","GET");
-    txtDrCode.value = nextdr.dailyremovecode;
-    dailyremove.dailyremovecode = txtDrCode.value;
-    txtDrCode.disabled = true;
 
 
     //text field empty
     txtrqty.value = "";
     dateDailyRemove.value = "";
-    txtDescription.value = "";
 
     setStyle(initial);
-    cmbEmployee.style.border = valid;
-    cmbDRStatus.style.border = valid;
-    txtDrCode.style.border = valid;
 
     disableButtons(false, true, true);
 }
@@ -166,10 +145,9 @@ function loadForm() {
 function setStyle(style) {
 
 
-    txtDrCode.style.border = style;
+
     txtrqty.style.border = style;
     dateDailyRemove.style.border = style;
-    txtDescription.style.border = style;
     cmbRReason.style.border = style;
     cmbMaterial.style.border = style;
 
@@ -212,11 +190,14 @@ function disableButtons(add, upd, del) {
     // select deleted data row
     for (index in dailyremoves) {
         if (dailyremoves[index].dailyremovestatus_id.name == "Deleted") {
-            tblDailyRemove.children[1].children[index].style.color = "#f00";
-            tblDailyRemove.children[1].children[index].style.border = "2px solid red";
+            tblDailyRemove.children[1].children[index].style.color = "rgb(9,9,9)";
+            tblDailyRemove.children[1].children[index].style.backgroundColor = "rgba(238,114,114,0.66)";
+
+            tblDailyRemove.children[1].children[index].lastChild.children[0].disabled = true;
+            tblDailyRemove.children[1].children[index].lastChild.children[0].style.cursor = "not-allowed";
+
             tblDailyRemove.children[1].children[index].lastChild.children[1].disabled = true;
             tblDailyRemove.children[1].children[index].lastChild.children[1].style.cursor = "not-allowed";
-
         }
     }
 
@@ -251,22 +232,9 @@ function getErrors() {
 
 function btnAddMC() {
     if (getErrors() == "") {
-        if (txtDescription.value == "") {
-            swal({
-                title: "Are you sure to continue...?",
-                text: "Form has some empty fields.....",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
-                    savedata();
-                }
-            });
 
-        } else {
             savedata();
-        }
+
     } else {
         swal({
             title: "You have following errors",
@@ -287,8 +255,7 @@ function savedata() {
             "\nMaterial : " + dailyremove.material_id.materialname +
             "\nRemove quantity : " + dailyremove.removeqty +
             "\nRemove reason : " + dailyremove.removereason_id.name +
-            "\nDaily Remove Date : " + dailyremove.dailyremovedate +
-            "\nStatus : " + dailyremove.dailyremovestatus_id.name,
+            "\nDaily Remove Date : " + dailyremove.dailyremovedate,
 
         icon: "warning",
         buttons: true,
@@ -371,19 +338,14 @@ function filldata(dRem) {
     txtDrCode.value = dailyremove.dailyremovecode
     txtrqty.value = dailyremove.removeqty
     dateDailyRemove.value = dailyremove.dailyremovedate
-    txtDescription.value = dailyremove.description
 
     fillCombo(cmbRReason, "", removereasons, "name", dailyremove.removereason_id.name);
     fillCombo(cmbMaterial, "", materials, "materialname", dailyremove.material_id.materialname);
-    fillCombo(cmbDRStatus, "", dailyremovestatuses, "name", dailyremove.dailyremovestatus_id.name);
-    cmbDRStatus.disabled = false; //updte ekedi status ek select krnna eneble wela tyen oona
 
     disableButtons(true, false, false);
     setStyle(valid);
 
-    //Optional fields initial colour
-    if(dailyremove.description == null)
-        txtDescription.style.border= initial;
+
 }
 
 //Update-Display updated values msg
@@ -393,8 +355,6 @@ function getUpdates() {
 
     if (dailyremove != null && olddailyremove != null) {
 
-        if (dailyremove.dailyremovecode != olddailyremove.dailyremovecode)
-            updates = updates + "\nDaily Remove Code :" + olddailyremove.dailyremovecode + " is Changed into " + dailyremove.dailyremovecode;
 
         if (dailyremove.removeqty != olddailyremove.removeqty)
             updates = updates + "\nDaily Remove Quantity :" + olddailyremove.removeqty + "KG is Changed into " + dailyremove.removeqty + "KG";
@@ -414,8 +374,6 @@ function getUpdates() {
         if (dailyremove.removereason_id.name != olddailyremove.removereason_id.name)
             updates = updates + "\nMaterial remove reason :" + olddailyremove.removereason_id.name + " is change into " + dailyremove.removereason_id.name;
 
-        if (dailyremove.dailyremovestatus_id.name != olddailyremove.dailyremovestatus_id.name)
-            updates = updates + "\nStatus :" + olddailyremove.dailyremovestatus_id.name + " is change into " + dailyremove.dailyremovestatus_id.name;
 
     }
 

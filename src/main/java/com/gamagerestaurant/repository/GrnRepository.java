@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -23,4 +24,7 @@ public interface GrnRepository extends JpaRepository<Grn, Integer> {
     //get GRN Code
     @Query(value = "SELECT concat('SGRN',lpad(substring(max(g.grncode),5)+1,6,'0')) FROM gamage_restaurant.grn as g;",nativeQuery = true)
     String nextGRNCode();
+
+    @Query(value = "SELECT * FROM gamage_restaurant.grn as g where g.porder_id in (select p.id from gamage_restaurant.porder as p where p.supplier_id=:supplierid )",nativeQuery = true)
+    List<Grn> grnbySupplier( @Param("supplierid") int supplierid);
 }

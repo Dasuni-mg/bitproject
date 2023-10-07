@@ -4,14 +4,12 @@
     <!-- Required meta tags -->
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="icon" type="image/x-icon" href="./resources/image/cart/chef.png">
 
-    <!-- Bootstrap CSS -->
-    <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-            crossorigin="anonymous"
-    />
+    <!--bootstrap 5-->
+    <link rel="stylesheet" type="text/css" href="resources/b5/bootstrap-5.1.3-dist/css/bootstrap.min.css"/>
+    <script src="/resources/b5/bootstrap-5.1.3-dist/js/bootstrap.bundle.js"></script>
+    <script src="/resources/b5/bootstrap-5.1.3-dist/js/bootstrap.min.js"></script>
 
     <!--Fontawesome-most popular icon set and toolkit-->
     <script defer src="resources/fontawesome/js/solid.js"></script>
@@ -34,7 +32,7 @@
     <script src="resources/script/innertablefunctions.js"></script>
     <script src="resources/script/common.bitproject.js"></script>
     <script src="customerpayment1.js"></script>
-    <link rel="stylesheet" href="resources/style/common.css">
+    <!--    <link rel="stylesheet" href="resources/style/common.css">-->
 
     <title>Hello,Gamage!</title>
 </head>
@@ -57,7 +55,7 @@
 
             <ul>
                 <li class="list">
-                    <a href="#">
+                    <a href="./dashboard.html">
                 <span class="icon"
                 ><ion-icon name="home-outline"></ion-icon
                 ></span>
@@ -73,7 +71,7 @@
                     </a>
                 </li>
                 <li class="list">
-                    <a href="#">
+                    <a  href="http://localhost:8080/changepassword">
                 <span class="icon"
                 ><ion-icon name="settings-outline"></ion-icon
                 ></span>
@@ -81,7 +79,8 @@
                     </a>
                 </li>
                 <li class="list">
-                    <a href="#">
+                    <a  onclick="btnSignoutMC()">
+
                 <span class="icon"
                 ><ion-icon name="log-out-outline"></ion-icon
                 ></span>
@@ -89,7 +88,8 @@
                     </a>
                 </li>
                 <li class="list">
-                    <a href="#" onclick="handalNavigationModel()">
+                    <a data-toggle="modal"
+                       data-target="#navModal">
                 <span class="icon"
                 ><ion-icon name="menu-outline"></ion-icon
                 ></span>
@@ -117,7 +117,7 @@
     <div class="bgForm">
         <div class="row  text-black ">
             <h3 class="p-3">
-               Customer Payment Management
+                Customer Payment Management
             </h3>
         </div>
         <div class="row m-8 ">
@@ -130,33 +130,18 @@
                             <div class="row ">
                                 <form class="" id="customerform" onsubmit="return false">
                                     <div class="row mt-2">
-                                        <div class="col-md-2"></div>
+
                                         <!--form-->
-                                        <div class="col-md-12 p-3">
+                                        <div class="col-md-12 px-3">
 
-                                            <div class="row m-2 p-3"   >
-
-
-                                                    <!--Bill No-->
-                                                <div class="col-md-3">
-                                                    <div class="form-group text-dark ">
-                                                        <label for="txtBillNo" class=" "><b>Bill No
-                                                            <span style="color: red;">*</span></b> </label>
-                                                        <div class="input-group">
-                                                            <input type="text"
-                                                                   class="form-control"
-                                                                   id="txtBillNo"
-                                                                   required
-                                                            >
-                                                        </div>
-                                                        </div>
-                                                    </div>
+                                            <div class="row mx-2 px-2">
 
 
                                                 <!--Reservation-->
-                                                <div class="col-md-3" >
+                                                <div class="col-md-4">
                                                     <div class="form-group text-dark  ">
-                                                        <label for="cmbReservation" class=""><b>Reservation:</b>
+                                                        <label for="cmbReservation" class=""><b>Delivery
+                                                            Reservation:</b>
                                                         </label>
                                                         <div class="input-group">
                                                             <select id="cmbReservation"
@@ -167,13 +152,14 @@
                                                     </div>
                                                 </div>
 
-                                            <!--reservation amount-->
-                                                <div class="col-md-3">
+                                                <!--reservation amount-->
+                                                <div class="col-md-4">
                                                     <div class="form-group text-dark ">
-                                                        <label for="txtReservationAmount" class="  "> <b>Reservation Amount:
+                                                        <label for="txtReservationAmount" class="  "> <b>Reservation
+                                                            Amount:
                                                         </b> <span style="color: red;">*</span></label>
                                                         <div class="input-group">
-                                                            <input type="text"
+                                                            <input type="text" readonly
                                                                    class="form-control"
                                                                    id="txtReservationAmount"
                                                                    placeholder="Enter Reservation Amount"
@@ -187,7 +173,7 @@
                                                 </div>
 
                                                 <!-- Current Amount-->
-                                                <div class="col-md-3 ">
+                                                <div class="col-md-4 ">
                                                     <div class="form-group text-dark ">
                                                         <label for="txtCurrentAmount" class="  "><b>Current Amount:
                                                         </b> <span style="color: red;">*</span></label>
@@ -206,14 +192,46 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
 
-                                            <div class="row m-2 p-3"   >
+                                            <div class="row mx-2 px-3">
 
+
+                                                <!--Remain Amount-->
+                                                <div class="col-md-4">
+                                                    <div class="form-group text-dark ">
+                                                        <label for="txtRAmount" class=" "><b>Remain Amount
+                                                            <span style="color: red;">*</span></b> </label>
+                                                        <div class="input-group">
+                                                            <input type="text"
+                                                                   class="form-control"
+                                                                   id="txtRAmount"
+                                                                   placeholder="Enter Remain Amount"
+                                                                   required
+                                                                   readonly
+                                                                   data-toggle="tooltip"
+                                                                   data-placement="bottom"
+                                                                   title=""
+                                                                   onkeyup="textFieldBinder(txtRAmount,'^[0-9]{2,12}[.][0-9]{2}$','customerpayment','','oldcustomerpayment')">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--Payment Method-->
+                                                <div class="col-md-4">
+                                                    <div class="form-group text-dark ">
+                                                        <label for="cmbPMethod" class=" "><b>Payment Method
+                                                            <span style="color: red;">*</span></b> </label>
+                                                        <div class="input-group">
+                                                            <select id="cmbPMethod"
+                                                                    class="form-control"
+                                                                    onchange="comboBoxBinder(cmbPMethod,'','customerpayment','cpmethod_id','oldcustomerpayment')">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
                                                 <!--Paid Amount-->
-                                                <div class="col-md-3">
+                                                <div class="col-md-4">
                                                     <div class="form-group text-dark ">
                                                         <label for="txtPAmount" class=" "><b>Paid Amount
                                                             <span style="color: red;">*</span></b> </label>
@@ -226,14 +244,17 @@
                                                                    data-toggle="tooltip"
                                                                    data-placement="bottom"
                                                                    title=""
-                                                                   onkeyup="textFieldBinder(txtPAmount,'^[0-9]{2,5}[.][0-9]{2}$','customerpayment','paidamount','oldcustomerpayment')">
+                                                                   onkeyup="textFieldBinder(txtPAmount,'^[0-9]{2,10}$','customerpayment','paidamount','oldcustomerpayment')">
                                                         </div>
                                                     </div>
                                                 </div>
 
+                                            </div>
 
-                                                <!--Reservation-->
-                                                <div class="col-md-3" >
+                                            <div class="row mx-2 px-3">
+
+                                                <!--BalanceAmount-->
+                                                <div class="col-md-4">
                                                     <div class="form-group text-dark  ">
                                                         <label for="txtBalanceAmount" class=""><b>Balance Amount:</b>
                                                         </label>
@@ -251,132 +272,51 @@
                                                     </div>
                                                 </div>
 
-                                                <!--Paid Date Time-->
-                                                <div class="col-md-3">
-                                                    <div class="form-group text-dark ">
-                                                        <label for="dtePDateTime" class="  "> <b>Paid Date Time:
-                                                        </b> <span style="color: red;">*</span></label>
-                                                        <div class="input-group">
-                                                            <input type="datetime-local"
-                                                                   class="form-control"
-                                                                   id="dtePDateTime"
-                                                                   placeholder="Enter Paid Date/Time"
-                                                                   data-toggle="tooltip"
-                                                                   data-placement="bottom"
-                                                                   title="Paid Date"
-                                                                   onchange="datetimeFieldBinder(dtePDateTime,'','customerpayment','paiddatetime','oldcustomerpayment')">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!--Depositted Date/Time-->
-                                                <div class="col-md-3 ">
-                                                    <div class="form-group text-dark ">
-                                                        <label for="dteDepoDateTime" class="  "><b>Deposited
-                                                            Date/Time:
-                                                        </b> <span style="color: red;">*</span></label>
-                                                        <div class="input-group">
-
-                                                            <input type="datetime-local"
-                                                                   class="form-control"
-                                                                   id="dteDepoDateTime"
-                                                                   placeholder="Enter Deposited Date"
-                                                                   data-toggle="tooltip"
-                                                                   data-placement="bottom"
-                                                                   title="Paid Date"
-                                                                   onchange="datetimeFieldBinder(dteDepoDateTime,'','customerpayment','depositeddatetime','oldcustomerpayment')">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
                                             </div>
 
-                                            <div class="row m-2 p-3"   >
+
+                                            <!--                                            <div class="row m-2 p-3"   >-->
 
 
-                                                <!--Payment Method-->
-                                                <div class="col-md-3">
-                                                    <div class="form-group text-dark ">
-                                                        <label for="cmbPMethod" class=" "><b>Payment Method
-                                                            <span style="color: red;">*</span></b> </label>
-                                                        <div class="input-group">
-                                                            <select id="cmbPMethod"
-                                                                    class="form-control"
-                                                                    onchange="comboBoxBinder(cmbPMethod,'','customerpayment','cpmethod_id','oldcustomerpayment')">
-                                                            </select>
-                                                        </div>
-                                                    </div>
+                                            <!--                                                &lt;!&ndash;Transfer Acc Name:&ndash;&gt;-->
+                                            <!--                                                <div class="col-md-3">-->
+                                            <!--                                                    <div class="form-group text-dark ">-->
+                                            <!--                                                        <label for="txtTACCname" class=" "><b>Transfer Acc Name:-->
+                                            <!--                                                            <span style="color: red;">*</span></b> </label>-->
+                                            <!--                                                        <div class="input-group">-->
+                                            <!--                                                            <input type="text"-->
+                                            <!--                                                                   class="form-control"-->
+                                            <!--                                                                   id="txtTACCname"-->
+                                            <!--                                                                   placeholder="Enter Transfer Acc Name"-->
+                                            <!--                                                            >-->
+                                            <!--                                                        </div>-->
+                                            <!--                                                    </div>-->
+                                            <!--                                                </div>-->
+
+
+                                            <!--                                            </div>-->
+
+                                            <div class="row m-2 p-3 flex justify-content-around">
+
+
+                                                <div class="col-md-4 button p-2">
+                                                    <button class="btn border-0 text-white font-weight-bold fs-5
+  " data-toggle="modal" data-target="#DepositeView">Deposit Information
+                                                    </button>
                                                 </div>
-
-
-                                                <!--Remark-->
-                                                <div class="col-md-3" >
-                                                    <div class="form-group text-dark  ">
-                                                        <label for="txtRemark" class=""><b>Remark:</b>
-                                                        </label>
-                                                        <div class="input-group">
-                                                            <input type="text"
-                                                                   class="form-control"
-                                                                   id="txtRemark"
-                                                                   placeholder="Enter Remark"
-                                                            >
-                                                        </div>
-                                                    </div>
+                                                <div class="col-md-4 button p-2">
+                                                    <button class="btn border-0 text-white font-weight-bold fs-5
+  " data-toggle="modal" data-target="#ChequeView">Cheque Information
+                                                    </button>
                                                 </div>
-
-                                                <!--Transefered Id-->
-                                                <div class="col-md-3">
-                                                    <div class="form-group text-dark ">
-                                                        <label for="txtTId" class="  "> <b>Transefered Id:
-                                                        </b> <span style="color: red;">*</span></label>
-                                                        <div class="input-group">
-                                                            <input type="text"
-                                                                   class="form-control"
-                                                                   id="txtTId"
-                                                                   placeholder="Enter Transfered Id"
-                                                            >
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!--Bank Name-->
-                                                <div class="col-md-3 ">
-                                                    <div class="form-group text-dark ">
-                                                        <label for="txtBname" class="  "><b>Bank Name:
-                                                        </b> <span style="color: red;">*</span></label>
-                                                        <div class="input-group">
-                                                            <input type="text"
-                                                                   class="form-control"
-                                                                   id="txtBname"
-                                                                   placeholder="Enter Bank Name"
-                                                            >
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="row m-2 p-3"   >
-
-
-                                                <!--Transfer Acc Name:-->
-                                                <div class="col-md-3">
-                                                    <div class="form-group text-dark ">
-                                                        <label for="txtTACCname" class=" "><b>Transfer Acc Name:
-                                                            <span style="color: red;">*</span></b> </label>
-                                                        <div class="input-group">
-                                                            <input type="text"
-                                                                   class="form-control"
-                                                                   id="txtTACCname"
-                                                                   placeholder="Enter Transfer Acc Name"
-                                                            >
-                                                        </div>
-                                                    </div>
+                                                <div class="col-md-4 button p-2">
+                                                    <button class="btn border-0 text-white font-weight-bold fs-5
+   " data-toggle="modal" data-target="#MoneyTView">Online Transfer Information
+                                                    </button>
                                                 </div>
 
 
                                             </div>
-
 
                                         </div>
 
@@ -389,18 +329,19 @@
 
                             <!--Clear/Update/Delete buttons-->
                             <div class="row mt-2 p-2">
+
                                 <div class="col-md-12">
 
                                     <div class="text-right">
-                                        <button class="btn button " type="button" id="btnClear"
+                                        <button class="btn button-86 " type="button" id="btnClear"
                                                 style="width: 25%">
                                             <i class="fas fa-recycle mr-2"></i> Clear
                                         </button>
-                                        <button class="btn button " type="submit" id="btnUpdate"
+                                        <button class="btn button-86 " type="submit" id="btnUpdate"
                                                 style="width: 25%"><i class="fas fa-edit mr-2"></i>
                                             Update
                                         </button>
-                                        <button class="btn button" style="width: 25%" type="submit"
+                                        <button class="btn button-86" style="width: 25%" type="submit"
                                                 id="btnAdd">
                                             <i class='fas fa-plus-circle mr-2'></i>Add
                                         </button>
@@ -510,13 +451,15 @@
              aria-hidden="true">
             <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
-
+                    <div class="modal-header text-white bg-black h-100">
+                        <h3> View Customer Payment</h3>
+                    </div>
                     <div class="modal-body">
                         <div class="row p-5  formcontent w-100" style="background-color: white" id="divTable">
                             <div class="container-fluid">
                                 <div class="row d-flex align-items-center">
                                     <div class="col-md-3">
-                                        <a class="btn button  font-weight-bold" href="http://localhost:8080/qrequest">Q-Request</a>
+                                        <a class="btn button  font-weight-bold" href="http://localhost:8080/cpayment">Customer Payment</a>
 
                                     </div>
                                     <div class="col-md-3">
@@ -549,29 +492,32 @@
                                                 <table id="tablePrintEmployee"
                                                        class=" table table-striped shadow rounded">
                                                     <thead class="text-white bg-black ">
-                                                    <h3> View Q-Request</h3>
+                                                    <h3> View C-payment</h3>
                                                     </thead>
                                                     <div class="modal-body">
-                                                        <table id="printformtable" class="mt-5 table table-bordered table-striped">
+                                                        <table id="printformtable"
+                                                               class="mt-5 table table-bordered table-striped">
                                                             <tbody>
                                                             <tr>
-                                                                <td>QR Code :</td>
-                                                                <td id="tdQRcode"></td>
+                                                                <td>Reservation :</td>
+                                                                <td id="tdReservation"></td>
                                                             </tr>
                                                             <tr>
-                                                                <td>Supplier :</td>
-                                                                <td id="tdsupid"></td>
+                                                                <td>Reservation Amount :</td>
+                                                                <td id="tdramount"></td>
                                                             </tr>
-
                                                             <tr>
-                                                                <td>Employee :</td>
-                                                                <td id="tdemployee"></td>
+                                                                <td>Current Amount:</td>
+                                                                <td id="tdcurrentamount"></td>
                                                             </tr>
-                                                                                                                      <tr>
-                                                                <td>Required Date :</td>
-                                                                <td id="tdRdate"></td>
+                                                            <tr>
+                                                                <td>Paid Amount :</td>
+                                                                <td id="tdPaidamount"></td>
                                                             </tr>
-
+                                                            <tr>
+                                                                <td>Balance Amount :</td>
+                                                                <td id="tdBAmount"></td>
+                                                            </tr>
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -579,17 +525,12 @@
                                                         <button type="button" class="btn btn-secondary"
                                                                 data-dismiss="modal">Close
                                                         </button>
-                                                        <button type="button" class="btn btn-light"
-                                                                onclick="btnPrintRowMC()">Print
-                                                        </button>
+                                                        
                                                     </div>
 
                                                 </table>
                                             </div>
                                         </div>
-
-
-
 
 
                                         <!--                                <div class="justify-content-between">-->
@@ -635,7 +576,12 @@
                                                     datatype: 'text',
                                                     property: 'balanceamount'
                                                 },
-                                                {name: 'Paid Date/Time', search: true, datatype: 'text', property: 'paiddatetime'},
+                                                {
+                                                    name: 'Paid Date/Time',
+                                                    search: true,
+                                                    datatype: 'text',
+                                                    property: 'paiddatetime'
+                                                },
                                                 {
                                                     name: 'Payment status',
                                                     search: true,
@@ -654,9 +600,9 @@
                                     <div>
                                         <div style="display: inline-block ; float: left">
                                             <select class="form-control input" id="cmbPageSize" style="width: 80px;">
-                                                <option selected value="10">10</option>
-                                                <option value="15">15</option>
-                                                <option value="30">30</option>
+                                                <option selected value="5">5</option>
+                                                <option value="10">10</option>
+                                                <option value="100">100</option>
                                                 <option value="500">500</option>
                                                 <option value="1000">1000</option>
                                             </select>
@@ -673,10 +619,697 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
+                            <div class="modal-footer bg-black">
+                                <button type="button" class="btn button-86"
+                                        data-dismiss="modal" onclick="window.location.href ='dashboard.html'">Close
+                                </button>
+
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deposite Modal -->
+        <div class="modal fade position-absolute  " id="DepositeView" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Deposite Information</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <!--Bank Name-->
+
+                                    <div class="form-group text-dark ">
+                                        <label for="txtBname" class="  "><b>Bank Name:
+                                        </b> <span style="color: red;">*</span></label>
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="txtBname"
+                                                   placeholder="Enter Bank Name"
+                                                   onkeyup="textFieldBinder(txtBname,'^.*$','customerpayment','bankname','oldcustomerpayment')"
+                                            >
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <!--Bank Acc No-->
+
+                                    <div class="form-group text-dark ">
+                                        <label for="txtBAccNo" class="  "><b>Bank Acc No:
+                                        </b> <span style="color: red;">*</span></label>
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="txtBAccNo"
+                                                   placeholder="Enter Bank Acc No"
+                                                   onkeyup="textFieldBinder(txtBAccNo,'^.*$','customerpayment','bankaccountno','oldcustomerpayment')"
+                                            >
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+
+                                    <!--Depositted Date/Time-->
+
+                                    <div class="form-group text-dark ">
+                                        <label for="dteDepoDateTime" class="  "><b>Deposited
+                                            Date/Time:
+                                        </b> <span style="color: red;">*</span></label>
+                                        <div class="input-group">
+
+                                            <input type="datetime-local"
+                                                   class="form-control"
+                                                   id="dteDepoDateTime"
+                                                   placeholder="Enter Deposited Date"
+                                                   data-toggle="tooltip"
+                                                   data-placement="bottom"
+                                                   title="Paid Date"
+                                                   onchange="datetimeFieldBinder(dteDepoDateTime,'','customerpayment','depositeddatetime','oldcustomerpayment')">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-md-6">
+                                    <!--Holder Name-->
+
+                                    <div class="form-group text-dark ">
+                                        <label for="txtHName" class="  "><b>Holder Name:
+                                        </b> <span style="color: red;">*</span></label>
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="txtHName"
+                                                   placeholder="Enter Bank Acc Holder Name"
+                                                   onkeyup="textFieldBinder(txtHoName,'^([A-Z][a-z]+)$','customerpayment','holdername','oldcustomerpayment')">
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-end">
+                        <button type="button" class="btn button" data-bs-dismiss="modal">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cheque Modal -->
+        <div class="modal fade position-absolute  " id="ChequeView" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg" style="max-height: 1000px !important;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalLabel">Cheque Information</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <!--Cheque No-->
+                                <div class="form-group text-dark ">
+                                    <label for="txtCNo" class="  "><b>Cheque No:
+                                    </b> <span style="color: red;">*</span></label>
+                                    <div class="input-group">
+                                        <input type="text"
+                                               class="form-control"
+                                               id="txtCNo"
+                                               placeholder="Enter Cheque No"
+                                               onkeyup="textFieldBinder(txtCNo,'^.*$','customerpayment','chequenumber','oldcustomerpayment')">
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <!--Cheque Date-->
+
+                                <div class="form-group text-dark ">
+                                    <label for="dteChequeDate" class="  "><b>Cheque Date:
+                                    </b> <span style="color: red;">*</span></label>
+                                    <div class="input-group">
+                                        <input type="date"
+                                               class="form-control"
+                                               id="dteChequeDate"
+                                               onchange="datetimeFieldBinder(dteChequeDate,'','customerpayment','chequedate','oldcustomerpayment')">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-end">
+                        <button type="button" class="btn button" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Money Transfer Modal -->
+        <div class="modal fade position-absolute m-50 " id="MoneyTView" tabindex="-1"
+             aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Transfer Information</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <!--Bank Name-->
+
+                                    <div class="form-group text-dark ">
+                                        <label for="txtBaTname" class="  "><b>Bank Name:
+                                        </b> <span style="color: red;">*</span></label>
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="txtBaTname"
+                                                   placeholder="Enter Bank Name"
+                                                   onkeyup="textFieldBinder(txtBaTname,'^([A-Z][a-z]+)$','customerpayment','bankname','oldcustomerpayment')">
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <!--Bank Branch Name-->
+
+                                    <div class="form-group text-dark ">
+                                        <label for="txtTBBName" class="  "><b>Bank Branch Name:
+                                        </b> <span style="color: red;">*</span></label>
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="txtTBBName"
+                                                   placeholder="Enter Bank Branch Name"
+                                                   onkeyup="textFieldBinder(txtTBBName,'^([A-Z][a-z]+)$','customerpayment','bankbrachname','oldcustomerpayment')">
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <!--Holder Name-->
+
+                                    <div class="form-group text-dark ">
+                                        <label for="txtTHoName" class="  "><b>Holder Name:
+                                        </b> <span style="color: red;">*</span></label>
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="txtTHoName"
+                                                   placeholder="Enter Bank Acc Holder Name"
+                                                   onkeyup="textFieldBinder(txtTHoName,'^([A-Z][a-z]+)$','customerpayment','holdername','oldcustomerpayment')">
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <!--Bank Acc No-->
+
+                                    <div class="form-group text-dark ">
+                                        <label for="txtTBaAccNo" class="  "><b>Bank Acc No:
+                                        </b> <span style="color: red;">*</span></label>
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="txtTBaAccNo"
+                                                   placeholder="Enter Bank Acc No"
+                                                   onkeyup="textFieldBinder(txtTBaAccNo,'^.*$','customerpayment','bankaccountno','oldcustomerpayment')">
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!--Transefered Id-->
+                                <div class="col-md-6">
+                                    <div class="form-group text-dark ">
+                                        <label for="txtTId" class="  "> <b>Transefered Id:
+                                        </b> <span style="color: red;">*</span></label>
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="txtTId"
+                                                   placeholder="Enter Transfered Id"
+                                                   onkeyup="textFieldBinder(txtTId,'^.*$','customerpayment','transferid','oldcustomerpayment')">
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <!--Depositted Date/Time-->
+
+                                    <div class="form-group text-dark ">
+                                        <label for="dteTDeposDateTime" class="  "><b>Deposited
+                                            Date/Time:
+                                        </b> <span style="color: red;">*</span></label>
+                                        <div class="input-group">
+
+                                            <input type="datetime-local"
+                                                   class="form-control"
+                                                   id="dteTDeposDateTime"
+                                                   placeholder="Enter Deposited Date"
+                                                   data-toggle="tooltip"
+                                                   data-placement="bottom"
+                                                   title="Paid Date"
+                                                   onchange="datetimeFieldBinder(dteTDeposDateTime,'','customerpayment','depositeddatetime','oldcustomerpayment')">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-end">
+                        <button type="button" class="btn button" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Modal-->
+        <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog"
+             aria-labelledby="settingsModal" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content" id="modalContent">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle"><i
+                                class="fas fa-cog"></i> Settings</h5>
+                        <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form id="changePasswordForm" onsubmit="return false">
+                            <div class="form-row">
+                                <!-- Username -->
+                                <div class="form-group text-black col-md-12">
+                                    <label for="txtUsernameView" class="text-blue">
+                                        <b>Username</b>
+                                    </label>
+                                    <div readonly class="form-control-plaintext"
+                                         id="txtUsernameView"></div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <!-- Current Password -->
+                                <div class="form-group text-black col-md-12">
+                                    <label for="txtCurrentPassword"
+                                           class="text-blue"><b>Current Password</b> <i
+                                            class="fas fa-question-circle  question ml-1"
+                                            data-toggle="tooltip" data-placement="right"
+                                            title=""></i></label>
+                                    <input type="password"
+                                           class="form-control form-control-sm changePasswordFields"
+                                           id="txtCurrentPassword"
+                                           onkeyup="textFieldBinder(txtCurrentPassword, '^[0-9]{5,}$', 'changePassword', 'currentPassword', 'oldChangePassword')">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <!-- New Password -->
+                                <div class="form-group text-black col-md-12">
+                                    <label for="txtNewPassword" class="text-blue"><b>New
+                                        Password</b><i
+                                            class="fas fa-question-circle question ml-1"
+                                            data-toggle="tooltip" data-placement="right"
+                                            title=""></i></label>
+                                    <input type="password"
+                                           class="form-control form-control-sm changePasswordFields"
+                                           id="txtNewPassword"
+                                           onkeyup="passwordFieldBinder(txtNewPassword, txtConfirmPassword, '^[0-9]{5,}$', 'changePassword', '', 'oldChangePassword')">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <!-- Confirm Password -->
+                                <div class="form-group text-black col-md-12">
+                                    <label for="txtConfirmPassword"
+                                           class="text-blue"><b>Confirm
+                                        Password</b><i
+                                            class="fas fa-question-circle question ml-1"
+                                            data-toggle="tooltip" data-placement="right"
+                                            title=""></i></label>
+                                    <input type="password"
+                                           class="form-control form-control-sm changePasswordFields"
+                                           id="txtConfirmPassword"
+                                           onkeyup="passwordFieldBinder(txtNewPassword, txtConfirmPassword, '^[0-9]{5,}$', 'changePassword', 'newPassword', 'oldChangePassword')">
+                                </div>
+                            </div>
+                        </form>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="brnClosechnagepasswordmodle" class="btn button" data-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="button" class="btn button"
+                                onclick="btnSaveChangePasswordMC()">Save changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Modal-->
+        <div class="modal fade" id="navModal" tabindex="-1" role="dialog"
+             aria-labelledby="settingsModal" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+                <div class="modal-content" id="">
+
+                    <div class="modal-body ml-5 bg-dark">
+
+                        <div class="row m-2 ml-5 flex justify-content-between dashboard">
+
+
+                            <div class="col-12  ">
+                                <div class="row ">
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/customer')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/customer.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Customer </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center   align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/take_away')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/away%20-%20Copy.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Take away </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/dinein')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/dinein.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Dine in </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/tableallocation1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/table.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Table Allocation</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/delivery')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/deliver.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Delivery </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/customerpayment')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/cpayment.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Customer Payment </h5>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row pl-5  ">
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/menu1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/menu.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Menu </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/submenu1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/submenu.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Sub Menu </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/supplier1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/supplier.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Supplier </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/qrequest')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="resources/image/cart/quotationReq.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Quotation Request </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/quotation1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/quotation.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Quotation </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/purchaseorder')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/porder.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Purchase Order </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12  ">
+                                <div class="row pl-5  ">
+
+
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/grn')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="resources/image/cart/grn.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                GRN </h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/spayment1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/spayment.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Suppier payment </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/material1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/material.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Material </h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2 text-center   align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/dailyremove')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/dailyremove.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Daily Remove </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/inventory')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/cart/inventory.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Inventory </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center   align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/employee1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/employee.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Employee </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12  ">
+                                <div class="row pl-5  ">
+
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/user1')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/user.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                User </h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center align-items-center" style="max-width: 18rem;"
+                                         onclick="window.location.assign('http://localhost:8080/privilage')">
+                                        <div style="width:150px; height:130px">
+                                            <img class="navIcon" src="./resources/image/previlage.png"
+                                                 style="margin:25px;width: 100px; height: 100px;align-items: center">
+
+                                        </div>
+                                        <div class="card cart- footer mainW text-black p-0"
+                                             style="width:150px">
+                                            <h5>
+                                                Previllage </h5>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
                 </div>
             </div>
         </div>

@@ -26,7 +26,7 @@ public interface PurchaseorderRepository extends JpaRepository<Purchaseorder, In
     @Query(value = "SELECT concat('P',lpad(substring(max(p.pordercode),2)+1,9,'0')) FROM gamage_restaurant.porder as p;",nativeQuery = true)
     String nextPordercode();
 
-    @Query(value = "select new Purchaseorder (p.id,p.pordercode) from Purchaseorder p WHERE p.supplier_id.id=:supplierid and p.porderstatus_id.id= 1")
+    @Query(value = "select new Purchaseorder (p.id,p.pordercode,p.supplier_id) from Purchaseorder p WHERE p.supplier_id.id=:supplierid and p.porderstatus_id.id= 1")
     List<Purchaseorder>porderlistbysupplier(@Param("supplierid")Integer supplierid);
 
 }

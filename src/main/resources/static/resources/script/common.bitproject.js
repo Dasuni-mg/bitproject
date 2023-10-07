@@ -122,6 +122,15 @@ function getErrormsg(obj,list,colorreq) {
 function doDecimal(value, dpoint=2) {
     return parseFloat(value).toFixed(dpoint);
 }
+function btnSignoutMC() {
+    var willDelete = confirm("Do you want to sign out?");
+    if (willDelete) {
+        alert("Sign Out Successful");
+        setTimeout(function() {
+            window.location.assign('/logout');
+        }, 1500);
+    }
+}
 
 function hiddenbody(icnid, divid) {
     if(divid.style.visibility == 'hidden'){
@@ -926,7 +935,7 @@ function fileChooser(parent,id,lblText,labelWidth,extenstions,maxsize,required,o
     label.innerHTML = lblText + " (200*100)";
     label.for = id;
     label.classList.add('control-label');
-    label.classList.add('font-weight-bold');
+     label.classList.add('font-weight-bold');
     // label.classList.add('col-md-'+labelWidth);
     var fieldArea = createElement('div');
     fieldArea.classList.add('row');

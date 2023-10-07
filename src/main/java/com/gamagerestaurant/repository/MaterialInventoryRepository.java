@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
+import java.util.List;
+
 public interface MaterialInventoryRepository extends JpaRepository<Materialinventory, Integer> {
 
     @Query("select mi from Materialinventory mi where (trim(mi.removeqty ) like concat('%',:searchtext,'%') or trim(mi.avaqty)  like concat('%',:searchtext,'%') or " +
@@ -16,6 +19,8 @@ public interface MaterialInventoryRepository extends JpaRepository<Materialinven
     @Query("select mi from Materialinventory mi where mi.material_id.id=:matid")
     Materialinventory getByMaterial(@Param("matid") Integer matid);
 
+//    @Query(value = "SELECT dayname(sp.paiddate),sum(sp.paidamount) FROM gamage_restaurant.spayment as sp WHERE sp.paiddate between ?1 and ?2 group by dayname(sp.paiddate)",nativeQuery = true)
+//    List dailyExpencesReportList(LocalDate parse, LocalDate parse1);
 
 
 }

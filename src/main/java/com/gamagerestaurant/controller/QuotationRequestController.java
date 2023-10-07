@@ -104,8 +104,10 @@ public class QuotationRequestController {
         //check user null
         if (user != null & priv != null & priv.get("add")) {
             try {
+                quotationrequest.setQrcode(dao.nextQRCode());
                 quotationrequest.setAddeddate(LocalDate.now());
                 quotationrequest.setQrstatus_id(daostatus.getById(1));
+                quotationrequest.setEmployee_id(user.getEmployeeId());
                 dao.save(quotationrequest);
                 return "0";
             } catch (Exception ex) {
